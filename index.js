@@ -1,7 +1,5 @@
 require('dotenv').config();
 var mysql = require('mysql');
-<<<<<<< Updated upstream
-=======
 
 const express = require('express');
 const app = express();
@@ -12,7 +10,6 @@ app.use(express.static('./client/build'));
 
 const cors = require('cors');
 app.use(cors());
->>>>>>> Stashed changes
 
 const user = process.env.user
 const password = process.env.password
@@ -28,8 +25,6 @@ var con = mysql.createConnection({
 con.connect(function(err) {
   if (err) throw err;
   console.log("Connected!");
-<<<<<<< Updated upstream
-=======
 });
 
 
@@ -264,5 +259,4 @@ const PORT = process.env.PORT
 
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`)
->>>>>>> Stashed changes
 });
