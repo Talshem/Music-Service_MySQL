@@ -11,13 +11,10 @@ var con = mysql.createConnection({
   database: "mydb",
 });
 
-
 con.connect(function(err) {
   if (err) throw err;
-  console.log("Connected!");
- var sql = "ALTER TABLE users ADD COLUMN id INT AUTO_INCREMENT PRIMARY KEY";
-  con.query(sql, function (err, result) {
+  con.query("SELECT * FROM table WHERE prop = 'value'", function (err, result) {
     if (err) throw err;
-    console.log("Table altered");
+    console.log(result);
   });
 });
