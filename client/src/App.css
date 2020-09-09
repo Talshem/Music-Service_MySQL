@@ -1,38 +1,105 @@
-.App {
+.App{
+  background: rgb(20, 20, 20);
+  border-radius: 25px;
+border: solid 2px white;
+  top: 50px;
+  left: 50px;
+position: absolute;
+width: 1300px;
+height:600px;
+}
+
+
+.lists {
+margin-top:210px;
+text-align: center;
+color:white;
+justify-content: center;
+display: flex;
+}
+
+h4{
+border: 2px solid rgb(149, 243, 215);
+padding-top:10px;
+margin-left:30px;
+padding-bottom:10px;
+width:250px;
+overflow: hidden;
+}
+
+
+.songs, .albums, .artists, .playlists {
+height:300px;
+width:250px;
+overflow: auto;
+}
+
+ul{
+list-style-type: none;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+border-radius: 10px;
+background: rgb(256,256,256,0.1); 
+
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+  border-radius: 10px;
+}
+
+.Add{
+background:rgb(149, 243, 215);
+border: 2px solid rgb(86, 177, 150);
+height:45px;
+margin-left:76%;
+margin-top:120px;
+font-size: 25px;
+border-radius: 5px;
+width:50px;
+position: absolute;
+}
+.Add:focus {outline:0;}
+
+.filterList{
+  margin-top:120px;
+  position: absolute;
+  margin-left:25%;
+  width: 50%;
+  height: 40px;
+  border-radius: 5px;
+  background-color: rgb(255, 255, 255);
+  font-size: 25px;
+  border: 1.5px solid rgb(218, 218, 218);
+  outline: none;
+  box-shadow: none;
+  color: black; 
+}
+
+.grid-container{
+  margin-top:180px;
+  position: relative;
+  margin-left:64px;
+  display: inline-grid;
+  grid-template-columns: auto auto auto auto auto;
+  padding: 10px;
+  height: 395px;
+  overflow: auto;
+
+}
+
+.grid-item {
+color:white;
+padding-left: 40px;
+padding-right: 40px;
+  font-size: 30px;
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
