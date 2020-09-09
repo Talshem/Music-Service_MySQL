@@ -13,8 +13,9 @@ var con = mysql.createConnection({
 
 con.connect(function(err) {
   if (err) throw err;
-  con.query("SELECT * FROM table WHERE prop = 'value'", function (err, result) {
+  var sql = "DELETE FROM songs WEHRE = ";
+  con.query(sql, function (err, result) {
     if (err) throw err;
-    console.log(result);
+    console.log("Number of - deleted: " + result.affectedRows);
   });
 });
