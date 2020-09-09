@@ -67,7 +67,7 @@ res.send(result)
 
 // delete song
 app.delete('/song/:title', (req, res) => {
-var sql = `DELETE FROM songs WHERE title = ${req.params.title} LIMIT 1 `;
+var sql = `DELETE FROM songs WHERE title = ${req.params.title}, id = ${body.id} LIMIT 1 `;
 con.query(sql, function (err, result) {
 if (err) throw err;
 res.send(result)
