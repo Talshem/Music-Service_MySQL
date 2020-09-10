@@ -35,13 +35,6 @@ const [registerName, setRegisterName] = useState('')
 const [registerPassword, setRegisterPassword] = useState('')
 const [registerRePassword, setRegisterRePassword] = useState('')
 
-  const handleLoginEmail = (event) => {
-  setLoginName(event.target.value)
-  }
-  const handleLoginPassword = (event) => {
-  setLoginPassword(event.target.value)
-  }
-
 
 const handleLogout = async () => {
 await axios.put(`/logout`, {
@@ -50,22 +43,8 @@ email: user.email,
 setUser(undefined)
     };
 
-
-  const handleRegisterName = (event) => {
-  setRegisterName(event.target.value)
-  }
-  const handleRegisterEmail = (event) => {
-  setRegisterEmail(event.target.value)
-  }
-  const handleRegisterPassword = (event) => {
-  setRegisterPassword(event.target.value)
-  }
-  const handleRegisterRePassword = (event) => {
-  setRegisterRePassword(event.target.value)
-  }   
  
-function validateEmail(mail) 
-{
+function validateEmail(mail) {
  if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail))
   {
     return (true)
@@ -73,14 +52,14 @@ function validateEmail(mail)
     return (false)
 }
 
-  const handleRegister = async () => {
+  const handleRegister = async (email, name, password, repassword) => {
     try{
-    if(validateEmail(registerEmail)) {
-          if (registerPassword === registerRePassword){
+    if(validateEmail(email)) {
+          if (password === repassword){
       const { data } = await axios.post(`/users`, {
-      name: registerName,
-      email: registerEmail,
-      password: registerPassword,
+      name: name,
+      email: email,
+      password: password,
       });
 setUser(data[0])
 setRegisterOpen(false)
@@ -91,17 +70,16 @@ setRegisterOpen(false)
  document.getElementById('errorMessage').innerHTML='Please enter a valid email address';
            }
   } catch(response){
-  
   document.getElementById('errorMessage').innerHTML='The email you tried to register with is already in use';
   }; 
   }
 
-    const handleLogin = async () => {
+    const handleLogin = async (email, password) => {
     try{
-    if(validateEmail(loginEmail)) {
+    if(validateEmail(email)) {
       const { data } = await axios.put(`/users`, {
-      email: loginEmail,
-      password: loginPassword,
+      email: email,
+      password: password,
       });
 setUser(data[0])
 setLoginOpen(false)
@@ -113,7 +91,19 @@ setLoginOpen(false)
   }; 
 };
 
-const login = 
+function login(){
+let email;
+let password;
+
+      function insertEmail(event) {
+        email = event.target.value;
+      }
+
+      function insertPassword(event) {
+        password = event.target.value;
+      }
+
+return (
   <span>
 <Button variant="text" color="inherit" onClick={() => setLoginOpen(true)}>
         Login
@@ -121,7 +111,9 @@ const login =
       <Dialog open={loginOpen} onClose={() => setLoginOpen(false)} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Login</DialogTitle>
         <DialogContent>
-          <TextField onChange={handleLoginEmail}
+          <TextField
+            onChange={insertEmail}
+            defaultValue={email}
             autoFocus
             margin="dense"
             id="name"
@@ -130,8 +122,10 @@ const login =
             required
             fullWidth
           />
-            <TextField onChange={handleLoginPassword}
+            <TextField
+            onChange={insertPassword}
             autoFocus
+            defaultValue={password}
             margin="dense"
             id="password"
             label="Password"
@@ -145,15 +139,37 @@ const login =
           <Button type="submit" onClick={() => setLoginOpen(false)} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleLogin} color="primary">
+          <Button onClick={() => handleLogin(email, password)} color="primary">
             login
           </Button>
         </DialogActions>
       </Dialog>
       </span>
+)}
 
+function register(){
+let email;
+let name;
+let password;
+let repassword
 
-const register = 
+      function insertEmail(event) {
+        email = event.target.value;
+      }
+
+      function insertName(event) {
+        name = event.target.value;
+      }
+
+      function insertPassword(event) {
+        password = event.target.value;
+      }
+
+      function insertRePassword(event) {
+        repassword = event.target.value;
+      }
+
+return (
   <span>
 <Button variant="text" color="inherit" onClick={() => setRegisterOpen(true)}>
         Register
@@ -161,7 +177,8 @@ const register =
       <Dialog open={registerOpen} onClose={() => setRegisterOpen(false)} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Register</DialogTitle>
         <DialogContent>
-          <TextField onChange={handleRegisterEmail}
+          <TextField
+            onChange={insertEmail}
             autoFocus
             margin="dense"
             id="email"
@@ -169,7 +186,8 @@ const register =
             type="email"
             fullWidth
           />
-          <TextField onChange={handleRegisterName}
+          <TextField
+            onChange={insertName}
             autoFocus
             margin="dense"
             id="name"
@@ -177,7 +195,8 @@ const register =
             type="name"
             fullWidth
           />
-           <TextField onChange={handleRegisterPassword}
+           <TextField
+            onChange={insertPassword}
             autoFocus
             margin="dense"
             id="password"
@@ -185,7 +204,8 @@ const register =
             type="password"
             fullWidth
           />
-           <TextField onChange={handleRegisterRePassword}
+           <TextField
+            onChange={insertRePassword}
             autoFocus
             margin="dense"
             id="rePassword"
@@ -199,19 +219,20 @@ const register =
           <Button onClick={() => setRegisterOpen(false)} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleRegister} color="primary">
+          <Button onClick={() => handleRegister(email, name, password, repassword)} color="primary">
             Register
           </Button>
         </DialogActions>
       </Dialog>
       </span>
+)}
 
 const logout =
 <Button style={{marginLeft:'85px'}} variant="text" color="inherit" onClick={handleLogout}>
 Logout
 </Button>
 
-const platform = user ? <h5> {logout} </h5> :  <h5> {login} | {register} </h5>
+const platform = user ? <h5> {logout} </h5> :  <h5> {login()} | {register()} </h5>
 
   return (
 <div className="App">
