@@ -59,13 +59,15 @@ const [registerRePassword, setRegisterRePassword] = useState('')
       email: loginEmail,
       password: loginPassword,
       });
-
 setUser(data[0])
 setLoginOpen(false)
     };
 
+
 const handleLogout = async () => {
-await axios.put(`/logout`);
+await axios.put(`/logout`, {
+email: user.email,
+});
 setUser(undefined)
     };
 
@@ -207,7 +209,7 @@ const register =
       </span>
 
 const logout =
-<Button style={{marginLeft:'100px'}} variant="text" color="inherit" onClick={handleLogout}>
+<Button style={{marginLeft:'85px'}} variant="text" color="inherit" onClick={handleLogout}>
 Logout
 </Button>
 
@@ -224,10 +226,10 @@ const platform = user ? <h5> {logout} </h5> :  <h5> {login} | {register} </h5>
         <SideNav.Nav defaultSelected="home">
           <NavItem eventKey="home">
             <NavIcon>
-              <i className="fa fa-fw fa-home" style={{ fontSize: '1.75em' }} />
+              <i style={{ fontSize: '1.75em' }} />
             </NavIcon>
             <NavText>
-              <NavLink to="/">Home</NavLink>
+              <NavLink to="/"><i style={{fontSize:'22px'}} className="fa fa-fw fa-home" /></NavLink>
             </NavText>
           </NavItem>
           <NavItem eventKey="1">

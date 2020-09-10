@@ -31,7 +31,7 @@ let sArray = songs.map(e => {
 return (
 <li key={e.id}>
 <p>{e.title}</p>
-<YouTube onPlay={() => playCount(e)}videoId={e.youtube_id} id="video" opts={{width:"150",height:"150"}}/>
+<YouTube className="video" onPlay={() => playCount(e)}videoId={e.youtube_id} id="video" opts={{width:"150",height:"150"}}/>
 <br/><br/>
 </li>
 )}

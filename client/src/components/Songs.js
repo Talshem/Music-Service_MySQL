@@ -5,14 +5,25 @@ import YouTube from 'react-youtube';
 function Songs(props) {
 const [list, setList] = useState([])
 const [search, setSearch] = useState('')
+const [user, setUser] = useState(props.user)
+const [preferences, setPreferences] = useState([])
+
+useEffect(() => {
+if(props.user){
+let x = props.user.preferences
+setPreferences(JSON.parse(x))
+console.log(preferences)
+}}, [user])
+
 
 useEffect(() => {
     const fetchData = async () => {
       const songs = await (await axios.get(`/top_songs`)).data;
       let list = songs.filter(e => e.title.toUpperCase().includes(search.toUpperCase()))
-      makeSongs(list)
+      makeSongs(list) 
     }; fetchData();
-   }, [search])
+   }, [search, preferences])
+
 
 const playCount = async (e) => {
 await axios.put(`/count`, {
@@ -22,30 +33,42 @@ count: e.play_count + 1,
 };
 
 const isLiked = async (e) => {
-await axios.put(`/like`, {
+if (preferences.includes(e.youtube_id)){
+const { data } = await axios.put(`/unlike`, {
+preferences: preferences,
 user: props.user.email,
 song_id: e.youtube_id,
-is_liked: 1,
 });
-}
+let x = JSON.parse(data[0].preferences)
+setPreferences(x)
+} else {
+const { data } = await axios.put(`/like`, {
+user: props.user.email,
+song_id: e.youtube_id,
+});
+let x = JSON.parse(data[0].preferences)
+setPreferences(x)
+}}
+
 
 const makeSongs = (songs) => {
 let array = songs.map(e => {
+const heart = preferences.includes(e.youtube_id) ? <i id={`${e.youtube_id}like`} className="fas fa-heart"></i> : <i id={`${e.youtube_id}like`} className="far fa-heart"></i>
+const like = user ? heart :  '';
 return (
-<li key={e.id} className="grid-item">
-<p><span style={{cursor:'pointer'}} onClick={() => isLiked(e)}>{unliked}</span> {e.title}</p>
-<YouTube onPlay={() => playCount(e)} videoId={e.youtube_id} id="video" opts={{width:"150",height:"150"}}/>
+
+<li key={e.youtube_id} className="grid-item">
+<p><span style={{cursor:'pointer'}} onClick={() => isLiked(e)}>{like}</span> {e.title}</p>
+<YouTube className="video" onPlay={() => playCount(e)} videoId={e.youtube_id} id="video" opts={{width:"150",height:"150"}}/>
 </li>
 )}
 )
 setList(array)
 }
 
-let liked = <span >&#9829;</span>;
-let unliked = <span>&#9825;</span>;
-
   return (
 <div> 
+<p className='listTitle'>Songs</p>
 <input className="filterList" placeholder="Search..." onChange={(event) => setSearch(event.target.value)} /> 
 <button className="Add">+</button>  
 <ul className="grid-container">

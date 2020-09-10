@@ -112,11 +112,16 @@ position: absolute;
 
 }
 
+img, .video{
+border: 2px solid white;
+}
+
 .grid-item {
 color:white;
 padding-left: 33px;
 padding-right: 33px;
-  font-size: 30px;
+margin-bottom:50px;
+  font-size: 16px;
   text-align: center;
 }
 
@@ -134,4 +139,15 @@ margin-top:-150px;
 color:white;
 font-size:60px;
 margin-left:100px;
+}
+
+.fa-heart{
+color:rgb(149, 243, 215)
+}
+
+.listTitle{
+margin-left:100px;
+position: absolute;
+font-size: 60px;
+color:rgb(149, 243, 215)
 }

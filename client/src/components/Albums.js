@@ -30,6 +30,7 @@ setList(array)
 
   return (
 <div> 
+  <p className='listTitle'>Albums</p>
 <input className="filterList" placeholder="Search..." onChange={(event) => setSearch(event.target.value)} />
 <button className="Add">+</button>  
 <ul className="grid-container">

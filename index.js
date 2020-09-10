@@ -35,48 +35,36 @@ app.put('/users', (req, res) => {
 const body = req.body
 var date = new Date();
   con.query(`
-UPDATE users SET remember_token = 0;
-UPDATE users SET remember_token = 1 WHERE email = '${body.email}' AND password = '${body.password}';
-UPDATE users SET upload_at = '${date.toISOString().substring(0, 10)}' WHERE email = '${body.email}' AND password = '${body.password}';
+UPDATE users SET remember_token = 1 WHERE email = '${body.email}';
+UPDATE users SET upload_at = '${date.toISOString().substring(0, 10)}' WHERE email = '${body.email}';
 SELECT * FROM users WHERE email = '${body.email}' AND password = '${body.password}';
     `, function (err, result) {
     if (err) console.log(err);
-    res.send(result[3])
+    res.send(result[2])
     })
   })
 
       // logout user
 app.put('/logout', (req, res) => {
-  con.query(`
-UPDATE users SET remember_token = 0;
+const body = req.body
+con.query(`
+UPDATE users SET remember_token = 0 WHERE email = '${body.email}';
     `, function (err, result) {
     if (err) console.log(err);
     res.send(result)
     })
   })
-
-// Get remembered user
-app.get('/token', (req, res) => {
-var date = new Date();
-let sql = `SELECT * FROM users WHERE remember_token = 1`
-  con.query(sql, function (err, result) {
-    if (err) console.log(err);
-    res.send(result)
-    })
-  })
-
 
 // Register an user 
 app.post('/users', (req, res, next) => {
 var date = new Date();
 const body = req.body;
   con.query(`
-  UPDATE users SET remember_token = 0;
   INSERT INTO users (name, email, created_at, upload_at, password, is_admin, remember_token, preferences) VALUES 
   ('${body.name}', '${body.email}', '${date.toISOString().substring(0, 10)}', '${date.toISOString().substring(0, 10)}', '${body.password}', 0, 1, '[]')
   `, function (err, result) {
     if (err) return next(err);
-    res.send(result[1])
+    res.send(result)
   });
 });
 
@@ -95,20 +83,32 @@ UPDATE songs SET play_count = ${body.count} WHERE youtube_id = ${body.song_id};
 
 // toggle song in user's preferneces
 app.put('/like', (req, res) => {
-const body = req.body;
-console.log(body)
+  const body = req.body;
   con.query(`
 UPDATE users SET preferences =
-JSON_ARRAY_APPEND (preferences, '$', ${JSON.stringify({song_id: body.song_id, is_liked: body.is_liked})})
-WHERE email = ${body.user};
+JSON_ARRAY_APPEND (preferences, '$', '${body.song_id}')
+WHERE email = '${body.user}';
+SELECT preferences FROM users WHERE email = '${body.user}';
     `, function (err, result) {
     if (err) console.log(err);
-    res.send(result)
+    res.send(result[1])
     })
   })
   
-
-
+app.put('/unlike', (req, res) => {
+const body = req.body;
+let preferences = body.preferences;
+let x = preferences.filter(e => JSON.stringify(e) !== JSON.stringify(body.song_id))
+  con.query(`
+UPDATE users SET preferences = '${JSON.stringify(x)}'
+WHERE email = '${body.user}';
+SELECT preferences FROM users WHERE email = '${body.user}';
+    `, function (err, result) {
+    if (err) console.log(err);
+    res.send(result[1])
+    })
+  })
+  
 
 ///////////////////////////////////////////////////////////////// Get TOP
 
