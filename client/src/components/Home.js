@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import YouTube from 'react-youtube';
@@ -29,7 +30,7 @@ count: e.play_count + 1,
 const makeLists = (songs, albums, artists, playlists) => {
 let sArray = songs.map(e => {
 return (
-<li key={e.id}>
+<li key={e.youtube_id}>
 <p>{e.title}</p>
 <YouTube className="video" onPlay={() => playCount(e)}videoId={e.youtube_id} id="video" opts={{width:"150",height:"150"}}/>
 <br/><br/>
@@ -49,7 +50,7 @@ return (
 )
 let arArray = artists.map(e => {
 return (
-<li key={e.id}>
+<li key={e.name}>
 <p>{e.name}</p>
 <img alt={e.name} width="150" height="150" src={e.cover_img}>
 </img>

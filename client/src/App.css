@@ -15,11 +15,11 @@ format("svg");
   border-radius: 25px;
 border: solid 2px white;
   top: 50px;
-  padding-right:60px;
-  padding-left:60px;
+  padding-right:30px;
+  padding-left:90px;
   left: 50px;
 position: absolute;
-width: 1210px;
+width: 1000px;
 height:600px;
 }
 
@@ -39,14 +39,14 @@ padding-top:10px;
 color: rgb(149, 243, 215);
 margin-left:30px;
 padding-bottom:10px;
-width:250px;
+width:200px;
 overflow: hidden;
 }
 
 
 .songs, .albums, .artists, .playlists {
 height:300px;
-width:250px;
+width:200px;
 overflow: auto;
 }
 
@@ -56,7 +56,7 @@ list-style-type: none;
 
 /* width */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 6px;
 }
 
 /* Track */
@@ -72,25 +72,24 @@ background: rgb(256,256,256,0.1);
   border-radius: 10px;
 }
 
-.Add{
-background:rgb(149, 243, 215);
-border: 2px solid rgb(86, 177, 150);
-height:45px;
-margin-left:71%;
-margin-top:120px;
+.add{
+color:rgb(149, 243, 215);
+cursor: pointer;
+margin-left:680px;
+margin-top:117px;
 font-size: 25px;
-border-radius: 5px;
-width:50px;
+font-size: 45px;
 position: absolute;
 }
-.Add:focus {outline:0;}
+
+.add:hover {color:rgb(95, 206, 171)}
 
 .filterList{
   margin-top:120px;
   position: absolute;
-  margin-left:20%;
+  margin-left:100px;
   width: 50%;
-  height: 40px;
+  height: 30px;
   border-radius: 5px;
   background-color: rgb(255, 255, 255);
   font-size: 25px;
@@ -105,7 +104,7 @@ position: absolute;
   position: relative;
   margin-left:64px;
   display: inline-grid;
-  grid-template-columns: auto auto auto auto auto;
+  grid-template-columns: auto auto auto auto;
   padding: 10px;
   height: 395px;
   overflow: auto;
@@ -118,9 +117,9 @@ border: 2px solid white;
 
 .grid-item {
 color:white;
-padding-left: 33px;
-padding-right: 33px;
-margin-bottom:50px;
+padding-left: 38px;
+padding-right: 38px;
+margin-bottom:40px;
   font-size: 16px;
   text-align: center;
 }
@@ -129,7 +128,7 @@ h5 {
   position: absolute;
   font-size:16px;
   color:white;
-  margin-left:1080px;
+  margin-left:840px;
 }
 
 h3{
@@ -147,7 +146,13 @@ color:rgb(149, 243, 215)
 
 .listTitle{
 margin-left:100px;
+margin-top:20px;
 position: absolute;
 font-size: 60px;
 color:rgb(149, 243, 215)
+}
+
+.navItem{
+font-size:24px;
+text-decoration: none;
 }

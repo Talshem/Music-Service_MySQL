@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import SideNav, {
-  Toggle, Nav, NavItem, NavIcon, NavText,
+ NavItem, NavIcon, NavText,
 } from '@trendmicro/react-sidenav';
 import Home from './components/Home.js'
 import Songs from './components/Songs.js'
@@ -18,7 +18,6 @@ import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import axios from 'axios'
@@ -36,32 +35,12 @@ const [registerName, setRegisterName] = useState('')
 const [registerPassword, setRegisterPassword] = useState('')
 const [registerRePassword, setRegisterRePassword] = useState('')
 
-  useEffect(() => {
-    const rememberToken = async () => {
-      const { data } = await axios.get(`/token`)
-      setTimeout(() => {
-      setUser(data[0])
-      }, 500);
-    }; rememberToken();
-  }, []);
-
-
-
   const handleLoginEmail = (event) => {
   setLoginName(event.target.value)
   }
   const handleLoginPassword = (event) => {
   setLoginPassword(event.target.value)
   }
-
-    const handleLogin = async () => {
-      const { data } = await axios.put(`/users`, {
-      email: loginEmail,
-      password: loginPassword,
-      });
-setUser(data[0])
-setLoginOpen(false)
-    };
 
 
 const handleLogout = async () => {
@@ -106,15 +85,33 @@ function validateEmail(mail)
 setUser(data[0])
 setRegisterOpen(false)
            } else {
-    document.getElementById('errorMessage').innerHTML='Password fields do not match!';
+    document.getElementById('errorMessage').innerHTML='Password fields do not match';
            }
           } else {
  document.getElementById('errorMessage').innerHTML='Please enter a valid email address';
            }
   } catch(response){
+  
   document.getElementById('errorMessage').innerHTML='The email you tried to register with is already in use';
   }; 
   }
+
+    const handleLogin = async () => {
+    try{
+    if(validateEmail(loginEmail)) {
+      const { data } = await axios.put(`/users`, {
+      email: loginEmail,
+      password: loginPassword,
+      });
+setUser(data[0])
+setLoginOpen(false)
+    } else {
+ document.getElementById('errorMessage').innerHTML='Please enter a valid email address';
+    }
+  } catch (response){
+  document.getElementById('errorMessage').innerHTML='Either the email or password you entered is incorrect';
+  }; 
+};
 
 const login = 
   <span>
@@ -143,6 +140,7 @@ const login =
             fullWidth
           />
         </DialogContent>
+        <DialogTitle style={{color:'red'}} id="errorMessage"></DialogTitle>
         <DialogActions>
           <Button type="submit" onClick={() => setLoginOpen(false)} color="primary">
             Cancel
@@ -228,40 +226,38 @@ const platform = user ? <h5> {logout} </h5> :  <h5> {login} | {register} </h5>
             <NavIcon>
               <i style={{ fontSize: '1.75em' }} />
             </NavIcon>
-            <NavText>
-              <NavLink to="/"><i style={{fontSize:'22px'}} className="fa fa-fw fa-home" /></NavLink>
-            </NavText>
+              <NavLink to="/"><i style={{color:'white', fontSize:'26px', paddingTop:"14px"}} className="fa fa-fw fa-home" /></NavLink>
           </NavItem>
           <NavItem eventKey="1">
             <NavIcon>
-              <i className="fa fa-fw fa-line-chart" style={{ fontSize: '1.75em' }} />
+              <i className="fa fa-fw " style={{ fontSize: '1.75em' }} />
             </NavIcon>
             <NavText>
-               <NavLink to="/Songs">Songs</NavLink>
+               <NavLink className="navItem" to="/Songs">Songs</NavLink>
             </NavText>
           </NavItem>
           <NavItem eventKey="2">
             <NavIcon>
-              <i className="fa fa-fw fa-line-chart" style={{ fontSize: '1.75em' }} />
+              <i className="fa fa-fw " style={{ fontSize: '1.75em' }} />
             </NavIcon>
             <NavText>
-           <NavLink to="/Artists">Artists</NavLink>
+           <NavLink className="navItem" to="/Artists">Artists</NavLink>
             </NavText>
           </NavItem>
           <NavItem eventKey="3">
             <NavIcon>
-              <i className="fa fa-fw fa-line-chart" style={{ fontSize: '1.75em' }} />
+              <i className="fa fa-fw " style={{ fontSize: '1.75em' }} />
             </NavIcon>
             <NavText>
-               <NavLink to="/Albums">Albums</NavLink>
+               <NavLink className="navItem" to="/Albums">Albums</NavLink>
             </NavText>
           </NavItem>
           <NavItem eventKey="4">
             <NavIcon>
-              <i className="fa fa-fw fa-line-chart" style={{ fontSize: '1.75em' }} />
+              <i className="fa fa-fw " style={{ fontSize: '1.75em' }} />
             </NavIcon>
             <NavText>
-             <NavLink to="/Playlists">Playlists</NavLink>
+             <NavLink className="navItem" to="/Playlists">Playlists</NavLink>
             </NavText>
           </NavItem>
         </SideNav.Nav>

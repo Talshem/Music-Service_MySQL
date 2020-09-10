@@ -31,7 +31,7 @@ con.connect(function(err) {
 ///////////////////////////////////////////////////////////////// USER
 
     // login user
-app.put('/users', (req, res) => {
+app.put('/users', (req, res, next) => {
 const body = req.body
 var date = new Date();
   con.query(`
@@ -39,7 +39,7 @@ UPDATE users SET remember_token = 1 WHERE email = '${body.email}';
 UPDATE users SET upload_at = '${date.toISOString().substring(0, 10)}' WHERE email = '${body.email}';
 SELECT * FROM users WHERE email = '${body.email}' AND password = '${body.password}';
     `, function (err, result) {
-    if (err) console.log(err);
+    if (result[2].length === 0) return next(err);
     res.send(result[2])
     })
   })

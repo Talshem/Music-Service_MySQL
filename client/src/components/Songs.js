@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import YouTube from 'react-youtube';
@@ -5,15 +7,13 @@ import YouTube from 'react-youtube';
 function Songs(props) {
 const [list, setList] = useState([])
 const [search, setSearch] = useState('')
-const [user, setUser] = useState(props.user)
 const [preferences, setPreferences] = useState([])
 
 useEffect(() => {
 if(props.user){
 let x = props.user.preferences
 setPreferences(JSON.parse(x))
-console.log(preferences)
-}}, [user])
+}}, [props.user])
 
 
 useEffect(() => {
@@ -54,7 +54,7 @@ setPreferences(x)
 const makeSongs = (songs) => {
 let array = songs.map(e => {
 const heart = preferences.includes(e.youtube_id) ? <i id={`${e.youtube_id}like`} className="fas fa-heart"></i> : <i id={`${e.youtube_id}like`} className="far fa-heart"></i>
-const like = user ? heart :  '';
+const like = props.user ? heart :  '';
 return (
 
 <li key={e.youtube_id} className="grid-item">
@@ -70,7 +70,7 @@ setList(array)
 <div> 
 <p className='listTitle'>Songs</p>
 <input className="filterList" placeholder="Search..." onChange={(event) => setSearch(event.target.value)} /> 
-<button className="Add">+</button>  
+<i className="fa fa-plus-square-o add"></i>
 <ul className="grid-container">
 {list}
 </ul>

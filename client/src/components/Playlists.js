@@ -17,7 +17,7 @@ useEffect(() => {
 const makePlaylists = (playlists) => {
 let array = playlists.map(e => {
 return (
-<li key={e.id} class='grid-item'>
+<li key={e.id} className='grid-item'>
 <p>{e.name}</p>
 <img alt={e.name} width="150" height="150" src={e.cover_img}>
 </img>
@@ -33,7 +33,7 @@ setList(array)
 <div> 
 <p className='listTitle'>Playlists</p>
 <input className="filterList" placeholder="Search..." onChange={(event) => setSearch(event.target.value)} />
-<button className="Add">+</button>  
+<i className="fa fa-plus-square-o add"></i>
 <ul className="grid-container">
 {list}
 </ul>
