@@ -18,7 +18,7 @@ let array = artists.map(e => {
 return (
 <li key={e.id} class='grid-item'>
 <p>{e.name}</p>
-<img width="150" height="150" src={e.cover_img}>
+<img alt={e.name} width="150" height="150" src={e.cover_img}>
 </img>
 </li>
 )}
@@ -31,6 +31,7 @@ setList(array)
   return (
 <div> 
 <input className="filterList" placeholder="Search..." onChange={(event) => setSearch(event.target.value)} />
+<button className="Add">+</button>  
 <ul className="grid-container">
 {list}
 </ul>

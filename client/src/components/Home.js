@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import YouTube from 'react-youtube';
 
 function Home(props) {
 const [songs, setSongs] = useState([]);
 const [albums, setAlbums] = useState([]);
 const [artists, setArtists] = useState([]);
 const [playlists, setPlaylists] = useState([]);
-
 
 useEffect(() => {
     const fetchData = async () => {
@@ -18,22 +18,32 @@ useEffect(() => {
     }; fetchData();
    }, [])
 
+const playCount = async (e) => {
+await axios.put(`/count`, {
+song_id: e.id,
+count: e.play_count + 1,
+});
+};
+
+
 const makeLists = (songs, albums, artists, playlists) => {
 let sArray = songs.map(e => {
 return (
 <li key={e.id}>
 <p>{e.title}</p>
-<iframe width="150" height="150" src={e.youtube_link}>
-</iframe>
+<YouTube onPlay={() => playCount(e)}videoId={e.youtube_id} id="video" opts={{width:"150",height:"150"}}/>
+<br/><br/>
 </li>
 )}
 )
+
 let alArray = albums.map(e => {
 return (
 <li key={e.id}>
 <p>{e.name}</p>
-<img width="150" height="150" src={e.cover_img}>
+<img alt={e.name} width="150" height="150" src={e.cover_img}>
 </img>
+<br/><br/>
 </li>
 )}
 )
@@ -41,8 +51,9 @@ let arArray = artists.map(e => {
 return (
 <li key={e.id}>
 <p>{e.name}</p>
-<img width="150" height="150" src={e.cover_img}>
+<img alt={e.name} width="150" height="150" src={e.cover_img}>
 </img>
+<br/><br/>
 </li>
 )}
 )
@@ -50,8 +61,9 @@ let pArray = playlists.map(e => {
 return (
 <li key={e.id}>
 <p>{e.name}</p>
-<img width="150" height="150" src={e.cover_img}>
+<img alt={e.name} width="150" height="150" src={e.cover_img}>
 </img>
+<br/><br/>
 </li>
 )}
 )
@@ -62,10 +74,10 @@ setPlaylists(pArray)
 }
 
 
-
   return (
+    <div>
+<h3>Hello, {props.user ? props.user.name : 'Guest'}</h3>
 <div className="lists"> 
-
 <div >
 <h4> Top Songs </h4> 
 <ul className="songs" >{songs}</ul>
@@ -86,6 +98,7 @@ setPlaylists(pArray)
 <div>
 <h4>Top Playlists</h4>
 <ul className="playlists">{playlists}</ul>
+</div>
 </div>
 </div>
   );

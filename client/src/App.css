@@ -1,17 +1,32 @@
+@font-face { 
+font-family: "Avenir Light";
+src: url("//db.onlinewebfonts.com/t/116af611cbcd9e4bada60b4e700430c1.eot");
+src: url("//db.onlinewebfonts.com/t/116af611cbcd9e4bada60b4e700430c1.eot?#iefix")
+format("embedded-opentype"),url("//db.onlinewebfonts.com/t/116af611cbcd9e4bada60b4e700430c1.woff2")
+format("woff2"), url("//db.onlinewebfonts.com/t/116af611cbcd9e4bada60b4e700430c1.woff")
+format("woff"), url("//db.onlinewebfonts.com/t/116af611cbcd9e4bada60b4e700430c1.ttf")
+format("truetype"), url("//db.onlinewebfonts.com/t/116af611cbcd9e4bada60b4e700430c1.svg#Avenir Light")
+format("svg");
+}
+
 .App{
+  font-family: "Avenir Light";
   background: rgb(20, 20, 20);
   border-radius: 25px;
 border: solid 2px white;
   top: 50px;
+  padding-right:60px;
+  padding-left:60px;
   left: 50px;
 position: absolute;
-width: 1300px;
+width: 1210px;
 height:600px;
 }
 
 
 .lists {
-margin-top:210px;
+margin-left:30px;
+margin-top:208px;
 text-align: center;
 color:white;
 justify-content: center;
@@ -21,6 +36,7 @@ display: flex;
 h4{
 border: 2px solid rgb(149, 243, 215);
 padding-top:10px;
+color: rgb(149, 243, 215);
 margin-left:30px;
 padding-bottom:10px;
 width:250px;
@@ -60,7 +76,7 @@ background: rgb(256,256,256,0.1);
 background:rgb(149, 243, 215);
 border: 2px solid rgb(86, 177, 150);
 height:45px;
-margin-left:76%;
+margin-left:71%;
 margin-top:120px;
 font-size: 25px;
 border-radius: 5px;
@@ -72,7 +88,7 @@ position: absolute;
 .filterList{
   margin-top:120px;
   position: absolute;
-  margin-left:25%;
+  margin-left:20%;
   width: 50%;
   height: 40px;
   border-radius: 5px;
@@ -98,8 +114,24 @@ position: absolute;
 
 .grid-item {
 color:white;
-padding-left: 40px;
-padding-right: 40px;
+padding-left: 33px;
+padding-right: 33px;
   font-size: 30px;
   text-align: center;
+}
+
+h5 {
+  position: absolute;
+  font-size:16px;
+  color:white;
+  margin-left:1080px;
+}
+
+h3{
+font-family: "Avenir Light";
+position: absolute;
+margin-top:-150px;
+color:white;
+font-size:60px;
+margin-left:100px;
 }

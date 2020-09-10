@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import YouTube from 'react-youtube';
 
 function Songs(props) {
 const [list, setList] = useState([])
@@ -13,20 +14,31 @@ useEffect(() => {
     }; fetchData();
    }, [search])
 
+const playCount = async (e) => {
+await axios.put(`/count`, {
+song_id: e.id,
+count: e.play_count + 1,
+});
+};
+
+const isLiked = async (e) => {
+
+}
+
 const makeSongs = (songs) => {
 let array = songs.map(e => {
 return (
 <li key={e.id} className="grid-item">
-<p>{e.title}</p>
-<iframe width="150" height="150" src={e.youtube_link}>
-</iframe>
+<p><span style={{cursor:'pointer'}} onClick={() => isLiked(e)}>{unliked}</span> {e.title}</p>
+<YouTube onPlay={() => playCount(e)} videoId={e.youtube_id} id="video" opts={{width:"150",height:"150"}}/>
 </li>
 )}
 )
 setList(array)
 }
 
-
+let liked = <span >&#9829;</span>;
+let unliked = <span>&#9825;</span>;
 
   return (
 <div> 

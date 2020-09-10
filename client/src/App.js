@@ -14,28 +14,193 @@ import {
   NavLink,
   HashRouter
 } from "react-router-dom";
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
+import axios from 'axios'
 
 function App() {
-const [expanded, setExpanded] = useState(false)
+const [registerOpen, setRegisterOpen] = useState(false)
+const [loginOpen,setLoginOpen] = useState(false)
+const [user, setUser] = useState(undefined);
 
-  function handleMargin() {
-    if (expanded) {
-    document.querySelector('.App').style.transition = 'all 0.2s';
-    document.querySelector('.App').style.paddingLeft = '0px';
-      setExpanded(false);
-    } else {
-    document.querySelector('.App').style.transition = 'all 0.2s';
-    document.querySelector('.App').style.paddingLeft = '54px';
-      setExpanded(true);
-    }
+const [loginEmail, setLoginName] = useState('')
+const [loginPassword, setLoginPassword] = useState('')
+
+const [registerEmail, setRegisterEmail] = useState('')
+const [registerName, setRegisterName] = useState('')
+const [registerPassword, setRegisterPassword] = useState('')
+const [registerRePassword, setRegisterRePassword] = useState('')
+
+  useEffect(() => {
+    const rememberToken = async () => {
+      const { data } = await axios.get(`/token`)
+      setTimeout(() => {
+      setUser(data[0])
+      }, 500);
+    }; rememberToken();
+  }, []);
+
+
+
+  const handleLoginEmail = (event) => {
+  setLoginName(event.target.value)
   }
+  const handleLoginPassword = (event) => {
+  setLoginPassword(event.target.value)
+  }
+
+    const handleLogin = async () => {
+      const { data } = await axios.put(`/users`, {
+      email: loginEmail,
+      password: loginPassword,
+      });
+
+setUser(data[0])
+setLoginOpen(false)
+    };
+
+const handleLogout = async () => {
+await axios.put(`/logout`);
+setUser(undefined)
+    };
+
+
+  const handleRegisterName = (event) => {
+  setRegisterName(event.target.value)
+  }
+  const handleRegisterEmail = (event) => {
+  setRegisterEmail(event.target.value)
+  }
+  const handleRegisterPassword = (event) => {
+  setRegisterPassword(event.target.value)
+  }
+  const handleRegisterRePassword = (event) => {
+  setRegisterRePassword(event.target.value)
+  }   
+ 
+  const handleRegister = async () => {
+    if(registerPassword === registerRePassword) {
+      const { data } = await axios.post(`/users`, {
+      name: registerName,
+      email: registerEmail,
+      password: registerPassword,
+      });
+setUser(data[0])
+setRegisterOpen(false)
+    } else {
+    alert('Password fields do not match!')
+    }
+  }; 
+
+
+const login = 
+  <span>
+<Button variant="text" color="inherit" onClick={() => setLoginOpen(true)}>
+        Login
+      </Button>
+      <Dialog open={loginOpen} onClose={() => setLoginOpen(false)} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">Login</DialogTitle>
+        <DialogContent>
+          <TextField onChange={handleLoginEmail}
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Email Address"
+            type="email"
+            required
+            fullWidth
+          />
+            <TextField onChange={handleLoginPassword}
+            autoFocus
+            margin="dense"
+            id="password"
+            label="Password"
+            type="password"
+            required
+            fullWidth
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button type="submit" onClick={() => setLoginOpen(false)} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleLogin} color="primary">
+            login
+          </Button>
+        </DialogActions>
+      </Dialog>
+      </span>
+
+
+const register = 
+  <span>
+<Button variant="text" color="inherit" onClick={() => setRegisterOpen(true)}>
+        Register
+      </Button>
+      <Dialog open={registerOpen} onClose={() => setRegisterOpen(false)} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">Register</DialogTitle>
+        <DialogContent>
+          <TextField onChange={handleRegisterEmail}
+            autoFocus
+            margin="dense"
+            id="email"
+            label="Email Address"
+            type="email"
+            fullWidth
+          />
+          <TextField onChange={handleRegisterName}
+            autoFocus
+            margin="dense"
+            id="username"
+            label="Username"
+            type="name"
+            fullWidth
+          />
+           <TextField onChange={handleRegisterPassword}
+            autoFocus
+            margin="dense"
+            id="password"
+            label="Password"
+            type="password"
+            fullWidth
+          />
+           <TextField onChange={handleRegisterRePassword}
+            autoFocus
+            margin="dense"
+            id="rePassword"
+            label="Confirm password"
+            type="password"
+            fullWidth
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setRegisterOpen(false)} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleRegister} color="primary">
+            Register
+          </Button>
+        </DialogActions>
+      </Dialog>
+      </span>
+
+const logout =
+<Button style={{marginLeft:'100px'}} variant="text" color="inherit" onClick={handleLogout}>
+Logout
+</Button>
+
+const platform = user ? <h5> {logout} </h5> :  <h5> {login} | {register} </h5>
+
   return (
 <div className="App">
-
+{platform}
     <HashRouter>
    <SideNav
-        expanded={expanded}
-        onToggle={handleMargin}
         className="sideNav"
       >
         <SideNav.Toggle />
@@ -82,13 +247,15 @@ const [expanded, setExpanded] = useState(false)
           </NavItem>
         </SideNav.Nav>
       </SideNav>
-<Route exact path="/" component={Home}/>
-<Route path="/Songs" component={Songs}/>
-<Route path="/Artists" component={Artists}/>
-<Route path="/Playlists" component={Playlists}/>
-<Route path="/Albums" component={Albums}/>
+  <Route exact path="/" component={() => <Home user={user}/>}/>
+<Route path="/Songs" component={() => <Songs user={user}/>}/>
+<Route path="/Artists" component={() => <Artists user={user}/>}/>
+<Route path="/Playlists" component={() => <Playlists user={user}/>}/>
+<Route path="/Albums" component={() => <Albums user={user}/>}/>
       </HashRouter>
     </div>
+
+    
   );
 }
 
