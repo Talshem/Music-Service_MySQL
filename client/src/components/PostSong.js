@@ -29,6 +29,7 @@ function validateTrack(track) {
     const addSong = async (title, length, youtube_id, artist, album, track_number, lyrics, created_at) => {
   const newCreated_at = created_at.slice(0,10)
   const newLyrics = lyrics.replace(`'`,`''`);
+    if (props.user) {
     if (validateDate(newCreated_at)) {
     if(validateTrack(track_number)) {
     try{
@@ -44,13 +45,16 @@ function validateTrack(track) {
     })
   document.getElementById("songForm").reset();
 } catch (response){
-   document.getElementById('songError').innerHTML = "Artist unrecognized / song already exists ";
+   document.getElementById('songError').innerHTML = "Unrecognized data / song already exists ";
   }; 
    } else {
   document.getElementById('songError').innerHTML = "Track number field must be a number";
   }
 } else {
    document.getElementById('songError').innerHTML = "Release date form is invalid";
+}
+  } else {
+    alert('Only registered users can post songs to the website!')
   }
 
 };

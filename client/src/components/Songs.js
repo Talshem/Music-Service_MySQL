@@ -90,7 +90,7 @@ setList(array)
 <p className='listTitle'>Songs</p>
 <input className="filterList" placeholder="Search..." onChange={(event) => setSearch(event.target.value)} /> 
 <HashRouter>
-<NavLink className="fa fa-plus-square-o add" to="/PostSong"></NavLink>
+{props.user ? <NavLink className="fa fa-plus-square-o add" to="/PostSong"></NavLink> : ''}
 <Route path="/PostSong" component={() => <PostSong/>}/>
 </HashRouter>
 <ul className="grid-container">
