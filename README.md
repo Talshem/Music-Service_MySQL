@@ -1,4 +1,4 @@
-# My Ticket Manager
+# My Streaming app
 
 ![image](Image.png)
 
