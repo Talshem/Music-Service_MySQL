@@ -15,7 +15,7 @@ const user = process.env.user
 const password = process.env.password
 
 var con = mysql.createConnection({
-  host: process.env.host,
+  host: process.env.DB_host,
   user: process.env.DB_user,
   password: process.env.DB_password,
   database: process.env.DB_database,
