@@ -11,7 +11,7 @@ app.use(express.static('./client/build'));
 const cors = require('cors');
 app.use(cors());
 
-var con = mysql.createConnection({
+var con = mysql.createPool({
   host: process.env.DB_host,
   user: process.env.DB_user,
   password: process.env.DB_password,
@@ -367,7 +367,7 @@ const errorHandler = (error, request, response, next) => {
 
 app.use(errorHandler)
 
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`)
