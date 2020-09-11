@@ -28,12 +28,16 @@ const [registerOpen, setRegisterOpen] = useState(false)
 const [loginOpen,setLoginOpen] = useState(false)
 const [user, setUser] = useState(undefined);
 
-useEffect (() => {
-let email = localStorage.getItem('email');
-let password = localStorage.getItem('password');
-if(email && password) {
-handleLogin(email, password);
+useEffect(() => {
+let user = localStorage.getItem('email');
+const autoLogin = async () => {
+try {
+const { data } = await axios.get(`/auto/${user}`);
+setUser(data[0])
+} catch {
+return
 }
+}; autoLogin();
 }, [])
 
 const handleLogout = async () => {
@@ -83,7 +87,6 @@ document.getElementById('errorMessage').innerHTML='Password fields do not match'
       password: password,
       });
 localStorage.setItem('email', email);
-localStorage.setItem('password', password);  
 setLoginOpen(false)   
 setTimeout(() => {
 setUser(data[0])

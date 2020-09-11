@@ -30,6 +30,16 @@ con.connect(function(err) {
 
 ///////////////////////////////////////////////////////////////// USER
 
+    // auto login via local storage
+app.get('/auto/:user', (req, res, next) => {
+  con.query(`
+SELECT * FROM users WHERE email = '${req.params.user}';
+    `, function (err, result) {
+    if (err) return next(err);
+    res.send(result)
+    })
+  })
+
     // login user
 app.put('/users', (req, res, next) => {
 const body = req.body
