@@ -1,6 +1,6 @@
 # My Ticket Manager
 
-![image](image.png)
+![image](Image.png)
 
 -----------------
 ### Used app.post -
