@@ -253,15 +253,31 @@ margin-top:-25px;
 
 .deleteButton{
 font-family: "Avenir Light";
-width:100%;
+width:101.5%;
 background:#db3d44;
 color:white;
 border: 1.5px solid rgb(218, 218, 218);
 border-radius: 2px;
 font-size:16px;
+margin-top:20px;
 cursor: pointer;
 }
 
 .fa-home{
 margin-left:-53px;
+}
+
+.back{
+text-decoration: none;
+color:rgb(149, 243, 215);
+cursor: pointer;
+margin-left:42px;
+margin-top:-10px;
+font-size: 36px;
+position: absolute;
+}
+
+#songError{
+position: absolute;
+left:140px;
 }

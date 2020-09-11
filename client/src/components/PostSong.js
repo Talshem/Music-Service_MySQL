@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import {
+  Route,
+  NavLink,
+  HashRouter
+} from "react-router-dom";
+import Songs from './Songs.js';
 
 function PostSong(props) {
 
@@ -118,7 +124,11 @@ return (
   return (
 <div> 
 {form()}
-<p style={{marginTop:"0px", marginLeft:"40px", fontSize:'20px', color:"red"}} id="songError"></p>
+<HashRouter>
+<NavLink className="fa fa-arrow-left back" to="/Songs"></NavLink>
+<Route path="/Songs" component={() => <Songs/>}/>
+</HashRouter>
+<p id="songError" style={{marginTop:"0px", marginLeft:"40px", fontSize:'20px', color:"red"}}></p>
 </div>
   );
   }
