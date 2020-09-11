@@ -11,9 +11,6 @@ app.use(express.static('./client/build'));
 const cors = require('cors');
 app.use(cors());
 
-const user = process.env.user
-const password = process.env.password
-
 var con = mysql.createConnection({
   host: process.env.DB_host,
   user: process.env.DB_user,
@@ -217,6 +214,7 @@ var date = new Date();
   });
 });
 
+/*
 // POST artist
 app.post('/artist', (req, res) => {
 const body = req.body;
@@ -255,9 +253,9 @@ var date = new Date();
   });
 });
 
-
+*/
 ///////////////////////////////////////////////////////////////// PUT
-
+/*
 // PUT song
 app.put('/song', (req, res) => {
 const body = req.body;
@@ -304,21 +302,20 @@ const body = req.body;
   });
 });
 
-
+*/
 ///////////////////////////////////////////////////////////////// DELETE
 
 // DELETE song
 app.delete('/song/:youtube_id', (req, res) => {
 const body = req.body
 console.log(body)
-
 var sql = `DELETE FROM songs WHERE youtube_id = '${req.params.youtube_id}'`;
 con.query(sql, function (err, result) {
 if (err) throw err;
 res.send(result)
 });
 });
-
+/*
 // DELETE album
 app.delete('/album/:name', (req, res) => {
 const body = req.body
@@ -347,7 +344,7 @@ con.query(sql, function (err, result) {
 if (err) throw err;
 res.send(result)
 });
-});
+});*/
 
 ///////////////////////////////////////////////////////
 
