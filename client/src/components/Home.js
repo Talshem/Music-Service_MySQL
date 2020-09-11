@@ -11,10 +11,11 @@ const [playlists, setPlaylists] = useState([]);
 
 useEffect(() => {
     const fetchData = async () => {
-      const songs = await (await axios.get(`/top_songs`)).data.splice(0, 20);
-      const albums = await (await axios.get(`/top_albums`)).data.splice(0, 20);
-      const artists = await (await axios.get(`/top_artists`)).data.splice(0, 20);
-      const playlists = await (await axios.get(`/top_playlists`)).data.splice(0, 20);
+      const songs = await (await axios.get(`/top_songs`)).data.slice(0, 20);
+      const albums = await (await axios.get(`/top_albums`)).data.slice(0, 20);
+      const artists = await (await axios.get(`/top_artists`)).data.slice(0, 20);
+      const playlists = await (await axios.get(`/top_playlists`)).data.slice(0, 20);
+    console.log(songs)
       makeLists(songs, albums, artists, playlists)
     }; fetchData();
    }, [])

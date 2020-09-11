@@ -1,12 +1,11 @@
 require('dotenv').config();
 var mysql = require('mysql');
+const path = require('path')
 
 const express = require('express');
 const app = express();
 
 app.use(express.json());
-app.use(express.static(__dirname + '/public'));
-
 
 const cors = require('cors');
 app.use(cors());
@@ -24,6 +23,9 @@ con.connect(function(err) {
   if (err) throw err;
   console.log("Connected!");
 });
+
+app.use(express.static('./client/build'));
+
 
 ///////////////////////////////////////////////////////////////// USER
 
