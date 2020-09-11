@@ -24,7 +24,7 @@ con.connect(function(err) {
   console.log("Connected!");
 });
 
-app.use(express.static('./client/build'));
+app.use(express.static(__dirname + '/client/build'));
 
 
 ///////////////////////////////////////////////////////////////// USER
