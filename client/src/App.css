@@ -1,38 +1,284 @@
-.App {
+@font-face { 
+font-family: "Avenir Light";
+src: url("//db.onlinewebfonts.com/t/116af611cbcd9e4bada60b4e700430c1.eot");
+src: url("//db.onlinewebfonts.com/t/116af611cbcd9e4bada60b4e700430c1.eot?#iefix")
+format("embedded-opentype"),url("//db.onlinewebfonts.com/t/116af611cbcd9e4bada60b4e700430c1.woff2")
+format("woff2"), url("//db.onlinewebfonts.com/t/116af611cbcd9e4bada60b4e700430c1.woff")
+format("woff"), url("//db.onlinewebfonts.com/t/116af611cbcd9e4bada60b4e700430c1.ttf")
+format("truetype"), url("//db.onlinewebfonts.com/t/116af611cbcd9e4bada60b4e700430c1.svg#Avenir Light")
+format("svg");
+}
+
+.App{
+  font-family: "Avenir Light";
+  background: rgb(20, 20, 20);
+  border-radius: 25px;
+border: solid 2px white;
+  top: 50px;
+  padding-right:30px;
+  padding-left:90px;
+  left: 50px;
+position: absolute;
+width: 1000px;
+height:600px;
+}
+
+
+.lists {
+margin-left:30px;
+margin-top:208px;
+text-align: center;
+color:white;
+justify-content: center;
+display: flex;
+}
+
+h4{
+border: 2px solid rgb(149, 243, 215);
+padding-top:10px;
+color: rgb(149, 243, 215);
+margin-left:30px;
+padding-bottom:10px;
+width:200px;
+overflow: hidden;
+}
+
+
+.songs, .albums, .artists, .playlists {
+height:300px;
+width:200px;
+overflow: auto;
+}
+
+ul{
+list-style-type: none;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+border-radius: 10px;
+background: rgb(256,256,256,0.1); 
+
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+  border-radius: 10px;
+}
+
+.add{
+text-decoration: none;
+color:rgb(149, 243, 215);
+cursor: pointer;
+margin-left:670px;
+margin-top:117.5px;
+font-size: 44px;
+position: absolute;
+}
+
+.add:hover {color:rgb(95, 206, 171)}
+
+.filterList{
+  margin-top:120px;
+  position: absolute;
+  margin-left:100px;
+  width: 50%;
+  height: 30px;
+  border-radius: 5px;
+  background-color: rgb(255, 255, 255);
+  font-size: 25px;
+  border: 1.5px solid rgb(218, 218, 218);
+  outline: none;
+  box-shadow: none;
+  color: black; 
+}
+
+.grid-container{
+  margin-top:180px;
+  position: relative;
+  margin-left:64px;
+  display: inline-grid;
+  grid-template-columns: auto auto auto auto;
+  padding: 10px;
+  height: 395px;
+  overflow: auto;
+
+}
+
+
+img, .video{
+  margin-top: -10px;
+border-radius: 2px;
+border: 2px solid white;
+}
+
+.video{
+margin-bottom: -21px;
+}
+
+.grid-item p {
+overflow: auto;
+height:25px;
+}
+
+.grid-item {
+color:white;
+padding-left: 38px;
+padding-right: 38px;
+height:250px;
+  font-size: 16px;
+  overflow:hidden;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+h5 {
+  position: absolute;
+  font-size:16px;
+  color:white;
+  margin-left:840px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+h3{
+font-family: "Avenir Light";
+position: absolute;
+margin-top:-150px;
+color: rgb(245, 245, 245);
+font-size:80px;
+margin-left:60px;
+text-shadow:
+3px 3px 0px rgb(48, 145, 114);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.fa-heart{
+color:rgb(149, 243, 215)
 }
 
-.App-link {
-  color: #61dafb;
+.listTitle{
+margin-left:100px;
+margin-top:20px;
+position: absolute;
+font-size: 60px;
+color:rgb(149, 243, 215)
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.navItem{
+font-size:24px;
+margin-left:-40px;
+text-decoration: none;
+}
+
+.songSubmit{
+display: flex;
+justify-content:space-around;
+width:90%;
+}
+
+form{
+margin-top:70px;
+margin-left:20px;
+}
+
+form textarea {
+resize: none;
+width:395px;
+margin-bottom:19px;
+  border-radius: 5px;
+  background-color: rgb(255, 255, 255);
+  font-size: 25px;
+  border: 1.5px solid rgb(218, 218, 218);
+  outline: none;
+  box-shadow: none;
+  color: black; 
+}
+
+form input{
+  border-radius: 5px;
+  width:400px;
+  background-color: rgb(255, 255, 255);
+  font-size: 25px;
+  border: 1.5px solid rgb(218, 218, 218);
+  outline: none;
+  box-shadow: none;
+  color: black; 
+}
+
+form label{
+color: rgb(149, 243, 215);
+font-size:18px;
+}
+
+#postSong{
+border-radius: 5px;
+color:rgb(149, 243, 215, 1);
+cursor: pointer;
+font-size: 44px;
+padding: 10px;
+position: absolute;
+background-color: rgb(149, 243, 215, 0);
+border: 2px solid rgb(149, 243, 215, 0);
+margin-left:135px;
+margin-top:-25px;
+}
+
+.tooltip {
+  float:right;
+  color: rgb(196, 155, 79);
+  position: relative;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+    font-family: "Avenir Light";
+  visibility: hidden;
+  width:300px;
+  background-color: #d63f46b6;
+  
+  color: rgb(0, 0, 0);
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+.deleteButton{
+font-family: "Avenir Light";
+width:101.5%;
+background:#db3d44;
+color:white;
+border: 1.5px solid rgb(218, 218, 218);
+border-radius: 2px;
+font-size:16px;
+margin-top:20px;
+cursor: pointer;
+}
+
+.fa-home{
+margin-left:-53px;
+}
+
+.back{
+text-decoration: none;
+color:rgb(149, 243, 215);
+cursor: pointer;
+margin-left:42px;
+margin-top:-10px;
+font-size: 36px;
+position: absolute;
+}
+
+#songError{
+position: absolute;
+left:140px;
 }
