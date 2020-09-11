@@ -21,7 +21,7 @@ useEffect(() => {
 
 const playCount = async (e) => {
 await axios.put(`/count`, {
-song_id: e.id,
+song_id: e.youtube_id,
 count: e.play_count + 1,
 });
 };

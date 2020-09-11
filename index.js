@@ -84,7 +84,7 @@ const body = req.body;
 app.put('/count', (req, res) => {
 const body = req.body;
   con.query(`
-UPDATE songs SET play_count = ${body.count} WHERE youtube_id = ${body.song_id};
+UPDATE songs SET play_count = ${body.count} WHERE youtube_id = '${body.song_id}';
     `, function (err, result) {
     if (err) console.log(err);
     res.send(result)
