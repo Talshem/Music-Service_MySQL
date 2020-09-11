@@ -30,7 +30,7 @@ useEffect(() => {
       let list = songs.filter(e => e.title.toUpperCase().includes(search.toUpperCase()))
       makeSongs(list) 
     }; fetchData();
-   }, [search, preferences, toggleDelete])
+   }, [search, toggleDelete, preferences])
 
 const deleteSong = async (e) => {
 const newId = e.youtube_id.replace(`'`,`''`);
@@ -45,6 +45,7 @@ count: e.play_count + 1,
 });
 };
 
+
 const isLiked = async (e) => {
 if (preferences.includes(e.youtube_id)){
 const { data } = await axios.put(`/unlike`, {
@@ -54,6 +55,7 @@ song_id: e.youtube_id,
 });
 let x = JSON.parse(data[0].preferences)
 setPreferences(x)
+console.log(x)
 } else {
 const { data } = await axios.put(`/like`, {
 user: props.user.email,
@@ -61,7 +63,9 @@ song_id: e.youtube_id,
 });
 let x = JSON.parse(data[0].preferences)
 setPreferences(x)
-}}
+console.log(x)
+}
+}
 
 
 const makeSongs = (songs) => {
