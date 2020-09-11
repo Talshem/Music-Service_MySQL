@@ -1,4 +1,4 @@
-CREATE DATABASE music;
+CREATE DATABASE mydv;
 
 CREATE TABLE artists (
 upload_at DATE,

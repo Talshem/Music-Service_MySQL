@@ -11,13 +11,7 @@ app.use(express.static('./client/build'));
 const cors = require('cors');
 app.use(cors());
 
-var con = mysql.createConnection({
-  host: process.env.DB_host,
-  user: process.env.DB_user,
-  password: process.env.DB_password,
-  database: process.env.DB_database,
-  multipleStatements: true,
-});
+var con = mysql.createConnection(process.env.JAWSDB_URL);
 
 
 con.connect(function(err) {
