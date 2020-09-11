@@ -7,10 +7,17 @@ const app = express();
 app.use(express.json());
 app.use(express.static(__dirname + '/public'));
 
+
 const cors = require('cors');
 app.use(cors());
 
-var con = mysql.createConnection(process.env.JAWSDB_URL);
+var con = mysql.createConnection({
+  host: process.env.DB_host,
+  user: process.env.DB_user,
+  password: process.env.DB_password,
+  database: process.env.DB_database,
+  multipleStatements: true,
+});
 
 
 con.connect(function(err) {
@@ -341,6 +348,12 @@ res.send(result)
 
 ///////////////////////////////////////////////////////
 
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(unknownEndpoint)
 
 const errorHandler = (error, request, response, next) => {
   console.error(error.message)
