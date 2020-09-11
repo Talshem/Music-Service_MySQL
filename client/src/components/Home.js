@@ -40,7 +40,7 @@ return (
 
 let alArray = albums.map(e => {
 return (
-<li key={e.id}>
+<li key={e.name}>
 <p>{e.name}</p>
 <img alt={e.name} width="150" height="150" src={e.cover_img}>
 </img>
@@ -60,7 +60,7 @@ return (
 )
 let pArray = playlists.map(e => {
 return (
-<li key={e.id}>
+<li key={e.name}>
 <p>{e.name}</p>
 <img alt={e.name} width="150" height="150" src={e.cover_img}>
 </img>

@@ -195,12 +195,14 @@ app.get('/playlist/:name', (req, res) => {
 
 
 // POST song 
-app.post('/song', (req, res) => {
+app.post('/song', (req, res, next) => {
 const body = req.body;
-  let sql = `INSERT INTO songs (title, album, artist, created_at, length, lyrics, track_number, upload_at, youtube_link) VALUES 
-  (${body.title}, ${body.album}, ${body.artist}, ${body.created_at}, ${body.length}, ${body.lyrics}, ${body.track_number}, ${body.upload_at}, ${body.youtube_link})`;
+console.log(body)
+var date = new Date();
+  let sql = `INSERT INTO songs (title, album, artist, created_at, length, lyrics, track_number, upload_at, youtube_id) VALUES 
+  ('${body.title}', '${body.album}', '${body.artist}', '${body.created_at}', '${body.length}', '${body.lyrics.toString}', ${body.track_number}, '${date.toISOString().substring(0, 10)}', '${body.youtube_id}')`;
   con.query(sql, function (err, result) {
-    if (err) throw err;
+    if (err) return next(err);
     res.send(result)
   });
 });
@@ -208,8 +210,9 @@ const body = req.body;
 // POST artist
 app.post('/artist', (req, res) => {
 const body = req.body;
+var date = new Date();
   let sql = `INSERT INTO artists (name, cover_img, upload_at) VALUES 
-  (${body.name}, ${body.cover_img}, ${body.upload_at})`;
+  (${body.name}, ${body.cover_img}, ${date.toISOString().substring(0, 10)})`;
   con.query(sql, function (err, result) {
     if (err) throw err;
     res.send(result)
@@ -220,8 +223,9 @@ const body = req.body;
 // POST album 
 app.post('/album', (req, res) => {
 const body = req.body;
+var date = new Date();
   let sql = `INSERT INTO albums (name, artist, cover_img, created_at, upload_at) VALUES 
-  (${body.name}, ${body.artist}, ${body.cover_img}, ${body.created_at}, ${body.upload_at})`;
+  (${body.name}, ${body.artist}, ${body.cover_img}, ${body.created_at},${date.toISOString().substring(0, 10)})`;
   con.query(sql, function (err, result) {
     if (err) throw err;
     res.send(result)
@@ -232,8 +236,9 @@ const body = req.body;
 // POST playlist
 app.post('/playlist', (req, res) => {
 const body = req.body;
+var date = new Date();
   let sql = `INSERT INTO playlists (name, cover_img, songs, created_at,  upload_at) VALUES 
-  (${body.name}, ${body.cover_img}, ${body.songs}, ${body.created_at}, ${upload_at.length})`;
+  (${body.name}, ${body.cover_img}, ${body.songs}, ${body.created_at}, ${date.toISOString().substring(0, 10)})`;
   con.query(sql, function (err, result) {
     if (err) throw err;
     res.send(result)
@@ -293,8 +298,11 @@ const body = req.body;
 ///////////////////////////////////////////////////////////////// DELETE
 
 // DELETE song
-app.delete('/song/:title', (req, res) => {
-var sql = `DELETE FROM songs WHERE title = ${req.params.title}, id = ${body.id}`;
+app.delete('/song/:youtube_id', (req, res) => {
+const body = req.body
+console.log(body)
+
+var sql = `DELETE FROM songs WHERE youtube_id = '${req.params.youtube_id}'`;
 con.query(sql, function (err, result) {
 if (err) throw err;
 res.send(result)
@@ -303,7 +311,8 @@ res.send(result)
 
 // DELETE album
 app.delete('/album/:name', (req, res) => {
-var sql = `DELETE FROM albums WHERE name = ${req.params.name}, id = ${body.id}`;
+const body = req.body
+var sql = `DELETE FROM albums WHERE name = '${req.params.name}'`;
 con.query(sql, function (err, result) {
 if (err) throw err;
 res.send(result)
@@ -312,7 +321,8 @@ res.send(result)
 
 // DELETE artist
 app.delete('/artist/:name', (req, res) => {
-var sql = `DELETE FROM artists WHERE name = ${req.params.name}, id = ${body.id}`;
+const body = req.body
+var sql = `DELETE FROM artists WHERE name = '${req.params.name}'`;
 con.query(sql, function (err, result) {
 if (err) throw err;
 res.send(result)
@@ -321,7 +331,8 @@ res.send(result)
 
 // DELETE playlist
 app.delete('/playlist/:name', (req, res) => {
-var sql = `DELETE FROM playlists WHERE name = ${req.params.name}, id = ${body.id}`;
+const body = req.body
+var sql = `DELETE FROM playlists WHERE name = '${req.params.name}', id = '${body.id}'`;
 con.query(sql, function (err, result) {
 if (err) throw err;
 res.send(result)

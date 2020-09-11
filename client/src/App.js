@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import SideNav, {
@@ -21,26 +21,27 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import axios from 'axios'
+import PostSong from './components/PostSong.js';
 
 function App() {
 const [registerOpen, setRegisterOpen] = useState(false)
 const [loginOpen,setLoginOpen] = useState(false)
 const [user, setUser] = useState(undefined);
 
-const [loginEmail, setLoginName] = useState('')
-const [loginPassword, setLoginPassword] = useState('')
-
-const [registerEmail, setRegisterEmail] = useState('')
-const [registerName, setRegisterName] = useState('')
-const [registerPassword, setRegisterPassword] = useState('')
-const [registerRePassword, setRegisterRePassword] = useState('')
-
+useEffect (() => {
+let email = localStorage.getItem('email');
+let password = localStorage.getItem('password');
+if(email && password) {
+handleLogin(email, password);
+}
+}, [])
 
 const handleLogout = async () => {
 await axios.put(`/logout`, {
 email: user.email,
 });
 setUser(undefined)
+localStorage.clear();
     };
 
  
@@ -64,7 +65,7 @@ function validateEmail(mail) {
 setUser(data[0])
 setRegisterOpen(false)
            } else {
-    document.getElementById('errorMessage').innerHTML='Password fields do not match';
+document.getElementById('errorMessage').innerHTML='Password fields do not match';
            }
           } else {
  document.getElementById('errorMessage').innerHTML='Please enter a valid email address';
@@ -81,8 +82,12 @@ setRegisterOpen(false)
       email: email,
       password: password,
       });
+localStorage.setItem('email', email);
+localStorage.setItem('password', password);  
+setLoginOpen(false)   
+setTimeout(() => {
 setUser(data[0])
-setLoginOpen(false)
+}, 500);
     } else {
  document.getElementById('errorMessage').innerHTML='Please enter a valid email address';
     }
@@ -247,7 +252,7 @@ const platform = user ? <h5> {logout} </h5> :  <h5> {login()} | {register()} </h
             <NavIcon>
               <i style={{ fontSize: '1.75em' }} />
             </NavIcon>
-              <NavLink to="/"><i style={{color:'white', fontSize:'26px', paddingTop:"14px"}} className="fa fa-fw fa-home" /></NavLink>
+              <NavLink to="/"><i style={{color:'white', fontSize:'44px', paddingTop:"3px"}} className="fa fa-fw fa-home" /></NavLink>
           </NavItem>
           <NavItem eventKey="1">
             <NavIcon>
@@ -288,6 +293,7 @@ const platform = user ? <h5> {logout} </h5> :  <h5> {login()} | {register()} </h
 <Route path="/Artists" component={() => <Artists user={user}/>}/>
 <Route path="/Playlists" component={() => <Playlists user={user}/>}/>
 <Route path="/Albums" component={() => <Albums user={user}/>}/>
+<Route path="/PostSong" component={() => <PostSong/>}/>
       </HashRouter>
     </div>
 
