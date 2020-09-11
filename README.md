@@ -4,7 +4,7 @@
 
 -----------------
 ### User System -
-- user interface
+- user register & login system
 - auto login
 - posting new songs limited to users
 - deleting songs limited to admins
