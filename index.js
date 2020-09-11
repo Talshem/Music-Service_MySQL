@@ -11,7 +11,7 @@ app.use(express.static('./client/build'));
 const cors = require('cors');
 app.use(cors());
 
-var con = mysql.createPool({
+var con = mysql.createConnection({
   host: process.env.DB_host,
   user: process.env.DB_user,
   password: process.env.DB_password,
