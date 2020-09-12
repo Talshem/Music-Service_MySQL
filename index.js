@@ -319,7 +319,7 @@ var date = new Date();
   });
 });
 
-/*
+
 // POST artist
 app.post('/artist', (req, res) => {
 const body = req.body;
@@ -349,16 +349,16 @@ var date = new Date();
 // POST playlist
 app.post('/playlist', (req, res) => {
 const body = req.body;
+const jSongs = JSON.parse([body.songs]);
 var date = new Date();
   let sql = `INSERT INTO playlists (name, cover_img, songs, created_at,  upload_at) VALUES 
-  (${body.name}, ${body.cover_img}, ${body.songs}, ${body.created_at}, ${date.toISOString().substring(0, 10)})`;
+  (${body.name}, ${body.cover_img}, ${jSongs}, ${body.created_at}, ${date.toISOString().substring(0, 10)})`;
   con.query(sql, function (err, result) {
     if (err) throw err;
     res.send(result)
   });
 });
 
-*/
 
 ///////////////////////////////////////////////////////////////// DELETE
 
