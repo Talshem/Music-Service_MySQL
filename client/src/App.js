@@ -296,7 +296,7 @@ const platform = user ? <h5> {logout} </h5> :  <h5> {login()} | {register()} </h
 <Route path="/Artists" component={() => <Artists user={user}/>}/>
 <Route path="/Playlists" component={() => <Playlists user={user}/>}/>
 <Route path="/Albums" component={() => <Albums user={user}/>}/>
-<Route path="/PostSong" component={() => <PostSong/>}/>
+<Route path="/PostSong" component={() => <PostSong user={user}/>}/>
       </HashRouter>
     </div>
 

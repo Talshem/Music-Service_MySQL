@@ -29,23 +29,28 @@ function validateTrack(track) {
     const addSong = async (title, length, youtube_id, artist, album, track_number, lyrics, created_at) => {
   const newCreated_at = created_at.slice(0,10)
   const newLyrics = lyrics.replace(`'`,`''`);
+  const newTitle = title.replace(`'`,`''`);
+  const newArtist = artist.replace(`'`,`''`);
+  const newAlbum = album.replace(`'`,`''`);
+  
+  console.log(props.user)
     if (props.user) {
     if (validateDate(newCreated_at)) {
     if(validateTrack(track_number)) {
     try{
     await axios.post(`/song`, {
-    title: title, 
+    title: newTitle, 
     length: length, 
     youtube_id: youtube_id, 
-    artist: artist, 
-    album: album, 
+    artist: newArtist, 
+    album: newAlbum, 
     track_number: track_number, 
     lyrics: newLyrics, 
     created_at: newCreated_at,
     })
   document.getElementById("songForm").reset();
 } catch (response){
-   document.getElementById('songError').innerHTML = "Unrecognized data / song already exists ";
+   document.getElementById('songError').innerHTML = "Unrecognized album or artist / song already exists ";
   }; 
    } else {
   document.getElementById('songError').innerHTML = "Track number field must be a number";
@@ -54,7 +59,7 @@ function validateTrack(track) {
    document.getElementById('songError').innerHTML = "Release date form is invalid";
 }
   } else {
-    alert('Only registered users can post songs to the website!')
+    document.getElementById('songError').innerHTML = ('Only registered users can post songs to the website!')
   }
 
 };

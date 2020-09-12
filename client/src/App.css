@@ -180,8 +180,8 @@ width:90%;
 }
 
 form{
-margin-top:70px;
-margin-left:20px;
+margin-top:60px;
+margin-left:50px;
 }
 
 form textarea {
@@ -265,14 +265,14 @@ cursor: pointer;
 }
 
 .fa-home{
-margin-left:-53px;
+margin-left:-54px;
 }
 
 .back{
 text-decoration: none;
 color:rgb(149, 243, 215);
 cursor: pointer;
-margin-left:42px;
+margin-left:72px;
 margin-top:-10px;
 font-size: 36px;
 position: absolute;
@@ -280,5 +280,6 @@ position: absolute;
 
 #songError{
 position: absolute;
-left:140px;
+top:543px;
+left:180px;
 }
