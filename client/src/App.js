@@ -248,8 +248,9 @@ const platform = user ? <h5> {logout} </h5> :  <h5> {login()} | {register()} </h
     <HashRouter>
    <SideNav
         className="sideNav"
+        expanded={true}
       >
-        <SideNav.Toggle />
+        <SideNav.Toggle/>
         <SideNav.Nav defaultSelected="home">
           <NavItem eventKey="home">
             <NavIcon>
@@ -265,12 +266,12 @@ const platform = user ? <h5> {logout} </h5> :  <h5> {login()} | {register()} </h
                <NavLink className="navItem" to="/Songs">Songs</NavLink>
             </NavText>
           </NavItem>
-          <NavItem eventKey="2">
+             <NavItem eventKey="2">
             <NavIcon>
               <i className="fa fa-fw " style={{ fontSize: '1.75em' }} />
             </NavIcon>
             <NavText>
-           <NavLink className="navItem" to="/Artists">Artists</NavLink>
+               <NavLink className="navItem" to="/Albums">Albums</NavLink>
             </NavText>
           </NavItem>
           <NavItem eventKey="3">
@@ -278,7 +279,7 @@ const platform = user ? <h5> {logout} </h5> :  <h5> {login()} | {register()} </h
               <i className="fa fa-fw " style={{ fontSize: '1.75em' }} />
             </NavIcon>
             <NavText>
-               <NavLink className="navItem" to="/Albums">Albums</NavLink>
+           <NavLink className="navItem" to="/Artists">Artists</NavLink>
             </NavText>
           </NavItem>
           <NavItem eventKey="4">

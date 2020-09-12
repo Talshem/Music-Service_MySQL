@@ -91,39 +91,69 @@ UPDATE songs SET play_count = ${body.count} WHERE youtube_id = '${body.song_id}'
   })
 
 // toggle song in user's preferneces
-app.put('/like', (req, res) => {
+app.put('/song/like', (req, res) => {
   const body = req.body;
+  if (body.toggle === 'like') {
   con.query(`
 UPDATE users SET preferences =
-JSON_ARRAY_APPEND (preferences, '$', '${body.song_id}')
+JSON_ARRAY_APPEND (preferences, '$', 'song: ${body.youtube_id}')
 WHERE email = '${body.user}';
+UPDATE songs SET is_liked = ${body.is_liked} WHERE youtube_id = '${body.youtube_id}';
 SELECT preferences FROM users WHERE email = '${body.user}';
     `, function (err, result) {
     if (err) console.log(err);
-    res.send(result[1])
+    res.send(result[2])
     })
-  })
-  
-app.put('/unlike', (req, res) => {
-const body = req.body;
+  } else if (body.toggle === 'unlike') {
 let preferences = body.preferences;
-let x = preferences.filter(e => JSON.stringify(e) !== JSON.stringify(body.song_id))
-  con.query(`
+let x = preferences.filter(e => JSON.stringify(e) !== JSON.stringify(`song: ${body.youtube_id}`))
+con.query(`
 UPDATE users SET preferences = '${JSON.stringify(x)}'
 WHERE email = '${body.user}';
+UPDATE songs SET is_liked = ${body.is_liked} WHERE youtube_id = '${body.song_id}';
 SELECT preferences FROM users WHERE email = '${body.user}';
     `, function (err, result) {
     if (err) console.log(err);
-    res.send(result[1])
+    res.send(result[2])
     })
+  }
   })
-  
+
+ // toggle album in user's preferneces
+app.put('/album/like', (req, res) => {
+  const body = req.body;
+  if (body.toggle === 'like') {
+  con.query(`
+UPDATE users SET preferences =
+JSON_ARRAY_APPEND (preferences, '$', 'album: ${body.name}')
+WHERE email = '${body.user}';
+UPDATE albums SET is_liked = ${body.is_liked} WHERE name = '${body.name}';
+SELECT preferences FROM users WHERE email = '${body.user}';
+    `, function (err, result) {
+    if (err) console.log(err);
+    console.log(result[2])
+    res.send(result[2])
+    })
+  } else if (body.toggle === 'unlike') {
+let preferences = body.preferences;
+let x = preferences.filter(e => JSON.stringify(e) !== JSON.stringify(`album: ${body.name}`))
+con.query(`
+UPDATE users SET preferences = '${JSON.stringify(x)}'
+WHERE email = '${body.user}';
+UPDATE albums SET is_liked = ${body.is_liked} WHERE name = '${body.name}';
+SELECT preferences FROM users WHERE email = '${body.user}';
+    `, function (err, result) {
+    if (err) console.log(err);
+    res.send(result[2])
+    })
+  }
+  }) 
 
 ///////////////////////////////////////////////////////////////// Get TOP
 
   // Get top_songs
 app.get('/top_songs', (req, res) => {
-  let sql = `SELECT * FROM songs ORDER BY play_count DESC`;
+  let sql = "SELECT * FROM songs ORDER BY play_count DESC";
   con.query(sql,function (err, result) {
     if (err) throw err;
     res.send(result)
@@ -133,7 +163,18 @@ app.get('/top_songs', (req, res) => {
   })
   })
 
-  // Get top_songs
+
+  
+  // Get top_albums 
+app.get('/top_albums', (req, res) => {
+  let sql = "SELECT * FROM albums ORDER BY is_liked DESC ";
+  con.query(sql, function (err, result) {
+    if (err) throw err;
+    res.send(result)
+    })
+  })
+
+  // Get top_artists
 app.get('/top_artists', (req, res) => {
   let sql = "SELECT * FROM artists ORDER BY name";
   con.query(sql, function (err, result) {
@@ -142,16 +183,8 @@ app.get('/top_artists', (req, res) => {
     })
   })
 
-  // Get top_songs 
-app.get('/top_albums', (req, res) => {
-  let sql = "SELECT * FROM albums ORDER BY name ";
-  con.query(sql, function (err, result) {
-    if (err) throw err;
-    res.send(result)
-    })
-  })
 
-  // Get top_songs 
+  // Get top_playlists 
 app.get('/top_playlists', (req, res) => {
   let sql = "SELECT * FROM playlists ORDER BY name";
   con.query(sql, function (err, result) {
@@ -317,7 +350,7 @@ if (err) throw err;
 res.send(result)
 });
 });
-/*
+
 // DELETE album
 app.delete('/album/:name', (req, res) => {
 const body = req.body
@@ -328,6 +361,7 @@ res.send(result)
 });
 });
 
+/*
 // DELETE artist
 app.delete('/artist/:name', (req, res) => {
 const body = req.body

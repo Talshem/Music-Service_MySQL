@@ -15,6 +15,7 @@ const [search, setSearch] = useState('')
 const [preferences, setPreferences] = useState([])
 const [admin, setAdmin] = useState(0)
 const [toggleDelete, setToggleDelete] = useState(false)
+const [favorites, setFavorites] = useState(false)
 
 useEffect(() => {
 if(props.user){
@@ -28,9 +29,14 @@ useEffect(() => {
     const fetchData = async () => {
       const songs = await (await axios.get(`/top_songs`)).data;
       let list = songs.filter(e => e.title.toUpperCase().includes(search.toUpperCase()))
+      if (!favorites) {
       makeSongs(list) 
+      } else {
+      let favoriteList = list.filter(e => preferences.includes(`song: ${e.youtube_id}`))
+      makeSongs(favoriteList)
+      }
     }; fetchData();
-   }, [search, toggleDelete, preferences])
+   }, [favorites, search, toggleDelete, preferences])
 
 const deleteSong = async (e) => {
 const newId = e.youtube_id.replace(`'`,`''`);
@@ -47,34 +53,34 @@ count: e.play_count + 1,
 
 
 const isLiked = async (e) => {
-if (preferences.includes(e.youtube_id)){
-const { data } = await axios.put(`/unlike`, {
+if (preferences.includes(`song: ${e.youtube_id}`)){
+const { data } = await axios.put(`/song/like`, {
+toggle: 'unlike',
+is_liked: e.is_liked - 1,
 preferences: preferences,
 user: props.user.email,
-song_id: e.youtube_id,
+youtube_id: e.youtube_id,
 });
 let x = JSON.parse(data[0].preferences)
 setPreferences(x)
-console.log(x)
 } else {
-const { data } = await axios.put(`/like`, {
+const { data } = await axios.put(`/song/like`, {
+toggle: 'like',
+is_liked: e.is_liked + 1,
 user: props.user.email,
-song_id: e.youtube_id,
+youtube_id: e.youtube_id,
 });
 let x = JSON.parse(data[0].preferences)
 setPreferences(x)
-console.log(x)
 }
 }
-
 
 const makeSongs = (songs) => {
 let array = songs.map(e => {
-const heart = preferences.includes(e.youtube_id) ? <i id={`${e.youtube_id}like`} className="fas fa-heart"></i> : <i id={`${e.youtube_id}like`} className="far fa-heart"></i>
+const heart = preferences.includes(`song: ${e.youtube_id}`) ? <i className="fas fa-heart"></i> : <i className="far fa-heart"></i>
 const like = props.user ? heart :  '';
 
-const deleteButton = <button onClick={() => deleteSong(e)} className="deleteButton">Delete</button>;
-
+const deleteButton = <button style={{marginTop:"20px"}} onClick={() => deleteSong(e)} className="deleteButton">Delete</button>;
 const adminDelete = admin === 1 ? deleteButton : '';
 
 return (
@@ -88,6 +94,7 @@ return (
 setList(array)
 }
 
+const filterFavorites = favorites ?  <i className="fas fa-heart"></i> : <i className="far fa-heart"></i>
 
   return (
 <div> 
@@ -97,11 +104,10 @@ setList(array)
 {props.user ? <NavLink className="fa fa-plus-square-o add" to="/PostSong"></NavLink> : ''}
 <Route path="/PostSong" component={() => <PostSong/>}/>
 </HashRouter>
+<i className="filterFavorites" onClick={() => setFavorites(!favorites)}>{filterFavorites}</i>
 <ul className="grid-container">
 {list}
 </ul>
-
-
 </div>
   );
 }
