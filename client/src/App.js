@@ -22,6 +22,9 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import axios from 'axios'
 import PostSong from './components/PostSong.js';
+import PostAlbum from './components/PostAlbum.js';
+import PostArtist from './components/PostArtist.js';
+import PostPlaylist from './components/PostPlaylist.js';
 
 function App() {
 const [registerOpen, setRegisterOpen] = useState(false)
@@ -301,6 +304,9 @@ const platform = user ? <h5> {logout} </h5> :  <h5> {login()} | {register()} </h
 <Route path="/Playlists" component={() => <Playlists user={user}/>}/>
 <Route path="/Albums" component={() => <Albums user={user}/>}/>
 <Route path="/PostSong" component={() => <PostSong user={user}/>}/>
+<Route path="/PostAlbum" component={() => <PostAlbum user={user}/>}/>
+<Route path="/PostArtist" component={() => <PostArtist user={user}/>}/>
+<Route path="/PostPlaylist" component={() => <PostPlaylist user={user}/>}/>
       </HashRouter>
     </div>
 

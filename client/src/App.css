@@ -92,7 +92,7 @@ text-decoration: none;
 color:rgb(149, 243, 215);
 cursor: pointer;
 left:1045px;
-top:110px;
+top:108px;
 font-size: 44px;
 position: absolute;
 }
@@ -191,10 +191,12 @@ margin-left:-40px;
 text-decoration: none;
 }
 
-.songSubmit{
+.songForm{
 display: flex;
 justify-content:space-around;
-width:90%;
+width:95%;
+position: relative;
+left: -30px;
 }
 
 form{
@@ -215,10 +217,10 @@ margin-bottom:-2px;
   color: black; 
 }
 
-form select{
+form .select{
 display: block;
 border-radius: 5px;
-width:400px;
+width: 404px;
 font-size: 16px;
 border: 1.5px solid rgb(218, 218, 218);
 }
@@ -239,7 +241,7 @@ color: rgb(149, 243, 215);
 font-size:18px;
 }
 
-#postSong{
+.post{
 border-radius: 5px;
 color:rgb(149, 243, 215, 1);
 cursor: pointer;
@@ -248,9 +250,12 @@ padding: 10px;
 position: absolute;
 background-color: rgb(149, 243, 215, 0);
 border: 2px solid rgb(149, 243, 215, 0);
-margin-left:135px;
+margin-left:105px;
 margin-top:-25px;
 }
+
+.post:hover{color:rgb(95, 206, 171)}
+.back:hover{color:rgb(95, 206, 171)}
 
 .tooltip {
   float:right;
@@ -263,7 +268,8 @@ margin-top:-25px;
     font-family: "Avenir Light";
   visibility: hidden;
   width:300px;
-  margin-left:10px;
+  margin-top:-5px;
+  margin-left:-310px;
   background-color: #d63f46b6;
   
   color: rgb(0, 0, 0);
@@ -299,7 +305,7 @@ margin-left:-26px;
 text-decoration: none;
 color:rgb(149, 243, 215);
 cursor: pointer;
-margin-left:102px;
+margin-left:86px;
 margin-top:-10px;
 font-size: 36px;
 position: absolute;
@@ -309,4 +315,33 @@ position: absolute;
 position: absolute;
 top:543px;
 left:210px;
+}
+
+.albumForm{
+width:900px;
+margin-top:120px;
+}
+.albumForm input{
+  width:900px;
+}
+
+.playlistForm{
+width:900px;
+margin-top:80px;
+}
+
+
+.playlistForm input{
+  width:900px;
+}
+.playlistForm textarea{
+  width:896px;
+}
+
+
+.artistForm{
+margin-top:200px;
+}
+.artistForm input{
+  width:900px;
 }

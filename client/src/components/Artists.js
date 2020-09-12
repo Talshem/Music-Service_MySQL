@@ -1,6 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import {
+  NavLink,
+  HashRouter
+} from "react-router-dom";
 
 function Artists(props) {
 const [list, setList] = useState([])
@@ -99,7 +103,9 @@ const filterFavorites = favorites ?  <i className="fas fa-heart"></i> : <i class
 <div> 
 <p className='listTitle'>Artists</p>
 <input className="filterList" placeholder="Search..." onChange={(event) => setSearch(event.target.value)} /> 
-{props.user ? <i className="fa fa-plus-square-o add"></i> : ''}
+<HashRouter>
+{props.user ? <NavLink className="fa fa-plus-square-o add" to="/PostArtist"></NavLink> : ''}
+</HashRouter>
 <i className="filterFavorites" onClick={() => setFavorites(!favorites)}>{filterFavorites}</i>
 <ul className="grid-container">
 {list}
