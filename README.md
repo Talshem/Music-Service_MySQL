@@ -11,3 +11,6 @@
 - posting new songs limited to users
 - deleting songs limited to admins
 - users can mark their favourite songs permanently
+
+### App Upload -
+- using heroku & jawsDB addon
