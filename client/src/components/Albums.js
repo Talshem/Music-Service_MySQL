@@ -5,27 +5,38 @@ import axios from 'axios';
 function Albums(props) {
 const [list, setList] = useState([])
 const [search, setSearch] = useState('')
-const [preferences, setPreferences] = useState([])
+const [preferences, setPreferences] = useState("[]")
 const [admin, setAdmin] = useState(0)
 const [toggleDelete, setToggleDelete] = useState(false)
 const [favorites, setFavorites] = useState(false)
+const [togglePref, setTogglePref] = useState(false)
+
+useEffect(() => {
+const getPreferences = async () => {
+try {
+const { data } = await axios.get(`/preferences/${props.user.email}`)
+setPreferences(data[0].preferences)
+} catch {
+return
+}
+}; getPreferences();
+}, [togglePref])
 
 useEffect(() => {
 if(props.user){
-let pref = props.user.preferences;
-let admin = props.user.is_admin;
-setPreferences(JSON.parse(pref))
-setAdmin(admin)
+let isAdmin = props.user.is_admin;
+setAdmin(isAdmin)
 }}, [props.user])
 
 useEffect(() => {
     const fetchData = async () => {
+      let x = JSON.parse(preferences)
       const albums = await (await axios.get(`/top_albums`)).data;
       let list = albums.filter(e => e.name.toUpperCase().includes(search.toUpperCase()))
       if (!favorites) {
       makeAlbums(list) 
       } else {
-      let favoriteList = list.filter(e => preferences.includes(`album: ${e.youtube_id}`))
+      let favoriteList = list.filter(e => x.includes(`album: ${e.name}`))
       makeAlbums(favoriteList)
       }
     }; fetchData();
@@ -38,34 +49,34 @@ setToggleDelete(!toggleDelete)
 };
 
 const isLiked = async (e) => {
-if (preferences.includes(`album: ${e.name}`)){
-const { data } = await axios.put(`/album/like`, {
+let x = JSON.parse(preferences)
+if (x.includes(`album: ${e.name}`)){
+await axios.put(`/album/like`, {
 toggle: 'unlike',
 is_liked: e.is_liked - 1,
-preferences: preferences,
+preferences: x,
 user: props.user.email,
 name: e.name,
 });
-console.log(data)
-let x = JSON.parse(data[0].preferences)
-setPreferences(x)
+setTogglePref(!togglePref)
 } else {
-const { data } = await axios.put(`/album/like`, {
+await axios.put(`/album/like`, {
 toggle: 'like',
 is_liked: e.is_liked + 1,
 user: props.user.email,
 name: e.name,
 });
-console.log(data)
-let x = JSON.parse(data[0].preferences)
-setPreferences(x)
+setTogglePref(!togglePref)
 }
 }
 
 
 const makeAlbums = (albums) => {
+
+let x = JSON.parse(preferences);
+
 let array = albums.map(e => {
-const heart = preferences.includes(`album: ${e.name}`) ? <i className="fas fa-heart"></i> : <i className="far fa-heart"></i>
+const heart = x.includes(`album: ${e.name}`) ? <i className="fas fa-heart"></i> : <i className="far fa-heart"></i>
 const like = props.user ? heart :  '';
 
 const deleteButton = <button onClick={() => deleteAlbum(e)} className="deleteButton">Delete</button>;
@@ -73,7 +84,7 @@ const adminDelete = admin === 1 ? deleteButton : '';
 
 return (
 <li key={e.name} className="grid-item">
-<p><span style={{cursor:'pointer'}} onClick={() => isLiked(e)}>{like}</span>{e.name}</p>
+<p><span style={{cursor:'pointer'}} onClick={() => isLiked(e)}>{like} </span>{e.name}</p>
 <img alt={e.name} width="150" height="150" src={e.cover_img}></img>
 {adminDelete}
 </li>
@@ -90,7 +101,7 @@ const filterFavorites = favorites ?  <i className="fas fa-heart"></i> : <i class
 <div> 
 <p className='listTitle'>Albums</p>
 <input className="filterList" placeholder="Search..." onChange={(event) => setSearch(event.target.value)} /> 
-{props.user ? <i className="fa fa-plus-square-o add" to="/PostSong"></i> : ''}
+{props.user ? <i className="fa fa-plus-square-o add"></i> : ''}
 <i className="filterFavorites" onClick={() => setFavorites(!favorites)}>{filterFavorites}</i>
 <ul className="grid-container">
 {list}

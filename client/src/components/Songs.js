@@ -12,27 +12,38 @@ import PostSong from './PostSong.js';
 function Songs(props) {
 const [list, setList] = useState([])
 const [search, setSearch] = useState('')
-const [preferences, setPreferences] = useState([])
+const [preferences, setPreferences] = useState("[]")
 const [admin, setAdmin] = useState(0)
 const [toggleDelete, setToggleDelete] = useState(false)
 const [favorites, setFavorites] = useState(false)
+const [togglePref, setTogglePref] = useState(false)
+
+useEffect(() => {
+const getPreferences = async () => {
+try {
+const { data } = await axios.get(`/preferences/${props.user.email}`)
+setPreferences(data[0].preferences)
+} catch {
+return
+}
+}; getPreferences();
+}, [togglePref])
 
 useEffect(() => {
 if(props.user){
-let pref = props.user.preferences;
-let admin = props.user.is_admin;
-setPreferences(JSON.parse(pref))
-setAdmin(admin)
+let isAdmin = props.user.is_admin;
+setAdmin(isAdmin)
 }}, [props.user])
 
 useEffect(() => {
     const fetchData = async () => {
+      let x = JSON.parse(preferences)
       const songs = await (await axios.get(`/top_songs`)).data;
       let list = songs.filter(e => e.title.toUpperCase().includes(search.toUpperCase()))
       if (!favorites) {
       makeSongs(list) 
       } else {
-      let favoriteList = list.filter(e => preferences.includes(`song: ${e.youtube_id}`))
+      let favoriteList = list.filter(e => x.includes(`song: ${e.youtube_id}`))
       makeSongs(favoriteList)
       }
     }; fetchData();
@@ -53,31 +64,33 @@ count: e.play_count + 1,
 
 
 const isLiked = async (e) => {
-if (preferences.includes(`song: ${e.youtube_id}`)){
-const { data } = await axios.put(`/song/like`, {
+let x = JSON.parse(preferences)
+if (x.includes(`song: ${e.youtube_id}`)){
+await axios.put(`/song/like`, {
 toggle: 'unlike',
 is_liked: e.is_liked - 1,
-preferences: preferences,
+preferences: x,
 user: props.user.email,
 youtube_id: e.youtube_id,
 });
-let x = JSON.parse(data[0].preferences)
-setPreferences(x)
+setTogglePref(!togglePref)
 } else {
-const { data } = await axios.put(`/song/like`, {
+await axios.put(`/song/like`, {
 toggle: 'like',
 is_liked: e.is_liked + 1,
 user: props.user.email,
 youtube_id: e.youtube_id,
 });
-let x = JSON.parse(data[0].preferences)
-setPreferences(x)
+setTogglePref(!togglePref)
 }
 }
 
 const makeSongs = (songs) => {
+
+let x = JSON.parse(preferences);
+
 let array = songs.map(e => {
-const heart = preferences.includes(`song: ${e.youtube_id}`) ? <i className="fas fa-heart"></i> : <i className="far fa-heart"></i>
+const heart = x.includes(`song: ${e.youtube_id}`) ? <i className="fas fa-heart"></i> : <i className="far fa-heart"></i>
 const like = props.user ? heart :  '';
 
 const deleteButton = <button style={{marginTop:"20px"}} onClick={() => deleteSong(e)} className="deleteButton">Delete</button>;

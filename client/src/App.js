@@ -33,7 +33,9 @@ let user = localStorage.getItem('email');
 const autoLogin = async () => {
 try {
 const { data } = await axios.get(`/auto/${user}`);
+setTimeout(() => {
 setUser(data[0])
+}, 500);
 } catch {
 return
 }
@@ -249,6 +251,7 @@ const platform = user ? <h5> {logout} </h5> :  <h5> {login()} | {register()} </h
    <SideNav
         className="sideNav"
         expanded={true}
+        onToggle={() => {return}}
       >
         <SideNav.Toggle/>
         <SideNav.Nav defaultSelected="home">

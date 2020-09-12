@@ -85,17 +85,19 @@ font-size: 44px;
 position: absolute;
 }
 
-.add:hover {color:rgb(95, 206, 171)}
+.add:hover{color:rgb(95, 206, 171)}
 
 .filterFavorites{
 text-decoration: none;
 color:rgb(149, 243, 215);
 cursor: pointer;
-left:1000px;
+left:1045px;
 top:110px;
 font-size: 44px;
 position: absolute;
 }
+
+.filterFavorites:hover {color:rgb(95, 206, 171)}
 
 .filterList{
   margin-top:120px;
@@ -141,6 +143,7 @@ height:25px;
 }
 
 .grid-item {
+width:150px;
 color:white;
 padding-left: 38px;
 padding-right: 38px;
@@ -171,6 +174,8 @@ text-shadow:
 .fa-heart{
 color:rgb(149, 243, 215)
 }
+
+.fa-heart:hover {color:rgb(95, 206, 171)}
 
 .listTitle{
 margin-left:100px;
@@ -276,7 +281,7 @@ margin-top:-25px;
 
 .deleteButton{
 font-family: "Avenir Light";
-width:101.5%;
+width:155px;
 background:#db3d44;
 color:white;
 border: 1.5px solid rgb(218, 218, 218);
