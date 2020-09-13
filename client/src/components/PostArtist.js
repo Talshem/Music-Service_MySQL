@@ -37,9 +37,9 @@ return (
  <form id="artistForm" className="artistForm" onSubmit={() => addArtist(name, image)}>
    <div>
     <label> Name of the Artist: </label><br/>
-    <input required type="text" defaultValue={name} onChange={insertName}/> <br/><br/>
+    <input id="artist_name" required type="text" defaultValue={name} onChange={insertName}/> <br/><br/>
     <label> Artist image URL </label><br/>
-    <input required type="text" defaultValue={image} onChange={insertImage}/><br/><br/>
+    <input id="artist_img" required type="text" defaultValue={image} onChange={insertImage}/><br/><br/>
     <input type='submit' style={{left:'418px'}} className="post" value="Post Artist"/>
     </div>
     </form>

@@ -130,22 +130,16 @@ return (
  <form id="songForm" className="songForm" onSubmit={() => addSong(title, length, youtube_id, artist, album, track_number, lyrics, created_at)}>
    <div>
     <label> Name of the song: </label><br/>
-    <input required type="text" defaultValue={title} onChange={insertTitle}/> <br/><br/>
+    <input id="song_img" required type="text" defaultValue={title} onChange={insertTitle}/> <br/><br/>
 <label>Youtube ID: </label><i className='tooltip fas fa-info'> <span className="tooltiptext">youtube.com/watch?v= (Youtube_ID)</span></i><br/>
-    <input required type="text" defaultValue={youtube_id} onChange={insertYoutube}/><br/><br/>
+    <input id="song_id" required type="text" defaultValue={youtube_id} onChange={insertYoutube}/><br/><br/>
     <label> Length: </label><i className='tooltip fas fa-info'> <span className="tooltiptext">M M : S S</span></i><br/>
-   
-    <input required type="text" defaultValue={length} onChange={insertLength}/> <br/><br/>
-  
-  
+    <input id="song_length" required type="text" defaultValue={length} onChange={insertLength}/> <br/><br/>
     <label>Artist: </label><i className='tooltip fas fa-info'> <span className="tooltiptext">You can only post albums of uploaded artists</span></i><br/>
     <Select required maxMenuHeight={160}
     defaultValue={artist}
     onChange={insertArtist}
     options={selectArtist}>
-   
-   
-   
     </Select><br/>
     <label> Album: </label><i className='tooltip fas fa-info'> <span className="tooltiptext">You can only post songs of uploaded albums</span></i><br/>
     <Select required maxMenuHeight={160}
@@ -154,13 +148,13 @@ return (
     options={selectAlbum}>
     </Select><br/>
     <label> Track number: </label><br/>
-    <input required type="text" defaultValue={track_number} onChange={insertTrack}/><br/><br/>
+    <input id="song_track" required type="text" defaultValue={track_number} onChange={insertTrack}/><br/><br/>
      </div>
      <div>
     <label> Lyrics: </label><br/>
     <textarea rows="12" required type="text" defaultValue={lyrics} onChange={insertLyrics}/> <br/><br/>
     <label> Release date: </label><i className='tooltip fas fa-info'> <span className="tooltiptext">Y Y Y Y - M M - D D</span></i><br/>
-    <input required type="text" defaultValue={created_at} onChange={insertRelease}/><br/><br/>
+    <input id="song_date" required type="text" defaultValue={created_at} onChange={insertRelease}/><br/><br/>
     <input type='submit' className="post" value="Post Song"/>
     </div>
     </form>

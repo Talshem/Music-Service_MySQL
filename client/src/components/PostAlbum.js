@@ -78,7 +78,7 @@ return (
  <form id="albumForm" className="albumForm" onSubmit={() => addAlbum(name, image, artist, created_at)}>
    <div>
     <label> Name of the Album: </label><br/>
-    <input required type="text" id="title" defaultValue={name} onChange={insertName}/> <br/><br/>
+    <input id="album_name" required type="text" defaultValue={name} onChange={insertName}/> <br/><br/>
     <label>Artist: </label><i class='tooltip fas fa-info'> <span class="tooltiptext">You can only post albums of uploaded artists</span></i><br/>
     <Select style={{}} required maxMenuHeight={160}
     defaultValue={artist}
@@ -86,9 +86,9 @@ return (
     options={selectArtist}>
     </Select><br/>
     <label> Cover image URL </label><br/>
-    <input required type="text" defaultValue={image} onChange={insertImage}/><br/><br/>
+    <input id="album_img" required type="text" defaultValue={image} onChange={insertImage}/><br/><br/>
     <label> Release date: </label><i class='tooltip fas fa-info'> <span class="tooltiptext">Y Y Y Y - M M - D D</span></i><br/>
-    <input required type="text" defaultValue={created_at} onChange={insertRelease}/><br/><br/>
+    <input id="album_release" required type="text" defaultValue={created_at} onChange={insertRelease}/><br/><br/>
     <input type='submit' style={{left:'410px'}} className="post" value="Post Album"/>
     </div>
     </form>

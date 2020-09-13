@@ -152,7 +152,7 @@ return (
             defaultValue={email}
             autoFocus
             margin="dense"
-            id="name"
+            id="email"
             label="Email Address"
             type="email"
             required
@@ -248,9 +248,10 @@ return (
             autoFocus
             required
             margin="dense"
-            id="rePassword"
+            id="password"
             label="Confirm password"
-            type="password"
+            autoComplete=""
+            type="repassword"
             fullWidth
           />
         </DialogContent>

@@ -63,7 +63,7 @@ return (
  <form id="playlistForm" className="playlistForm" onSubmit={() => addPlaylist(name, song, image)}>
    <div>
     <label> Name of the Playlist: </label><br/>
-    <input required type="text" defaultValue={name} onChange={insertName}/> <br/><br/>
+    <input id="playlist_name" required type="text" defaultValue={name} onChange={insertName}/> <br/><br/>
     <label> Songs: </label><br/>
     <Select
     required
@@ -74,7 +74,7 @@ return (
     options={selectSong}>
     </Select><br/>
     <label> Cover image URL </label><br/>
-    <input required type="text" defaultValue={image} onChange={insertImage}/><br/><br/>
+    <input id="artist_img" required type="text" defaultValue={image} onChange={insertImage}/><br/><br/>
     <input type='submit' style={{left:'400px'}} className="post" value="Post Playlist"/>
     </div>
     </form>
