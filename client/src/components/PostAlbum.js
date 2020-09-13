@@ -23,6 +23,7 @@ function validateDate(date) {
 }
 
   const addAlbum = async (name, image, artist, created_at) => {
+   let regex = /'/gi
   const newCreated_at = created_at.slice(0,10)
     if (!validateDate(newCreated_at)) {
     return document.getElementById('albumError').innerHTML = "Release date form is invalid";
@@ -30,11 +31,11 @@ function validateDate(date) {
     if (!props.user) {
     return document.getElementById('albumError').innerHTML = 'Only registered users can post new albums to the website!';
     }
-    if(artist === null) {
+    if(!artist) {
     return document.getElementById('albumError').innerHTML = "Select an artist";
     }
-  const newName = name.replace(`'`,`''`);
-  const newArtist = artist.replace(`'`,`''`);
+  const newName = name.replace(regex,`''`);
+  const newArtist = artist.value.replace(regex,`''`);
     try{
     await axios.post(`/album`, {
     name: newName, 

@@ -72,7 +72,7 @@ function validateEmail(mail) {
 
   const handleRegister = async (email, name, password, repassword) => {
     let code = generator.generate({
-    length: 20,
+    length: 50,
     numbers: true
 });
     try{

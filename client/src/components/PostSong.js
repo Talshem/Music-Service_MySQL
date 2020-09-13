@@ -40,17 +40,21 @@ if (/^([0-5]?[0-9]|2[0-3]):[0-5][0-9]$/.test(length)) {
 }
 
   const addSong = async (title, length, youtube_id, artist, album, track_number, lyrics, created_at) => {
-    if(artist === null) {
+    let regex = /'/gi
+    let enter = /\n/gi
+
+    if(!artist) {
     return document.getElementById('songError').innerHTML = "Select an artist";
     }
-    if(album === null) {
+    if(!album) {
     return document.getElementById('songError').innerHTML = "Select an album";
     }
   const newCreated_at = created_at.slice(0,10)
-  const newLyrics = lyrics.replace(`'`,`''`);
-  const newTitle = title.replace(`'`,`''`);
-  const newArtist = artist.replace(`'`,`''`);
-  const newAlbum = album.replace(`'`,`''`);
+  const newLyrics = lyrics.replace(regex,`''`).replace(enter,`&&`);
+  const newTitle = title.replace(regex,`''`);
+  const newArtist = artist.value.replace(regex,`''`);
+  const newAlbum = album.value.replace(regex,`''`);
+
     if (!props.user) {
     return document.getElementById('songError').innerHTML = 'Only registered users can post new songs to the website!';
     }
@@ -74,7 +78,7 @@ if (/^([0-5]?[0-9]|2[0-3]):[0-5][0-9]$/.test(length)) {
     lyrics: newLyrics, 
     created_at: newCreated_at,
     })
-  document.getElementById("songForm").reset();
+ // document.getElementById("songForm").reset();
 } catch (response){
    document.getElementById('songError').innerHTML = "Song already exists";
   }; 
@@ -118,8 +122,6 @@ let album;
       }
 
 let selectArtist = artists.map(e => ({ value: e.name, label: e.name }))
-
-
 
 let selectAlbum = albums.map(e => ({value: e.name, label: `${e.name} - ${e.artist}` }))
 

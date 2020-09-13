@@ -11,7 +11,7 @@ function SongData(props) {
 let lyrics = ''    
 
 if(props.song){
-lyrics = props.song.lyrics.split("\\n").map(function(item, idx) {
+lyrics = props.song.lyrics.split("&&").map(function(item, idx) {
         return (
             <span key={idx}>
                 {item}

@@ -52,8 +52,7 @@ useEffect(() => {
    }, [favorites, search, toggleDelete, preferences])
 
 const deletePlaylist = async (e) => {
-const newName = e.name.replace(`'`,`''`);
-await axios.delete(`/playlist/${newName}`);
+await axios.delete(`/playlist/${e.id}`);
 setToggleDelete(!toggleDelete)
 };
 

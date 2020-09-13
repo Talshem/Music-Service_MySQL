@@ -7,7 +7,8 @@ import {
 function PostArtist(props) {
 
   const addArtist = async (name, image) => {
-  const newName = name.replace(`'`,`''`);
+  let regex = /'/gi
+  const newName = name.replace(regex,`''`);
     try{
     await axios.post(`/artist`, {
     name: newName, 
