@@ -118,6 +118,9 @@ let album;
       }
 
 let selectArtist = artists.map(e => ({ value: e.name, label: e.name }))
+
+
+
 let selectAlbum = albums.map(e => ({value: e.name, label: `${e.name} - ${e.artist}` }))
 
 return (
@@ -128,12 +131,18 @@ return (
 <label>Youtube ID: </label><i className='tooltip fas fa-info'> <span className="tooltiptext">youtube.com/watch?v= (Youtube_ID)</span></i><br/>
     <input required type="text" defaultValue={youtube_id} onChange={insertYoutube}/><br/><br/>
     <label> Length: </label><i className='tooltip fas fa-info'> <span className="tooltiptext">M M : S S</span></i><br/>
+   
     <input required type="text" defaultValue={length} onChange={insertLength}/> <br/><br/>
+  
+  
     <label>Artist: </label><i className='tooltip fas fa-info'> <span className="tooltiptext">You can only post albums of uploaded artists</span></i><br/>
     <Select required maxMenuHeight={160}
     defaultValue={artist}
     onChange={insertArtist}
     options={selectArtist}>
+   
+   
+   
     </Select><br/>
     <label> Album: </label><i className='tooltip fas fa-info'> <span className="tooltiptext">You can only post songs of uploaded albums</span></i><br/>
     <Select required maxMenuHeight={160}
