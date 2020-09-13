@@ -65,12 +65,12 @@ SELECT * FROM users WHERE email = '${body.email}' AND password = '${body.passwor
   })
 
       // logout user
-app.put('/logout', (req, res) => {
+app.put('/logout', (req, res, next) => {
 const body = req.body
 con.query(`
 UPDATE users SET remember_token = 0, auto_code = 0 WHERE email = '${body.email}';
     `, function (err, result) {
-    if (err) console.log(err);
+    if (err) return next(err);
     res.send(result)
     })
   })
@@ -93,12 +93,12 @@ const body = req.body;
 ///////////////////////////////////////////////////////////////// Play Count
 
 // increase play count of a song
-app.put('/count', (req, res) => {
+app.put('/count', (req, res, next) => {
 const body = req.body;
   con.query(`
 UPDATE songs SET play_count = ${body.count} WHERE youtube_id = '${body.song_id}';
     `, function (err, result) {
-    if (err) console.log(err);
+    if (err) return next(err);
     res.send(result)
     })
   })
@@ -106,7 +106,7 @@ UPDATE songs SET play_count = ${body.count} WHERE youtube_id = '${body.song_id}'
 ///////////////////////////////////////////////////////////////// Preferences 
 
 // toggle song in user's preferneces
-app.put('/song/like', (req, res) => {
+app.put('/song/like', (req, res, next) => {
   const body = req.body;
   if (body.toggle === 'like') {
   con.query(`
@@ -128,14 +128,14 @@ WHERE email = '${body.user}';
 UPDATE songs SET is_liked = ${body.is_liked} WHERE youtube_id = '${body.song_id}';
 SELECT preferences FROM users WHERE email = '${body.user}';
     `, function (err, result) {
-    if (err) console.log(err);
+    if (err) return next(err);
     res.send(result[2])
     })
   }
   })
 
  // toggle album in user's preferneces
-app.put('/album/like', (req, res) => {
+app.put('/album/like', (req, res, next) => {
   const body = req.body;
   if (body.toggle === 'like') {
   con.query(`
@@ -157,14 +157,14 @@ WHERE email = '${body.user}';
 UPDATE albums SET is_liked = ${body.is_liked} WHERE name = '${body.name}';
 SELECT preferences FROM users WHERE email = '${body.user}';
     `, function (err, result) {
-    if (err) console.log(err);
+    if (err) return next(err);
     res.send(result[2])
     })
   }
   }) 
 
  // toggle artist in user's preferneces
-app.put('/artist/like', (req, res) => {
+app.put('/artist/like', (req, res, next) => {
   const body = req.body;
   if (body.toggle === 'like') {
   con.query(`
@@ -174,7 +174,7 @@ WHERE email = '${body.user}';
 UPDATE artists SET is_liked = ${body.is_liked} WHERE name = '${body.name}';
 SELECT preferences FROM users WHERE email = '${body.user}';
     `, function (err, result) {
-    if (err) console.log(err);
+    if (err) return next(err);
     res.send(result[2])
     })
   } else if (body.toggle === 'unlike') {
@@ -186,14 +186,14 @@ WHERE email = '${body.user}';
 UPDATE artists SET is_liked = ${body.is_liked} WHERE name = '${body.name}';
 SELECT preferences FROM users WHERE email = '${body.user}';
     `, function (err, result) {
-    if (err) console.log(err);
+    if (err) return next(err);
     res.send(result[2])
     })
   }
   }) 
 
  // toggle playlist in user's preferneces
-app.put('/playlist/like', (req, res) => {
+app.put('/playlist/like', (req, res, next) => {
   const body = req.body;
   if (body.toggle === 'like') {
   con.query(`
@@ -203,7 +203,7 @@ WHERE email = '${body.user}';
 UPDATE playlists SET is_liked = ${body.is_liked} WHERE id = ${body.id};
 SELECT preferences FROM users WHERE email = '${body.user}';
     `, function (err, result) {
-    if (err) console.log(err);
+    if (err) return next(err);
     res.send(result[2])
     })
   } else if (body.toggle === 'unlike') {
@@ -215,7 +215,7 @@ WHERE email = '${body.user}';
 UPDATE playlists SET is_liked = ${body.is_liked} WHERE id = ${body.id};
 SELECT preferences FROM users WHERE email = '${body.user}';
     `, function (err, result) {
-    if (err) console.log(err);
+    if (err) return next(err);
     res.send(result[2])
     })
   }
@@ -224,43 +224,43 @@ SELECT preferences FROM users WHERE email = '${body.user}';
 ///////////////////////////////////////////////////////////////// Get TOP
 
   // Get top_songs
-app.get('/top_songs', (req, res) => {
+app.get('/top_songs', (req, res,next) => {
   const { name } = req.query;
   let sql = `SELECT * FROM songs WHERE title LIKE "%${name ? name : ''}%" ORDER BY play_count DESC LIMIT 20`;
   con.query(sql,function (err, result) {
-    if (err) throw err;
+    if (err) return next(err);
     res.send(result)
   })
   })
 
   
   // Get top_albums 
-app.get('/top_albums', (req, res) => {
+app.get('/top_albums', (req, res, next) => {
   const { name } = req.query;
   let sql = `SELECT * FROM albums WHERE name LIKE "%${name ? name : ''}%" ORDER BY is_liked DESC LIMIT 20 `;
   con.query(sql, function (err, result) {
-    if (err) throw err;
+    if (err) return next(err);
     res.send(result)
     })
   })
 
   // Get top_artists
-app.get('/top_artists', (req, res) => {
+app.get('/top_artists', (req, res, next) => {
     const { name } = req.query;
   let sql = `SELECT * FROM artists WHERE name LIKE "%${name ? name : ''}%" ORDER BY is_liked DESC LIMIT 20`;
   con.query(sql, function (err, result) {
-    if (err) throw err;
+    if (err) return next(err);
     res.send(result)
     })
   })
 
 
   // Get top_playlists 
-app.get('/top_playlists', (req, res) => {
+app.get('/top_playlists', (req, res, next) => {
     const { name } = req.query;
   let sql = `SELECT * FROM playlists WHERE name LIKE "%${name ? name : ''}%" ORDER BY is_liked DESC LIMIT 20`;
   con.query(sql, function (err, result) {
-    if (err) throw err;
+    if (err) return next(err);
     res.send(result)
     })
   })
@@ -269,37 +269,37 @@ app.get('/top_playlists', (req, res) => {
 
 
     // Get a song 
-app.get('/song/:title', (req, res) => {
+app.get('/song/:title', (req, res, next) => {
   let sql = `SELECT * FROM songs WHERE title = ${req.params.title}`;
   con.query(sql, function (err, result) {
-    if (err) throw err;
+    if (err) return next(err);
     res.send(result)
     })
   })
 
       // Get an artist
-app.get('/artist/:name', (req, res) => {
+app.get('/artist/:name', (req, res, next) => {
   let sql = `SELECT * FROM artists WHERE name = ${req.params.name}`;
   con.query(sql, function (err, result) {
-    if (err) throw err;
+    if (err) return next(err);
     res.send(result)
     })
   })
 
       // Get an album
-app.get('/album/:name', (req, res) => {
+app.get('/album/:name', (req, res, next) => {
   let sql = `SELECT * FROM albums WHERE name = ${req.params.name}`;
   con.query(sql, function (err, result) {
-    if (err) throw err;
+    if (err) return next(err);
     res.send(result)
     })
   })
 
       // Get a song LIMIT 20
-app.get('/playlist/:name', (req, res) => {
+app.get('/playlist/:name', (req, res, next) => {
   let sql = `SELECT * FROM playlists WHERE name = ${req.params.name}`;
   con.query(sql, function (err, result) {
-    if (err) throw err;
+    if (err) return next(err);
     res.send(result)
     })
   })
@@ -317,7 +317,7 @@ console.log(body)
   ('${body.title}', '${body.album}', '${body.artist}', '${body.created_at}', '${body.length}', '${body.lyrics}',
   ${body.track_number}, '${date.toISOString().substring(0, 10)}', '${body.youtube_id}', '${body.user}')`;
   con.query(sql, function (err, result) {
-    if (err) console.log(err);
+    if (err) return next(err);
     res.send(result)
   });
 });
@@ -358,7 +358,7 @@ var date = new Date();
   ('${body.name}', '${body.cover_img}', '${JSON.stringify(body.songs)}',
   '${date.toISOString().substring(0, 10)}', '${body.lyrics}')`;
   con.query(sql, function (err, result) {
-    if (err) next(err);
+    if (err) return next(err);
     res.send(result)
   });
 });
@@ -367,40 +367,40 @@ var date = new Date();
 ///////////////////////////////////////////////////////////////// DELETE
 
 // DELETE song
-app.delete('/song/:youtube_id', (req, res) => {
+app.delete('/song/:youtube_id', (req, res, next) => {
 var sql = `DELETE FROM songs WHERE youtube_id = '${req.params.youtube_id}'`;
 con.query(sql, function (err, result) {
-if (err) throw err;
+if (err) return next(err);
 res.send(result)
 });
 });
 
 // DELETE album
-app.delete('/album/:name', (req, res) => {
+app.delete('/album/:name', (req, res, next) => {
 var sql = `DELETE FROM albums WHERE name = '${req.params.name}'`;
 con.query(sql, function (err, result) {
-if (err) throw err;
+if (err) return next(err);
 res.send(result)
 });
 });
 
 
 // DELETE artist
-app.delete('/artist/:name', (req, res) => {
+app.delete('/artist/:name', (req, res, next) => {
 var sql = `DELETE FROM artists WHERE name = '${req.params.name}'`;
 con.query(sql, function (err, result) {
-if (err) throw err;
+if (err) return next(err);
 res.send(result)
 });
 });
 
 
 // DELETE playlist
-app.delete('/playlist/:id', (req, res) => {
+app.delete('/playlist/:id', (req, res, next) => {
 const body = req.body
 var sql = `DELETE FROM playlists WHERE id = '${req.params.id}'`;
 con.query(sql, function (err, result) {
-if (err) throw err;
+if (err) return next(err);
 res.send(result)
 });
 });
