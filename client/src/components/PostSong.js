@@ -2,16 +2,12 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
   NavLink,
-  HashRouter
 } from "react-router-dom";
 import Select from 'react-select';
 
 function PostSong(props) {
 const [albums, setAlbums] = useState([]);
 const [artists, setArtists] = useState([]);
-
-const [selectedAlbum, setSelectedAlbum] = useState(null);
-const [selectedArtist, setSelectedArtist] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,10 +40,10 @@ if (/^([0-5]?[0-9]|2[0-3]):[0-5][0-9]$/.test(length)) {
 }
 
   const addSong = async (title, length, youtube_id, artist, album, track_number, lyrics, created_at) => {
-    if(selectedArtist === null) {
+    if(artist === null) {
     return document.getElementById('songError').innerHTML = "Select an artist";
     }
-    if(selectedAlbum === null) {
+    if(album === null) {
     return document.getElementById('songError').innerHTML = "Select an album";
     }
   const newCreated_at = created_at.slice(0,10)
@@ -91,7 +87,9 @@ let youtube_id;
 let length;
 let track_number;
 let lyrics;
-let created_at
+let created_at;
+let artist;
+let album;
 
       function insertTitle(event) {
         title = event.target.value;
@@ -112,12 +110,18 @@ let created_at
       function insertRelease(event) {
         created_at = event.target.value;
       }
+      function insertArtist(event) {
+        artist = event;
+      }
+       function insertAlbum(event) {
+        album = event;
+      }
 
 let selectArtist = artists.map(e => ({ value: e.name, label: e.name }))
-let selectAlbum = albums.map(e => ({value: e.name, label: e.name }))
+let selectAlbum = albums.map(e => ({value: e.name, label: `${e.name} - ${e.artist}` }))
 
 return (
- <form id="songForm" className="songForm" onSubmit={() => addSong(title, length, youtube_id, selectedArtist, selectedAlbum, track_number, lyrics, created_at)}>
+ <form id="songForm" className="songForm" onSubmit={() => addSong(title, length, youtube_id, artist, album, track_number, lyrics, created_at)}>
    <div>
     <label> Name of the song: </label><br/>
     <input required type="text" defaultValue={title} onChange={insertTitle}/> <br/><br/>
@@ -125,16 +129,16 @@ return (
     <input required type="text" defaultValue={youtube_id} onChange={insertYoutube}/><br/><br/>
     <label> Length: </label><i className='tooltip fas fa-info'> <span className="tooltiptext">M M : S S</span></i><br/>
     <input required type="text" defaultValue={length} onChange={insertLength}/> <br/><br/>
-    <label>Artist: </label><br/>
+    <label>Artist: </label><i className='tooltip fas fa-info'> <span className="tooltiptext">You can only post albums of uploaded artists</span></i><br/>
     <Select required maxMenuHeight={160}
-    defaultValue={selectedArtist}
-    onChange={setSelectedArtist}
+    defaultValue={artist}
+    onChange={insertArtist}
     options={selectArtist}>
     </Select><br/>
-    <label> Album: </label><br/>
+    <label> Album: </label><i className='tooltip fas fa-info'> <span className="tooltiptext">You can only post songs of uploaded albums</span></i><br/>
     <Select required maxMenuHeight={160}
-    defaultValue={selectedAlbum}
-    onChange={setSelectedAlbum}
+    defaultValue={album}
+    onChange={insertAlbum}
     options={selectAlbum}>
     </Select><br/>
     <label> Track number: </label><br/>
@@ -143,7 +147,7 @@ return (
      <div>
     <label> Lyrics: </label><br/>
     <textarea rows="12" required type="text" defaultValue={lyrics} onChange={insertLyrics}/> <br/><br/>
-    <label> Release date: </label><i class='tooltip fas fa-info'> <span class="tooltiptext">Y Y Y Y - M M - D D</span></i><br/>
+    <label> Release date: </label><i className='tooltip fas fa-info'> <span className="tooltiptext">Y Y Y Y - M M - D D</span></i><br/>
     <input required type="text" defaultValue={created_at} onChange={insertRelease}/><br/><br/>
     <input type='submit' className="post" value="Post Song"/>
     </div>
@@ -154,9 +158,7 @@ return (
   return (
 <div> 
 {form()}
-<HashRouter>
 <NavLink className="fa fa-arrow-left back" to="/Songs"></NavLink>
-</HashRouter>
 <p id="songError" style={{marginTop:"10px", marginLeft:"20px", fontSize:'20px', color:"red"}}></p>
 </div>
   );

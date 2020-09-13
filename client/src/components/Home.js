@@ -2,20 +2,28 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import YouTube from 'react-youtube';
+import {
+  NavLink,
+} from "react-router-dom";
+import LoadingOverlay from 'react-loading-overlay';
+import ClipLoader from "react-spinners/ClipLoader";
 
 function Home(props) {
 const [songs, setSongs] = useState([]);
 const [albums, setAlbums] = useState([]);
 const [artists, setArtists] = useState([]);
 const [playlists, setPlaylists] = useState([]);
+const [loading, setLoading] = useState(true);
 
 useEffect(() => {
     const fetchData = async () => {
-      const songs = await (await axios.get(`/top_songs`)).data.slice(0, 20);
-      const albums = await (await axios.get(`/top_albums`)).data.slice(0, 20);
-      const artists = await (await axios.get(`/top_artists`)).data.slice(0, 20);
-      const playlists = await (await axios.get(`/top_playlists`)).data.slice(0, 20);
-      makeLists(songs, albums, artists, playlists)
+      const songs = await axios.get(`/top_songs`);
+      const albums = await axios.get(`/top_albums`);
+      const artists = await axios.get(`/top_artists`);
+      const playlists = await axios.get(`/top_playlists`);
+      console.log(songs)
+      makeLists(songs.data, albums.data, artists.data, playlists.data)
+      setLoading(false)
     }; fetchData();
    }, [])
 
@@ -31,7 +39,9 @@ const makeLists = (songs, albums, artists, playlists) => {
 let sArray = songs.map(e => {
 return (
 <li key={e.youtube_id}>
-<p>{e.title}</p>
+<p>
+<NavLink className="navTo" to="/SongData" onClick={() => props.song(e)}>{e.title}</NavLink>
+</p>
 <YouTube className="video" onPlay={() => playCount(e)}videoId={e.youtube_id} id="video" opts={{width:"150",height:"150"}}/>
 <br/><br/>
 </li>
@@ -74,9 +84,25 @@ setArtists(arArray)
 setPlaylists(pArray)
 }
 
+const override =`
+  display: block;
+  position:absolute;
+  width:200px;
+  height:200px;
+  left: 375px;
+`;
 
   return (
     <div>
+<LoadingOverlay
+  active={loading}
+  spinner={<ClipLoader css={override} color="white" style={{zIndex:1010}} size={150}/>}
+  >
+  {loading ?
+  <p style={{left:"0", top:"-15px", zIndex:"1007", background:"rgb(0,0,0,0.5)", position:"fixed", width:"100vw", height:"100vh"}}></p> : ''
+  }
+  </LoadingOverlay>
+
 <h3>Hello, {props.user ? props.user.name : 'Guest'}</h3>
 <div className="lists"> 
 <div >

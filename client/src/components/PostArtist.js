@@ -2,7 +2,6 @@ import React from 'react';
 import axios from 'axios';
 import {
   NavLink,
-  HashRouter
 } from "react-router-dom";
 
 function PostArtist(props) {
@@ -48,9 +47,7 @@ return (
   return (
 <div> 
 {form()}
-<HashRouter>
 <NavLink className="fa fa-arrow-left back" style={{left:"83px"}} to="/Artists"></NavLink>
-</HashRouter>
 <p id="artistError" style={{marginTop:"-2px", marginLeft:"120px", fontSize:'20px', color:"red"}}></p>
 </div>
   );

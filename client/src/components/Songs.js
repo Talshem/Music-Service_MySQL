@@ -3,11 +3,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import YouTube from 'react-youtube';
 import {
-  Route,
   NavLink,
   HashRouter
 } from "react-router-dom";
-import PostSong from './PostSong.js';
+import LoadingOverlay from 'react-loading-overlay';
+import ClipLoader from "react-spinners/ClipLoader";
 
 function Songs(props) {
 const [list, setList] = useState([])
@@ -17,6 +17,7 @@ const [admin, setAdmin] = useState(0)
 const [toggleDelete, setToggleDelete] = useState(false)
 const [favorites, setFavorites] = useState(false)
 const [togglePref, setTogglePref] = useState(false)
+const [loading, setLoading] = useState(true);
 
 useEffect(() => {
 const getPreferences = async () => {
@@ -38,7 +39,7 @@ setAdmin(isAdmin)
 useEffect(() => {
     const fetchData = async () => {
       let x = JSON.parse(preferences)
-      const songs = await (await axios.get(`/top_songs`)).data;
+      const songs = await (await axios.get(`/top_songs?name=${search}`)).data;
       let list = songs.filter(e => e.title.toUpperCase().includes(search.toUpperCase()))
       if (!favorites) {
       makeSongs(list) 
@@ -46,6 +47,7 @@ useEffect(() => {
       let favoriteList = list.filter(e => x.includes(`song: ${e.youtube_id}`))
       makeSongs(favoriteList)
       }
+      setLoading(false)
     }; fetchData();
    }, [favorites, search, toggleDelete, preferences])
 
@@ -85,6 +87,7 @@ setTogglePref(!togglePref)
 }
 }
 
+
 const makeSongs = (songs) => {
 
 let x = JSON.parse(preferences);
@@ -98,7 +101,9 @@ const adminDelete = admin === 1 ? deleteButton : '';
 
 return (
 <li key={e.youtube_id} className="grid-item">
-<p><span style={{cursor:'pointer'}} onClick={() => isLiked(e)}>{like}</span> {e.title}</p>
+<p><span style={{cursor:'pointer'}} onClick={() => isLiked(e)}>{like} {" "} </span>
+<NavLink className="navTo" to="/SongData" onClick={() => props.song(e)}>{e.title}</NavLink>
+</p>
 <YouTube className="video" onPlay={() => playCount(e)} videoId={e.youtube_id} id="video" opts={{width:"150",height:"150"}}/>
 {adminDelete}
 </li>
@@ -109,15 +114,31 @@ setList(array)
 
 const filterFavorites = favorites ?  <i className="fas fa-heart"></i> : <i className="far fa-heart"></i>
 
+const override =`
+  display: block;
+  position:absolute;
+  width:200px;
+  height:200px;
+  left: 375px;
+    top:200px;
+`;
+
   return (
 <div> 
+<LoadingOverlay
+  active={loading}
+  spinner={<ClipLoader css={override} color="white" style={{zIndex:1010}} size={150}/>}
+  >
+  {loading ?
+  <p style={{left:"0", top:"-15px", zIndex:"1007", background:"rgb(0,0,0,0.5)", position:"fixed", width:"100vw", height:"100vh"}}></p> : ''
+  }
+  </LoadingOverlay>
 <p className='listTitle'>Songs</p>
 <input className="filterList" placeholder="Search..." onChange={(event) => setSearch(event.target.value)} /> 
 <HashRouter>
-{props.user ? <NavLink className="fa fa-plus-square-o add" to="/PostSong"></NavLink> : ''}
-<Route path="/PostSong" component={() => <PostSong/>}/>
+<NavLink className="fa fa-plus-square-o add" to="/PostSong"></NavLink>
 </HashRouter>
-<i className="filterFavorites" onClick={() => setFavorites(!favorites)}>{filterFavorites}</i>
+{props.user ? <i className="filterFavorites" onClick={() => setFavorites(!favorites)}>{filterFavorites}</i> : ''}
 <ul className="grid-container">
 {list}
 </ul>

@@ -43,7 +43,7 @@ SELECT preferences FROM users WHERE email = '${req.params.user}';
     // auto login via local storage
 app.get('/auto/:user', (req, res, next) => {
   con.query(`
-SELECT * FROM users WHERE email = '${req.params.user}';
+SELECT * FROM users WHERE auto_code = '${req.params.user}' AND remember_token = 1;
     `, function (err, result) {
     if (err) return next(err);
     res.send(result)
@@ -55,8 +55,8 @@ app.put('/users', (req, res, next) => {
 const body = req.body
 var date = new Date();
   con.query(`
-UPDATE users SET remember_token = 1 WHERE email = '${body.email}';
-UPDATE users SET upload_at = '${date.toISOString().substring(0, 10)}' WHERE email = '${body.email}';
+UPDATE users SET remember_token = 1, auto_code = '${body.auto_code}' WHERE email = '${body.email}';
+UPDATE users SET upload_at = '${date.toISOString().substring(0, 10)}' WHERE auto_code = '${body.email}';
 SELECT * FROM users WHERE email = '${body.email}' AND password = '${body.password}';
     `, function (err, result) {
     if (result[2].length === 0) return next(err);
@@ -68,7 +68,7 @@ SELECT * FROM users WHERE email = '${body.email}' AND password = '${body.passwor
 app.put('/logout', (req, res) => {
 const body = req.body
 con.query(`
-UPDATE users SET remember_token = 0 WHERE email = '${body.email}';
+UPDATE users SET remember_token = 0, auto_code = 0 WHERE email = '${body.email}';
     `, function (err, result) {
     if (err) console.log(err);
     res.send(result)
@@ -80,8 +80,8 @@ app.post('/users', (req, res, next) => {
 var date = new Date();
 const body = req.body;
   con.query(`
-  INSERT INTO users (name, email, created_at, upload_at, password, is_admin, remember_token, preferences) VALUES 
-  ('${body.name}', '${body.email}', '${date.toISOString().substring(0, 10)}', '${date.toISOString().substring(0, 10)}', '${body.password}', 0, 1, '[]')
+  INSERT INTO users (name, email, created_at, upload_at, password, remember_token, preferences, auto_code) VALUES 
+  ('${body.name}', '${body.email}', '${date.toISOString().substring(0, 10)}', '${date.toISOString().substring(0, 10)}', '${body.password}', 0, '[]', '${body.auto_code}')
   `, function (err, result) {
     if (err) return next(err);
     res.send(result)
@@ -224,20 +224,19 @@ SELECT preferences FROM users WHERE email = '${body.user}';
 
   // Get top_songs
 app.get('/top_songs', (req, res) => {
-  let sql = "SELECT * FROM songs ORDER BY play_count DESC";
+  const { name } = req.query;
+  let sql = `SELECT * FROM songs WHERE title LIKE "%${name ? name : ''}%" ORDER BY play_count DESC LIMIT 20`;
   con.query(sql,function (err, result) {
     if (err) throw err;
     res.send(result)
-    })
-      res.cookie({
-    sameSite: 'none'
   })
   })
 
   
   // Get top_albums 
 app.get('/top_albums', (req, res) => {
-  let sql = "SELECT * FROM albums ORDER BY is_liked DESC ";
+  const { name } = req.query;
+  let sql = `SELECT * FROM albums WHERE name LIKE "%${name ? name : ''}%" ORDER BY is_liked DESC LIMIT 20 `;
   con.query(sql, function (err, result) {
     if (err) throw err;
     res.send(result)
@@ -246,7 +245,8 @@ app.get('/top_albums', (req, res) => {
 
   // Get top_artists
 app.get('/top_artists', (req, res) => {
-  let sql = "SELECT * FROM artists ORDER BY is_liked DESC";
+    const { name } = req.query;
+  let sql = `SELECT * FROM artists WHERE name LIKE "%${name ? name : ''}%" ORDER BY is_liked DESC LIMIT 20`;
   con.query(sql, function (err, result) {
     if (err) throw err;
     res.send(result)
@@ -256,7 +256,8 @@ app.get('/top_artists', (req, res) => {
 
   // Get top_playlists 
 app.get('/top_playlists', (req, res) => {
-  let sql = "SELECT * FROM playlists ORDER BY is_liked DESC";
+    const { name } = req.query;
+  let sql = `SELECT * FROM playlists WHERE name LIKE "%${name ? name : ''}%" ORDER BY is_liked DESC LIMIT 20`;
   con.query(sql, function (err, result) {
     if (err) throw err;
     res.send(result)
@@ -309,7 +310,6 @@ app.get('/playlist/:name', (req, res) => {
 // POST song 
 app.post('/song', (req, res, next) => {
 const body = req.body;
-console.log(body)
 var date = new Date();
   let sql = `INSERT INTO songs (title, album, artist, created_at, length, lyrics, track_number, upload_at, youtube_id) VALUES 
   ('${body.title}', '${body.album}', '${body.artist}', '${body.created_at}', '${body.length}', '${body.lyrics.toString}', ${body.track_number}, '${date.toISOString().substring(0, 10)}', '${body.youtube_id}')`;

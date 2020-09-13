@@ -25,14 +25,22 @@ import PostSong from './components/PostSong.js';
 import PostAlbum from './components/PostAlbum.js';
 import PostArtist from './components/PostArtist.js';
 import PostPlaylist from './components/PostPlaylist.js';
+import generator from 'generate-password'
+import SongData from './components/SongData.js';
 
 function App() {
 const [registerOpen, setRegisterOpen] = useState(false)
 const [loginOpen,setLoginOpen] = useState(false)
 const [user, setUser] = useState(undefined);
 
+const [song, setSong] = useState('')
+const [album, setAlbum] = useState('')
+const [artist, setArtist] = useState('');
+const [playlist, setPlaylist] = useState('');
+
+
 useEffect(() => {
-let user = localStorage.getItem('email');
+let user = localStorage.getItem('session');
 const autoLogin = async () => {
 try {
 const { data } = await axios.get(`/auto/${user}`);
@@ -63,6 +71,10 @@ function validateEmail(mail) {
 }
 
   const handleRegister = async (email, name, password, repassword) => {
+    let code = generator.generate({
+    length: 20,
+    numbers: true
+});
     try{
     if(validateEmail(email)) {
           if (password === repassword){
@@ -70,7 +82,9 @@ function validateEmail(mail) {
       name: name,
       email: email,
       password: password,
+      auto_code: code,
       });
+localStorage.setItem('session', code);
 setUser(data[0])
 setRegisterOpen(false)
            } else {
@@ -85,13 +99,18 @@ document.getElementById('errorMessage').innerHTML='Password fields do not match'
   }
 
     const handleLogin = async (email, password) => {
+    let code = generator.generate({
+    length: 20,
+    numbers: true
+});
     try{
     if(validateEmail(email)) {
       const { data } = await axios.put(`/users`, {
       email: email,
       password: password,
+      auto_code: code,
       });
-localStorage.setItem('email', email);
+localStorage.setItem('session', code);
 setLoginOpen(false)   
 setTimeout(() => {
 setUser(data[0])
@@ -248,7 +267,9 @@ Logout
 const platform = user ? <h5> {logout} </h5> :  <h5> {login()} | {register()} </h5>
 
   return (
+    
 <div className="App">
+
 {platform}
     <HashRouter>
    <SideNav
@@ -298,8 +319,8 @@ const platform = user ? <h5> {logout} </h5> :  <h5> {login()} | {register()} </h
           </NavItem>
         </SideNav.Nav>
       </SideNav>
-  <Route exact path="/" component={() => <Home user={user}/>}/>
-<Route path="/Songs" component={() => <Songs user={user}/>}/>
+  <Route exact path="/" component={() => <Home song={e => setSong(e)} user={user}/>}/>
+<Route path="/Songs" component={() => <Songs song={e => setSong(e)} user={user}/>}/>
 <Route path="/Artists" component={() => <Artists user={user}/>}/>
 <Route path="/Playlists" component={() => <Playlists user={user}/>}/>
 <Route path="/Albums" component={() => <Albums user={user}/>}/>
@@ -307,10 +328,9 @@ const platform = user ? <h5> {logout} </h5> :  <h5> {login()} | {register()} </h
 <Route path="/PostAlbum" component={() => <PostAlbum user={user}/>}/>
 <Route path="/PostArtist" component={() => <PostArtist user={user}/>}/>
 <Route path="/PostPlaylist" component={() => <PostPlaylist user={user}/>}/>
+<Route path="/SongData" component={() => <SongData song={song} user={user}/>}/>
       </HashRouter>
     </div>
-
-    
   );
 }
 

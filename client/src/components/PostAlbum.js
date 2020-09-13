@@ -2,13 +2,11 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
   NavLink,
-  HashRouter
 } from "react-router-dom";
 import Select from 'react-select';
 
 function PostAlbum(props) {
 const [artists, setArtists] = useState([]);
-const [selectedArtist, setSelectedArtist] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,6 +30,9 @@ function validateDate(date) {
     if (!props.user) {
     return document.getElementById('albumError').innerHTML = 'Only registered users can post new albums to the website!';
     }
+    if(artist === null) {
+    return document.getElementById('albumError').innerHTML = "Select an artist";
+    }
   const newName = name.replace(`'`,`''`);
   const newArtist = artist.replace(`'`,`''`);
     try{
@@ -51,7 +52,8 @@ function validateDate(date) {
 function form(){
 let name;
 let image;
-let created_at
+let created_at;
+let artist;
 
       function insertName(event) {
         name = event.target.value;
@@ -64,17 +66,21 @@ let created_at
         created_at = event.target.value;
       }
 
+      function insertArtist(event) {
+        artist = event;
+      }
+
 let selectArtist = artists.map(e => ({ value: e.name, label: e.name }))
 
 return (
- <form id="albumForm" className="albumForm" onSubmit={() => addAlbum(name, image, selectedArtist, created_at)}>
+ <form id="albumForm" className="albumForm" onSubmit={() => addAlbum(name, image, artist, created_at)}>
    <div>
     <label> Name of the Album: </label><br/>
     <input required type="text" id="title" defaultValue={name} onChange={insertName}/> <br/><br/>
-    <label>Artist: </label><br/>
+    <label>Artist: </label><i class='tooltip fas fa-info'> <span class="tooltiptext">You can only post albums of uploaded artists</span></i><br/>
     <Select style={{}} required maxMenuHeight={160}
-    defaultValue={selectedArtist}
-    onChange={setSelectedArtist}
+    defaultValue={artist}
+    onChange={insertArtist}
     options={selectArtist}>
     </Select><br/>
     <label> Cover image URL </label><br/>
@@ -90,9 +96,7 @@ return (
   return (
 <div> 
 {form()}
-<HashRouter>
 <NavLink className="fa fa-arrow-left back" style={{left:"84px"}} to="/Albums"></NavLink>
-</HashRouter>
 <p id="albumError" style={{marginTop:"0px", marginLeft:"130px", fontSize:'20px', color:"red"}}></p>
 </div>
   );

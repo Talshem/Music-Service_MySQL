@@ -3,8 +3,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
   NavLink,
-  HashRouter
   } from "react-router-dom";
+import LoadingOverlay from 'react-loading-overlay';
+import ClipLoader from "react-spinners/ClipLoader";
 
 function Albums(props) {
 const [list, setList] = useState([])
@@ -14,6 +15,7 @@ const [admin, setAdmin] = useState(0)
 const [toggleDelete, setToggleDelete] = useState(false)
 const [favorites, setFavorites] = useState(false)
 const [togglePref, setTogglePref] = useState(false)
+const [loading, setLoading] = useState(true);
 
 useEffect(() => {
 const getPreferences = async () => {
@@ -35,7 +37,7 @@ setAdmin(isAdmin)
 useEffect(() => {
     const fetchData = async () => {
       let x = JSON.parse(preferences)
-      const albums = await (await axios.get(`/top_albums`)).data;
+      const albums = await (await axios.get(`/top_albums?name=${search}`)).data;
       let list = albums.filter(e => e.name.toUpperCase().includes(search.toUpperCase()))
       if (!favorites) {
       makeAlbums(list) 
@@ -43,6 +45,7 @@ useEffect(() => {
       let favoriteList = list.filter(e => x.includes(`album: ${e.name}`))
       makeAlbums(favoriteList)
       }
+      setLoading(false)
     }; fetchData();
    }, [favorites, search, toggleDelete, preferences])
 
@@ -99,16 +102,29 @@ setList(array)
 
 const filterFavorites = favorites ?  <i className="fas fa-heart"></i> : <i className="far fa-heart"></i>
 
-
+const override =`
+  display: block;
+  position:absolute;
+  width:200px;
+  height:200px;
+    top:200px;
+  left: 375px;
+`;
 
   return (
 <div> 
+<LoadingOverlay
+  active={loading}
+  spinner={<ClipLoader css={override} color="white" style={{zIndex:1010}} size={150}/>}
+  >
+  {loading ?
+  <p style={{left:"0", top:"-15px", zIndex:"1007", background:"rgb(0,0,0,0.5)", position:"fixed", width:"100vw", height:"100vh"}}></p> : ''
+  }
+  </LoadingOverlay>
 <p className='listTitle'>Albums</p>
 <input className="filterList" placeholder="Search..." onChange={(event) => setSearch(event.target.value)} /> 
-<HashRouter>
-{props.user ? <NavLink className="fa fa-plus-square-o add" to="/PostAlbum"></NavLink> : ''}
-</HashRouter>
-<i className="filterFavorites" onClick={() => setFavorites(!favorites)}>{filterFavorites}</i>
+<NavLink className="fa fa-plus-square-o add" to="/PostAlbum"></NavLink>
+{props.user ? <i className="filterFavorites" onClick={() => setFavorites(!favorites)}>{filterFavorites}</i> : ''}
 <ul className="grid-container">
 {list}
 </ul>
