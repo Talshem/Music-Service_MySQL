@@ -85,6 +85,7 @@ function validateEmail(mail) {
       auto_code: code,
       });
 localStorage.setItem('session', code);
+console.log(data)
 setUser(data[0])
 setRegisterOpen(false)
            } else {
@@ -97,6 +98,9 @@ document.getElementById('errorMessage').innerHTML='Password fields do not match'
   document.getElementById('errorMessage').innerHTML='The email you tried to register with is already in use';
   }; 
   }
+
+
+console.log(user)
 
     const handleLogin = async (email, password) => {
     let code = generator.generate({

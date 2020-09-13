@@ -81,10 +81,11 @@ var date = new Date();
 const body = req.body;
   con.query(`
   INSERT INTO users (name, email, created_at, upload_at, password, remember_token, preferences, auto_code) VALUES 
-  ('${body.name}', '${body.email}', '${date.toISOString().substring(0, 10)}', '${date.toISOString().substring(0, 10)}', '${body.password}', 0, '[]', '${body.auto_code}')
+  ('${body.name}', '${body.email}', '${date.toISOString().substring(0, 10)}', '${date.toISOString().substring(0, 10)}', '${body.password}', 1, '[]', '${body.auto_code}');
+  SELECT * FROM users WHERE email = '${body.email}' AND password = '${body.password}';
   `, function (err, result) {
     if (err) return next(err);
-    res.send(result)
+    res.send(result[1])
   });
 });
 
