@@ -1,3 +1,5 @@
+<<---- Not Updated ---->>
+
 CREATE DATABASE mydv;
 
 CREATE TABLE artists (

@@ -212,6 +212,7 @@ return (
           <TextField
             onChange={insertEmail}
             autoFocus
+            required
             margin="dense"
             id="email"
             label="Email Address"
@@ -221,6 +222,7 @@ return (
           <TextField
             onChange={insertName}
             autoFocus
+            required
             margin="dense"
             id="name"
             label="Name"
@@ -230,6 +232,7 @@ return (
            <TextField
             onChange={insertPassword}
             autoFocus
+            required
             margin="dense"
             id="password"
             label="Password"
@@ -239,6 +242,7 @@ return (
            <TextField
             onChange={insertRePassword}
             autoFocus
+            required
             margin="dense"
             id="rePassword"
             label="Confirm password"

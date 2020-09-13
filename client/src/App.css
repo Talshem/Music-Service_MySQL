@@ -129,14 +129,17 @@ position: absolute;
 
 
 img, .video{
-max-width:150px;
+margin-top: -10px;
+border-radius: 2px;
+border: 2px solid white;
+}
+
+.img{
 word-wrap: break-word;
+max-width:150px;
 max-height:150px;
 min-height:150px;
 min-width:150px;
-  margin-top: -10px;
-border-radius: 2px;
-border: 2px solid white;
 }
 
 .video{
@@ -190,7 +193,8 @@ text-shadow:
 
 .dataLyrics{
 overflow-y: auto;
-width:525px;
+width:550px;
+font-size: 21px;
 height:440px;
 margin-top:-15px;
 margin-left:75px;

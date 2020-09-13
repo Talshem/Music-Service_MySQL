@@ -8,12 +8,17 @@ import {
 } from "react-router-dom";
 import LoadingOverlay from 'react-loading-overlay';
 import ClipLoader from "react-spinners/ClipLoader";
+import generator from 'generate-password'
 
 function Songs(props) {
 const [list, setList] = useState([])
 const [search, setSearch] = useState('')
 const [preferences, setPreferences] = useState("[]")
 const [admin, setAdmin] = useState(0)
+const [user, setUser] = useState(generator.generate({
+    length: 20,
+    numbers: true
+}))
 const [toggleDelete, setToggleDelete] = useState(false)
 const [favorites, setFavorites] = useState(false)
 const [togglePref, setTogglePref] = useState(false)
@@ -32,7 +37,9 @@ return
 
 useEffect(() => {
 if(props.user){
+let user = props.user.email;
 let isAdmin = props.user.is_admin;
+setUser(user)
 setAdmin(isAdmin)
 }}, [props.user])
 
@@ -49,7 +56,7 @@ useEffect(() => {
       }
       setLoading(false)
     }; fetchData();
-   }, [favorites, search, toggleDelete, preferences])
+   }, [user, favorites, search, toggleDelete, preferences])
 
 const deleteSong = async (e) => {
 const newId = e.youtube_id.replace(`'`,`''`);
@@ -97,7 +104,7 @@ const heart = x.includes(`song: ${e.youtube_id}`) ? <i className="fas fa-heart">
 const like = props.user ? heart :  '';
 
 const deleteButton = <button style={{marginTop:"20px"}} onClick={() => deleteSong(e)} className="deleteButton">Delete</button>;
-const adminDelete = admin === 1 ? deleteButton : '';
+const adminDelete = admin === 1 || e.user === user ? deleteButton : '';
 
 return (
 <li key={e.youtube_id} className="grid-item">

@@ -6,12 +6,17 @@ import {
   } from "react-router-dom";
 import LoadingOverlay from 'react-loading-overlay';
 import ClipLoader from "react-spinners/ClipLoader";
+import generator from 'generate-password'
 
 function Albums(props) {
 const [list, setList] = useState([])
 const [search, setSearch] = useState('')
 const [preferences, setPreferences] = useState("[]")
 const [admin, setAdmin] = useState(0)
+const [user, setUser] = useState(generator.generate({
+    length: 20,
+    numbers: true
+}))
 const [toggleDelete, setToggleDelete] = useState(false)
 const [favorites, setFavorites] = useState(false)
 const [togglePref, setTogglePref] = useState(false)
@@ -30,6 +35,8 @@ return
 
 useEffect(() => {
 if(props.user){
+let user = props.user.email;
+setUser(user)
 let isAdmin = props.user.is_admin;
 setAdmin(isAdmin)
 }}, [props.user])
@@ -47,7 +54,7 @@ useEffect(() => {
       }
       setLoading(false)
     }; fetchData();
-   }, [favorites, search, toggleDelete, preferences])
+   }, [user, favorites, search, toggleDelete, preferences])
 
 const deleteAlbum = async (e) => {
 const newName = e.name.replace(`'`,`''`);
@@ -87,7 +94,7 @@ const heart = x.includes(`album: ${e.name}`) ? <i className="fas fa-heart"></i> 
 const like = props.user ? heart :  '';
 
 const deleteButton = <button onClick={() => deleteAlbum(e)} className="deleteButton">Delete</button>;
-const adminDelete = admin === 1 ? deleteButton : '';
+const adminDelete = admin === 1 || e.user === user ? deleteButton : '';
 
 return (
 <li key={e.name} className="grid-item">

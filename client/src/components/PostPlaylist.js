@@ -32,6 +32,7 @@ const [songs, setSongs] = useState([])
     name: newName, 
     songs: newSongs, 
     cover_img: image,
+    user: props.user.email,
     })
   document.getElementById("playlistForm").reset();
 } catch (response){

@@ -312,8 +312,9 @@ app.post('/song', (req, res, next) => {
 const body = req.body;
 var date = new Date();
 console.log(body)
-  let sql = `INSERT INTO songs (title, album, artist, created_at, length, lyrics, track_number, upload_at, youtube_id) VALUES 
-  ('${body.title}', '${body.album}', '${body.artist}', '${body.created_at}', '${body.length}', '${body.lyrics}', ${body.track_number}, '${date.toISOString().substring(0, 10)}', '${body.youtube_id}')`;
+  let sql = `INSERT INTO songs (title, album, artist, created_at, length, lyrics, track_number, upload_at, youtube_id, user) VALUES 
+  ('${body.title}', '${body.album}', '${body.artist}', '${body.created_at}', '${body.length}', '${body.lyrics}',
+  ${body.track_number}, '${date.toISOString().substring(0, 10)}', '${body.youtube_id}', '${body.user}')`;
   con.query(sql, function (err, result) {
     if (err) console.log(err);
     res.send(result)
@@ -325,8 +326,8 @@ console.log(body)
 app.post('/artist', (req, res, next) => {
 const body = req.body;
 var date = new Date();
-  let sql = `INSERT INTO artists (name, cover_img, upload_at) VALUES 
-  ('${body.name}', '${body.cover_img}', '${date.toISOString().substring(0, 10)}')`;
+  let sql = `INSERT INTO artists (name, cover_img, upload_at, user) VALUES 
+  ('${body.name}', '${body.cover_img}', '${date.toISOString().substring(0, 10)}', '${body.lyrics}')`;
   con.query(sql, function (err, result) {
     if (err) return next(err);
     res.send(result)
@@ -338,8 +339,9 @@ var date = new Date();
 app.post('/album', (req, res, next) => {
 const body = req.body;
 var date = new Date();
-  let sql = `INSERT INTO albums (name, artist, cover_img, created_at, upload_at) VALUES 
-  ('${body.name}', '${body.artist}', '${body.cover_img}', '${body.created_at}','${date.toISOString().substring(0, 10)}')`;
+  let sql = `INSERT INTO albums (name, artist, cover_img, created_at, upload_at, user) VALUES 
+  ('${body.name}', '${body.artist}', '${body.cover_img}', '${body.created_at}',
+  '${date.toISOString().substring(0, 10)}', '${body.lyrics}')`;
   con.query(sql, function (err, result) {
     if (err) return next(err);
     res.send(result)
@@ -351,8 +353,9 @@ var date = new Date();
 app.post('/playlist', (req, res, next) => {
 const body = req.body;
 var date = new Date();
-  let sql = `INSERT INTO playlists (name, cover_img, songs, created_at) VALUES 
-  ('${body.name}', '${body.cover_img}', '${JSON.stringify(body.songs)}', '${date.toISOString().substring(0, 10)}')`;
+  let sql = `INSERT INTO playlists (name, cover_img, songs, created_at, created, user) VALUES 
+  ('${body.name}', '${body.cover_img}', '${JSON.stringify(body.songs)}',
+  '${date.toISOString().substring(0, 10)}', '${body.lyrics}')`;
   con.query(sql, function (err, result) {
     if (err) next(err);
     res.send(result)

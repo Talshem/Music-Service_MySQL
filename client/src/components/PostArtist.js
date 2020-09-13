@@ -13,6 +13,7 @@ function PostArtist(props) {
     await axios.post(`/artist`, {
     name: newName, 
     cover_img: image,
+    user: props.user.email,
     })
   document.getElementById("artistForm").reset();
 } catch (response){

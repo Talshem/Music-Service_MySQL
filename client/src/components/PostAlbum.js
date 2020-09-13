@@ -42,6 +42,7 @@ function validateDate(date) {
     artist: newArtist, 
     cover_img: image,
     created_at: newCreated_at,
+    user: props.user.email,
     })
   document.getElementById("albumForm").reset();
 } catch (response){
