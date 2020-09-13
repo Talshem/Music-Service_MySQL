@@ -46,7 +46,8 @@ setAdmin(isAdmin)
 useEffect(() => {
     const fetchData = async () => {
       let x = JSON.parse(preferences)
-      const songs = await (await axios.get(`/top_songs?name=${search}`)).data;
+      try {
+      const songs = await (await axios.get(`/top_songs?name=${search}`)).data[0];
       let list = songs.filter(e => e.title.toUpperCase().includes(search.toUpperCase()))
       if (!favorites) {
       makeSongs(list) 
@@ -55,6 +56,9 @@ useEffect(() => {
       makeSongs(favoriteList)
       }
       setLoading(false)
+    } catch {
+    setLoading(false)
+    }
     }; fetchData();
    }, [user, favorites, search, toggleDelete, preferences])
 

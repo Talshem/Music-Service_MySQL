@@ -55,8 +55,11 @@ if (/^([0-5]?[0-9]|2[0-3]):[0-5][0-9]$/.test(length)) {
   const newArtist = artist.value.replace(regex,`''`);
   const newAlbum = album.value.replace(regex,`''`);
 
+console.log(artist.value)
+console.log(album.label)
+
     if (!props.user) {
-    return document.getElementById('songError').innerHTML = 'Only registered users can post new songs to the website!';
+    return document.getElementById('songError').innerHTML = 'Only registered users can post new songs to the website';
     }
     if (!validateLength(length)) {
     return document.getElementById('songError').innerHTML = 'Length form is invalid';
@@ -65,8 +68,13 @@ if (/^([0-5]?[0-9]|2[0-3]):[0-5][0-9]$/.test(length)) {
     return document.getElementById('songError').innerHTML = "Release date form is invalid";
     }
     if(!validateTrack(track_number)) {
-    return document.getElementById('songError').innerHTML = "Track number field must be a number";
+    return document.getElementById('songError').innerHTML = "Track number field must be a 2-digit number";
     }
+    if(!album.label.includes(artist.value)) {
+    return document.getElementById('songError').innerHTML = "Album and song must be of the same artist";
+    }
+
+
     try{
     await axios.post(`/song`, {
     title: newTitle, 
@@ -79,7 +87,8 @@ if (/^([0-5]?[0-9]|2[0-3]):[0-5][0-9]$/.test(length)) {
     created_at: newCreated_at,
     user: props.user.email,
     })
- // document.getElementById("songForm").reset();
+  document.getElementById("songForm").reset();
+  document.getElementById('songError').innerHTML = "";
 } catch (response){
    document.getElementById('songError').innerHTML = "Song already exists";
   }; 

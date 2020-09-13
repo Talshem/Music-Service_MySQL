@@ -35,7 +35,7 @@ return (
 <div>
 <YouTube className="video" onPlay={() => playCount(e)} videoId={e.youtube_id} id="video" opts={{width:"250",height:"250"}}/>
 <br/>
-<i>{e.is_liked} people liked this song</i><br/>
+<i><strong>{e.is_liked}</strong>  people liked this song</i><br/>
 <br/>
 <i><strong>Views:</strong>{" "} {e.play_count}</i><br/>
 <i><strong>Album:</strong>{" "}{e.album}</i><br/>
@@ -54,7 +54,7 @@ return (
 
   return (
 <div style={{position:'absolute', top:"-30px", left:"180px"}}>
-<p className="dataTitle">{props.song.title}</p>
+<p className="dataTitle">{props.song.title}</p><br/>
 {data(props.song)}
 </div>
   );

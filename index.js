@@ -226,7 +226,16 @@ SELECT preferences FROM users WHERE email = '${body.user}';
   // Get top_songs
 app.get('/top_songs', (req, res,next) => {
   const { name } = req.query;
-  let sql = `SELECT * FROM songs WHERE title LIKE "%${name ? name : ''}%" ORDER BY play_count DESC LIMIT 20`;
+  const { album } = req.query;
+  const { artist } = req.query;
+  let pSongs;
+  if(req.body.playlistSongs){
+  pSongs = req.body.playlistSongs
+  }
+  let sql = `
+  SELECT * FROM songs WHERE title LIKE '%${name ? name : ''}%' ORDER BY play_count DESC LIMIT 20;
+  SELECT * FROM songs WHERE album = '${album}' ORDER BY play_count DESC;
+  SELECT * FROM songs WHERE artist = '${artist}' ORDER BY play_count DESC;  `;
   con.query(sql,function (err, result) {
     if (err) return next(err);
     res.send(result)
@@ -354,9 +363,9 @@ var date = new Date();
 app.post('/playlist', (req, res, next) => {
 const body = req.body;
 var date = new Date();
-  let sql = `INSERT INTO playlists (name, cover_img, songs, created_at, created, user) VALUES 
+  let sql = `INSERT INTO playlists (name, cover_img, songs, created_at, user, user_name) VALUES 
   ('${body.name}', '${body.cover_img}', '${JSON.stringify(body.songs)}',
-  '${date.toISOString().substring(0, 10)}', '${body.lyrics}')`;
+  '${date.toISOString().substring(0, 10)}', '${body.user}', '${body.user_name}')`;
   con.query(sql, function (err, result) {
     if (err) return next(err);
     res.send(result)

@@ -17,12 +17,17 @@ const [loading, setLoading] = useState(true);
 
 useEffect(() => {
     const fetchData = async () => {
-      const songs = await axios.get(`/top_songs`);
+      try {
+      const songs = await axios.get(`/top_songs`)
       const albums = await axios.get(`/top_albums`);
       const artists = await axios.get(`/top_artists`);
       const playlists = await axios.get(`/top_playlists`);
-      makeLists(songs.data, albums.data, artists.data, playlists.data)
+      console.log(songs)
+      makeLists(songs.data[0], albums.data, artists.data, playlists.data)
       setLoading(false)
+      } catch {
+      setLoading(false)
+      }
     }; fetchData();
    }, [])
 
@@ -33,11 +38,10 @@ count: e.play_count + 1,
 });
 };
 
-
 const makeLists = (songs, albums, artists, playlists) => {
 let sArray = songs.map(e => {
 return (
-<li key={e.youtube_id}>
+<li key={e.youtube_id} className="hov">
 <p>
 <NavLink className="navTo" to="/SongData" onClick={() => props.song(e)}>{e.title}</NavLink>
 </p>
@@ -47,32 +51,49 @@ return (
 )}
 )
 
+
+
 let alArray = albums.map(e => {
 return (
-<li key={e.name}>
-<p>{e.name}</p>
-<img alt={e.name} width="150" height="150" src={e.cover_img}>
-</img>
+<li key={e.name} className="hov">
+<p>
+<NavLink className="navTo" to="/AlbumData" onClick={() => props.album(e)}>
+{e.name}
+</NavLink>
+</p>
+<NavLink className="navTo" to="/AlbumData" onClick={() => props.album(e)}>
+<img alt={e.name} width="150" height="150" src={e.cover_img}></img>
+</NavLink>
 <br/><br/>
 </li>
 )}
 )
 let arArray = artists.map(e => {
 return (
-<li key={e.name}>
-<p>{e.name}</p>
-<img alt={e.name} width="150" height="150" src={e.cover_img}>
-</img>
+<li key={e.name} className="hov">
+<p>
+<NavLink className="navTo" to="/ArtistData" onClick={() => props.artist(e)}>
+{e.name}
+</NavLink>
+</p>
+<NavLink className="navTo" to="/ArtistData" onClick={() => props.artist(e)}>
+<img alt={e.name} width="150" height="150" src={e.cover_img}></img>
+</NavLink>
 <br/><br/>
 </li>
 )}
 )
 let pArray = playlists.map(e => {
 return (
-<li key={e.name}>
-<p>{e.name}</p>
-<img alt={e.name} width="150" height="150" src={e.cover_img}>
-</img>
+<li key={e.name} className="hov">
+<p>
+<NavLink className="navTo" to="/PlaylistData" onClick={() => props.playlist(e)}>
+{e.name}
+</NavLink>
+</p>
+<NavLink className="navTo" to="/PlaylistData" onClick={() => props.playlist(e)}>
+<img alt={e.name} width="150" height="150" src={e.cover_img}></img>
+</NavLink>
 <br/><br/>
 </li>
 )}

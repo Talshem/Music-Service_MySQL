@@ -27,6 +27,9 @@ import PostArtist from './components/PostArtist.js';
 import PostPlaylist from './components/PostPlaylist.js';
 import generator from 'generate-password'
 import SongData from './components/SongData.js';
+import AlbumData from './components/AlbumData.js';
+import ArtistData from './components/ArtistData.js';
+import PlaylistData from './components/PlaylistData.js';
 
 function App() {
 const [registerOpen, setRegisterOpen] = useState(false)
@@ -85,7 +88,6 @@ function validateEmail(mail) {
       auto_code: code,
       });
 localStorage.setItem('session', code);
-console.log(data)
 setUser(data[0])
 setRegisterOpen(false)
            } else {
@@ -99,8 +101,6 @@ document.getElementById('errorMessage').innerHTML='Password fields do not match'
   }; 
   }
 
-
-console.log(user)
 
     const handleLogin = async (email, password) => {
     let code = generator.generate({
@@ -328,16 +328,19 @@ const platform = user ? <h5> {logout} </h5> :  <h5> {login()} | {register()} </h
           </NavItem>
         </SideNav.Nav>
       </SideNav>
-  <Route exact path="/" component={() => <Home song={e => setSong(e)} user={user}/>}/>
+  <Route exact path="/" component={() => <Home playlist={e => setPlaylist(e)} artist={e => setArtist(e)} album={e => setAlbum(e)} song={e => setSong(e)} user={user}/>}/>
 <Route path="/Songs" component={() => <Songs song={e => setSong(e)} user={user}/>}/>
-<Route path="/Artists" component={() => <Artists user={user}/>}/>
-<Route path="/Playlists" component={() => <Playlists user={user}/>}/>
-<Route path="/Albums" component={() => <Albums user={user}/>}/>
+<Route path="/Artists" component={() => <Artists artist={e => setArtist(e)} user={user}/>}/>
+<Route path="/Playlists" component={() => <Playlists playlist={e => setPlaylist(e)} user={user}/>}/>
+<Route path="/Albums" component={() => <Albums album={e => setAlbum(e)} user={user}/>}/>
 <Route path="/PostSong" component={() => <PostSong user={user}/>}/>
 <Route path="/PostAlbum" component={() => <PostAlbum user={user}/>}/>
 <Route path="/PostArtist" component={() => <PostArtist user={user}/>}/>
 <Route path="/PostPlaylist" component={() => <PostPlaylist user={user}/>}/>
 <Route path="/SongData" component={() => <SongData song={song} user={user}/>}/>
+<Route path="/AlbumData" component={() => <AlbumData album={album} user={user}/>}/>
+<Route path="/ArtistData" component={() => <ArtistData artist={artist} user={user}/>}/>
+<Route path="/PlaylistData" component={() => <PlaylistData playlist={playlist} user={user}/>}/>
       </HashRouter>
     </div>
   );

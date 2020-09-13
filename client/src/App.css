@@ -30,12 +30,21 @@ margin-top:1px;
 
 .lists {
 margin-left:30px;
-margin-top:208px;
 text-align: center;
 color:white;
 justify-content: center;
 display: flex;
+margin-top:178px;
 }
+
+.hov:hover a{
+color: rgb(95, 206, 171)
+}
+
+.hov:hover .video, .hov:hover img{
+ border: 2px solid rgb(95, 206, 171); 
+}
+
 
 h4{
 border: 2px solid rgb(149, 243, 215);
@@ -49,12 +58,12 @@ overflow: hidden;
 
 
 .songs, .albums, .artists, .playlists {
-height:300px;
+height:330px;
 width:200px;
 overflow: auto;
 }
 
-ul{
+ul, li{
 list-style-type: none;
 }
 
@@ -130,16 +139,22 @@ position: absolute;
 
 img, .video{
 margin-top: -10px;
-border-radius: 2px;
+border-radius: 5px;
 border: 2px solid white;
 }
 
-.img{
+img{
 word-wrap: break-word;
-max-width:150px;
-max-height:150px;
 min-height:150px;
 min-width:150px;
+}
+
+.grid-item:hover a{
+color: rgb(95, 206, 171)
+}
+
+.grid-item:hover .video, .grid-item:hover img{
+ border: 2px solid rgb(95, 206, 171); 
 }
 
 .video{
@@ -150,6 +165,7 @@ margin-bottom: -21px;
 overflow:auto;
 word-wrap: break-word;
 height:28px;
+color:white;
 text-align: left;
 width:155px;
 font-size:20px;
@@ -157,10 +173,21 @@ font-size:20px;
 
 .grid-item {
 width:150px;
-color:white;
 padding-left: 38px;
 padding-right: 38px;
 height:250px;
+  font-size: 16px;
+  overflow:hidden;
+  text-align: center;
+}
+
+
+.grid-item2 {
+width:120px;
+color:white;
+padding-left: 24px;
+padding-right: 38px;
+height:235px;
   font-size: 16px;
   overflow:hidden;
   text-align: center;
@@ -186,7 +213,7 @@ text-shadow:
 .dataTitle{
 color: rgb(245, 245, 245);
 font-size:60px;
-margin-bottom:20px;
+margin-bottom:0px;
 text-shadow:
 3px 3px 0px rgb(48, 145, 114); 
 }
@@ -200,6 +227,38 @@ margin-top:-15px;
 margin-left:75px;
 }
 
+
+.dataSongs{
+border: 1px solid white;
+border-radius: 10px;
+background:rgb(10, 10, 10);
+display:grid;
+overflow: auto;
+margin-left:30px;
+grid-template-columns: auto auto auto;
+height:423px;
+width:625px;
+margin-top:-10px;
+}
+
+.songsTitle{
+position:absolute;
+text-align: center;
+top:75px;
+font-weight: 100;
+font-size: 30px;
+width:625px;
+}
+
+.dataSongs p{
+overflow: auto;
+max-height:30px;
+width:154px;
+height:22px;
+text-align: left;
+word-wrap: break-word;
+}
+
 .lists p{
 overflow: auto;
 max-height:30px;
@@ -207,6 +266,9 @@ word-wrap: break-word;
 margin-right:10px;
 font-size:20px;
 }
+
+
+
 
 .navTo{
 text-decoration: none;
@@ -306,7 +368,6 @@ margin-top:-25px;
   margin-top:-5px;
   margin-left:-360px;
   background-color: #d63f46b6;
-  
   color: rgb(0, 0, 0);
   text-align: center;
   border-radius: 6px;

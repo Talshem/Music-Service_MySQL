@@ -10,7 +10,7 @@ const [songs, setSongs] = useState([])
 
   useEffect(() => {
     const fetchData = async () => {
-      setSongs(await (await axios.get(`/top_songs`)).data);
+      setSongs(await (await axios.get(`/top_songs`)).data[0]);
     }; fetchData();
    }, []); 
 
@@ -33,6 +33,7 @@ const [songs, setSongs] = useState([])
     songs: newSongs, 
     cover_img: image,
     user: props.user.email,
+    user_name:props.user_name,
     })
   document.getElementById("playlistForm").reset();
 } catch (response){
