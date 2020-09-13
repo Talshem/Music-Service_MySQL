@@ -10,7 +10,7 @@
 - auto login local-storage based (via generated random codes specified per user per login)
 - posting new data limited to users
 - deleting data limited to admins OR by the user who created it
-- users can mark their favourite songs permanently
+- users can mark their favourite songs
 - songs are sorted by play count
 - albums, artists and playlists are sorted by most users' favoriting
 
