@@ -448,7 +448,7 @@ margin-top:200px;
 position: relative;
 width:850px;
 left:47px;
-top:150px;
+top:148px;
 display: grid;
 grid-template-columns: auto auto;
 height:300px;
@@ -460,7 +460,8 @@ background:rgb(10, 10, 10);
 height: 205px;
 margin-right:20px;
 overflow:auto;
-margin-bottom:20px;
+margin-bottom:18px;
+padding-top:5px;
 display: flex;
 border: 1px solid white;
 border-radius: 10px;
@@ -473,7 +474,7 @@ overflow-y: hidden;
 margin-top:-0px;
 max-height:30px;
 width:130px;
-height:28px;
+height:24px;
 text-align: left;
 }
 
@@ -513,6 +514,6 @@ margin-left:380px;
 font-size: 20px;
 height:30px;
 font-weight: 100;
-margin-top:-21px;
+margin-top:-26px;
 text-shadow:1px 0px 0px rgb(0, 0, 0);
 }
