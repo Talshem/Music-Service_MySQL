@@ -62,7 +62,7 @@ return (
 </NavLink>
 </p>
 <NavLink className="navTo" to="/AlbumData" onClick={() => props.album(e)}>
-<img alt={e.name} width="150" height="150" src={e.cover_img}></img>
+<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="150" height="150" src={e.cover_img}></img>
 </NavLink>
 <br/><br/>
 </li>
@@ -77,7 +77,7 @@ return (
 </NavLink>
 </p>
 <NavLink className="navTo" to="/ArtistData" onClick={() => props.artist(e)}>
-<img alt={e.name} width="150" height="150" src={e.cover_img}></img>
+<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="150" height="150" src={e.cover_img}></img>
 </NavLink>
 <br/><br/>
 </li>
@@ -92,7 +92,7 @@ return (
 </NavLink>
 </p>
 <NavLink className="navTo" to="/PlaylistData" onClick={() => props.playlist(e)}>
-<img alt={e.name} width="150" height="150" src={e.cover_img}></img>
+<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="150" height="150" src={e.cover_img}></img>
 </NavLink>
 <br/><br/>
 </li>
