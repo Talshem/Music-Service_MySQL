@@ -133,7 +133,7 @@ return (
 {deleteButton}
 </li>
 )}
-)
+) 
 let pArray = playlists.map(e => {
 const deleteButton = <button onClick={() => deletePlaylist(e)} style={{ width:"130px"}} className="deleteButton">Delete playlist</button>;
 return (
