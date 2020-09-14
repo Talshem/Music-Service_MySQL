@@ -129,7 +129,7 @@ return (
 <NavLink className="navTo" to="/ArtistData" onClick={() => props.artist(e)}>
 <img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="125" height="125" src={e.cover_img}></img>
 </NavLink>
-<br/>
+<br/> 
 {deleteButton}
 </li>
 )}
