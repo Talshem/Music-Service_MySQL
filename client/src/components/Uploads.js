@@ -85,7 +85,7 @@ const makeLists = (songs, albums, artists, playlists) => {
 let z =1000
 let sArray = songs.map(e => {
 z--;
-const deleteButton = <button onClick={() => deleteSong(e)} style={{ width:"130px"}} className="deleteButton">Delete song</button>;
+const deleteButton = <button onClick={() => deleteSong(e)} style={{ width:"130px"}} className="deleteButton">Delete</button>;
 
 return (
 <li key={e.youtube_id} style={{zIndex: z}} className="hov">
@@ -103,7 +103,7 @@ return (
 
 
 let alArray = albums.map(e => {
-const deleteButton = <button onClick={() => deleteAlbum(e)} style={{ width:"130px"}} className="deleteButton">Delete album</button>;
+const deleteButton = <button onClick={() => deleteAlbum(e)} style={{ width:"130px"}} className="deleteButton">Delete</button>;
 z--;
 return (
 <li style={{zIndex: z}} key={e.name} className="hov">
@@ -122,7 +122,7 @@ return (
 )
 
 let arArray = artists.map(e => {
-const deleteButton = <button onClick={() => deleteArtist(e)} style={{ width:"130px"}} className="deleteButton">Delete artist</button>;
+const deleteButton = <button onClick={() => deleteArtist(e)} style={{ width:"130px"}} className="deleteButton">Delete</button>;
 z--;
 return (
 <li style={{zIndex: z}} key={e.name} className="hov">
@@ -140,7 +140,7 @@ return (
 )}
 ) 
 let pArray = playlists.map(e => {
-const deleteButton = <button onClick={() => deletePlaylist(e)} style={{ width:"130px"}} className="deleteButton">Delete playlist</button>;
+const deleteButton = <button onClick={() => deletePlaylist(e)} style={{ width:"130px"}} className="deleteButton">Delete</button>;
 z--
 return (
 <li style={{zIndex: z}} key={e.name} className="hov">
