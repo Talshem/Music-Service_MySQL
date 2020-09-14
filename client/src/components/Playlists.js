@@ -74,7 +74,6 @@ preferences: x,
 user: props.user.email,
 id: e.id,
 });
-setToggle(!toggle)
 } else {
 await axios.put(`/playlist/like`, {
 toggle: 'like',
@@ -82,8 +81,8 @@ is_liked: e.is_liked,
 user: props.user.email,
 id: e.id,
 });
-setToggle(!toggle)
 }
+setToggle(!toggle)
 }
 
 
@@ -106,7 +105,7 @@ return (
 </NavLink>
 </p>
 <NavLink className="navTo" to="/PlaylistData" onClick={() => props.playlist(e)}>
-<img alt={e.name} width="150" height="150" src={e.cover_img}></img>
+<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="150" height="150" src={e.cover_img}></img>
 </NavLink>
 {adminDelete}
 </li>

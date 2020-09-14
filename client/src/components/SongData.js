@@ -8,18 +8,6 @@ import YouTube from 'react-youtube';
 
 function SongData(props) {
 
-let lyrics = ''    
-
-if(props.song){
-lyrics = props.song.lyrics.split("&&").map(function(item, idx) {
-        return (
-            <span key={idx}>
-                {item}
-                <br/>
-            </span>
-         )})
-        }
-
 const playCount = async (e) => {
 await axios.put(`/count`, {
 song_id: e.youtube_id,
@@ -27,10 +15,25 @@ count: e.play_count + 1,
 });
 };
 
+
+       
 function data(e){
-if(e) {
+
+if(props.song){
+
+let lyrics = '' 
+lyrics = props.song.lyrics.split("&&").map(function(item, idx) {
+        return (
+            <span key={idx}>
+                {item}
+                <br/>
+            </span>
+         )}) 
 
 return (
+<div>
+<p className="dataTitle">{props.song.title}</p>
+<br/>
 <div style={{color:"white", display:"flex"}}>
 <div>
 <YouTube className="video" onPlay={() => playCount(e)} videoId={e.youtube_id} id="video" opts={{width:"250",height:"250"}}/>
@@ -48,13 +51,13 @@ return (
 <div className="dataLyrics">
 {lyrics}
 </div>
-</div>);
+</div>
+</div>
+);
 }}
-
 
   return (
 <div style={{position:'absolute', top:"-30px", left:"180px"}}>
-<p className="dataTitle">{props.song.title}</p><br/>
 {data(props.song)}
 </div>
   );

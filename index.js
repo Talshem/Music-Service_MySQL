@@ -203,7 +203,7 @@ SELECT preferences FROM users WHERE email = '${body.user}';
 
  // toggle playlist in user's preferneces
 app.put('/playlist/like', (req, res, next) => {
-  const body = req.body;s
+  const body = req.body;
   if (body.toggle === 'like') {
   con.query(`
 UPDATE users SET preferences =

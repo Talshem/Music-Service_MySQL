@@ -107,7 +107,7 @@ position: absolute;
 .filterList{
   margin-top:120px;
   position: absolute;
-  margin-left:100px;
+  margin-left:70px;
   width: 50%;
   height: 30px;
   border-radius: 5px;
@@ -120,15 +120,25 @@ position: absolute;
 }
 
 .grid-container{
-  margin-top:180px;
+  margin-top:165px;
   position: relative;
-  margin-left:64px;
+  margin-left:54px;
   display: inline-grid;
-  grid-template-columns: auto auto auto auto;
+  grid-template-columns: auto auto auto auto auto;
   padding: 10px;
-  height: 395px;
+  height: 410px;
   overflow: auto;
+}
 
+.grid-item {
+width:150px;
+margin-bottom:-25px;
+padding-left: 10px;
+padding-right: 28px;
+height:260px;
+  font-size: 16px;
+  overflow:hidden;
+  text-align: center;
 }
 
 
@@ -136,12 +146,6 @@ img, .video{
 margin-top: -10px;
 border-radius: 5px;
 border: 2px solid white;
-}
-
-img{
-word-wrap: break-word;
-min-height:125px;
-min-width:125px;
 }
 
 .grid-item2:hover .video, .grid-item:hover img, .grid-item:hover .video, .grid-item:hover img{
@@ -180,27 +184,17 @@ transform: scale(2);
 }
 
 
-.grid-item {
-width:150px;
-padding-left: 38px;
-padding-right: 38px;
-height:250px;
-  font-size: 16px;
+.grid-item2 {
+width:180px;
+color:white;
+height:235px;
+  font-size: 20px;
   overflow:hidden;
   text-align: center;
 }
 
-
-
-.grid-item2 {
-width:120px;
-color:white;
-padding-left: 24px;
-padding-right: 38px;
-height:235px;
-  font-size: 16px;
-  overflow:hidden;
-  text-align: center;
+.grid-item2 p{
+padding-right:25px;
 }
 
 h5 {
@@ -244,10 +238,11 @@ border-radius: 10px;
 background:rgb(10, 10, 10);
 display:grid;
 overflow: auto;
-margin-left:30px;
+margin-left:25px;
+padding-left:20px;
 grid-template-columns: auto auto auto;
 height:423px;
-width:625px;
+width:610px;
 margin-top:-10px;
 }
 
@@ -264,8 +259,9 @@ width:625px;
 .dataSongs p{
 max-height:30px;
 width:154px;
-height:26px;
+height:30px;
 text-align: left;
+margin-bottom:13px;
 white-space: nowrap;
 overflow-x: auto;
 overflow-y: hidden;
@@ -287,7 +283,7 @@ color:white;
 }
 
 .listTitle{
-margin-left:100px;
+margin-left:70px;
 margin-top:20px;
 position: absolute;
 font-size: 60px;
@@ -490,9 +486,8 @@ background: transparent;
 border: 2px solid rgb(149, 243, 215);
 border-radius: 10px; 
 cursor: pointer;
-margin-left:620px;
 font-size: 26px;
-margin-left:670px;
+margin-left:645px;
 margin-top:120px;
 position: absolute;
 }
@@ -514,6 +509,5 @@ margin-left:380px;
 font-size: 20px;
 height:30px;
 font-weight: 100;
-margin-top:-26px;
-text-shadow:1px 0px 0px rgb(0, 0, 0);
+margin-top:-27px;
 }
