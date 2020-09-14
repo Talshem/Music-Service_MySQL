@@ -49,6 +49,12 @@ color: rgb(149, 243, 215, 1)
  border: 2px solid rgb(149, 243, 215, 1); 
 }
 
+.grid-item2:hover p,.grid-item:hover p, .hov:hover p{
+animation-iteration-count: infinite;
+animation-name: movement;
+animation-duration: 15s;
+animation-timing-function: linear;
+}
 
 h4{
 border: 2px solid rgb(149, 243, 215);
@@ -165,37 +171,29 @@ color: rgb(149, 243, 215, 1)
 margin-bottom: -21px;
 }
 
-
-
-  @keyframes movement {
-    100% {
-padding-right:300px;
-margin-left:-300px;
-    }}
-
-.grid-item p:hover{
-animation-iteration-count: infinite;
-animation-name: movement;
-animation-duration: 15s;
-animation-timing-function: linear;
-}
-
 .fa-heart{
 color:rgb(199, 60, 60);
-transition:0.5s;
 }
 
+
+@keyframes movement {
+100% {
+padding-right:300px;
+margin-left:-300px;
+}}
+
+
 .like:active{
-transform: scale(2);
+color:rgb(156, 37, 37);
 }
 
 .like{
 position: absolute;
-margin-top: 5px;
 z-index: 1;
+padding-top:6px;
 background: rgb(20, 20, 20);
 padding-right:3px;
-padding-bottom: 7px;
+padding-bottom: 6px;
 padding-left:33px;
 margin-left: -108px;
 }
@@ -206,12 +204,12 @@ z-index: 0;
 position: relative;
 white-space: nowrap;
 overflow: hidden;
-margin-left:20px;
+margin-left:22px;
 margin-bottom:6px;
 margin-top:-0px;
 color:white;
 text-align: left;
-width:134px;
+width:132px;
 font-size:20px;
 }
 
@@ -298,13 +296,6 @@ white-space: nowrap;
 overflow: hidden;
 }
 
-.dataSongs p:hover{
-animation-iteration-count: infinite;
-animation-name: movement;
-animation-duration: 15s;
-animation-timing-function: linear;
-}
-
 .lists p{
 white-space: nowrap;
 overflow:hidden;
@@ -314,13 +305,6 @@ margin-bottom:14px;
 position: relative;
 width:154px;
 font-size:20px;
-}
-
-.lists p:hover{
-animation-iteration-count: infinite;
-animation-name: movement;
-animation-duration: 15s;
-animation-timing-function: linear;
 }
 
 .navTo{
@@ -524,12 +508,6 @@ height:24px;
 text-align: left;
 }
 
-.upload p:hover{
-animation-iteration-count: infinite;
-animation-name: movement;
-animation-duration: 15s;
-animation-timing-function: linear;
-}
 
 .upload li{
 background:rgb(10, 10, 10);
