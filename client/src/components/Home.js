@@ -24,7 +24,8 @@ useEffect(() => {
       const playlists = await axios.get(`/top_playlists`);
       makeLists(songs.data[0], albums.data, artists.data, playlists.data)
       setLoading(false)
-      } catch(response) {
+      }
+       catch(response) {
       setLoading(false)
       return alert(response)
       }

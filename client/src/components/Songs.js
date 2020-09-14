@@ -22,8 +22,8 @@ const getPreferences = async () => {
 try {
 const { data } = await axios.get(`/preferences/${props.user.email}`)
 setPreferences(data[0].preferences)
-} catch {
-return
+} catch(error) {
+return 
 }
 }; getPreferences();
 }, [toggle])
@@ -33,6 +33,7 @@ if(props.user){
 let isAdmin = props.user.is_admin;
 setAdmin(isAdmin)
 }}, [props.user])
+
 
 useEffect(() => {
     const fetchData = async () => {
@@ -107,7 +108,8 @@ const adminDelete = admin === 1 ? deleteButton : '';
 
 return (
 <li key={e.youtube_id} className="grid-item">
-<p><span style={{cursor:'pointer'}} onClick={() => isLiked(e)}>{like} {" "} </span>
+<span style={{cursor:'pointer'}} onClick={() => isLiked(e)}>{like} {" "} </span>
+<p>
 <NavLink className="navTo" to="/SongData" onClick={() => props.song(e)}>{e.title}</NavLink>
 </p>
 <YouTube className="video" onPlay={() => playCount(e)} videoId={e.youtube_id} id="video" opts={{width:"150",height:"150"}}/>

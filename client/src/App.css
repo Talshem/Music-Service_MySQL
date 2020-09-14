@@ -30,11 +30,15 @@ margin-top:1px;
 
 .lists {
 margin-left:30px;
-text-align: center;
 color:white;
 justify-content: center;
 display: flex;
 margin-top:178px;
+}
+
+.lists li{
+margin-top:-20px;
+margin-bottom:30px;
 }
 
 .hov:hover a{
@@ -49,6 +53,7 @@ color: rgb(149, 243, 215, 1)
 h4{
 border: 2px solid rgb(149, 243, 215);
 padding-top:10px;
+text-align:center;
 color: rgb(149, 243, 215);
 margin-left:30px;
 padding-bottom:10px;
@@ -132,10 +137,10 @@ position: absolute;
 
 .grid-item {
 width:150px;
-margin-bottom:-25px;
+margin-bottom:-10px;
 padding-left: 10px;
 padding-right: 28px;
-height:260px;
+height:235px;
   font-size: 16px;
   overflow:hidden;
   text-align: center;
@@ -160,18 +165,19 @@ color: rgb(149, 243, 215, 1)
 margin-bottom: -21px;
 }
 
-.grid-item p {
-height:32px;
-white-space: nowrap;
-overflow-x: auto;
-overflow-y: hidden;
-padding-top:10px;
-margin-bottom:15px;
-padding-left:10px;
-color:white;
-text-align: left;
-width:144px;
-font-size:20px;
+
+
+  @keyframes movement {
+    100% {
+padding-right:300px;
+margin-left:-300px;
+    }}
+
+.grid-item p:hover{
+animation-iteration-count: infinite;
+animation-name: movement;
+animation-duration: 15s;
+animation-timing-function: linear;
 }
 
 .fa-heart{
@@ -183,6 +189,31 @@ transition:0.5s;
 transform: scale(2);
 }
 
+.like{
+position: absolute;
+margin-top: 5px;
+z-index: 1;
+background: rgb(20, 20, 20);
+padding-right:3px;
+padding-bottom: 7px;
+padding-left:33px;
+margin-left: -108px;
+}
+
+.grid-item p {
+height:32px;
+z-index: 0;
+position: relative;
+white-space: nowrap;
+overflow: hidden;
+margin-left:20px;
+margin-bottom:6px;
+margin-top:-0px;
+color:white;
+text-align: left;
+width:134px;
+font-size:20px;
+}
 
 .grid-item2 {
 width:180px;
@@ -203,6 +234,7 @@ h5 {
   color:white;
   margin-left:840px;
 }
+
 
 h3{
 position: absolute;
@@ -263,19 +295,33 @@ height:30px;
 text-align: left;
 margin-bottom:13px;
 white-space: nowrap;
-overflow-x: auto;
-overflow-y: hidden;
+overflow: hidden;
+}
+
+.dataSongs p:hover{
+animation-iteration-count: infinite;
+animation-name: movement;
+animation-duration: 15s;
+animation-timing-function: linear;
 }
 
 .lists p{
 white-space: nowrap;
-overflow-x: auto;
-overflow-y: hidden;
+overflow:hidden;
 max-height:30px;
 margin-right:10px;
+margin-bottom:14px;
+position: relative;
+width:154px;
 font-size:20px;
 }
 
+.lists p:hover{
+animation-iteration-count: infinite;
+animation-name: movement;
+animation-duration: 15s;
+animation-timing-function: linear;
+}
 
 .navTo{
 text-decoration: none;
@@ -385,7 +431,7 @@ width:155px;
 background:#db3d44;
 color:white;
 border: 1.5px solid rgb(218, 218, 218);
-border-radius: 2px;
+border-radius: 5px;
 font-size:16px;
 margin-top:0px;
 cursor: pointer;
@@ -451,32 +497,43 @@ height:300px;
 }
 
 .upload{
-width:470px;
+width:455px;
+margin-right:20px;
 background:rgb(10, 10, 10);
 height: 205px;
-margin-right:20px;
+display:flex;
+justify-content:flex-start;
 overflow:auto;
 margin-bottom:18px;
 padding-top:5px;
-display: flex;
+padding-left:15px;
 border: 1px solid white;
 border-radius: 10px;
 }
 
 .upload p{
 white-space: nowrap;
-overflow-x: auto;
-overflow-y: hidden;
+overflow: hidden;
+z-index: 1;
+font-size: 18px;
 margin-top:-0px;
+margin-bottom:15px;
 max-height:30px;
 width:130px;
 height:24px;
 text-align: left;
 }
 
+.upload p:hover{
+animation-iteration-count: infinite;
+animation-name: movement;
+animation-duration: 15s;
+animation-timing-function: linear;
+}
+
 .upload li{
-padding-right:10px;
-padding-left:15px;
+background:rgb(10, 10, 10);
+padding-right:18px;
 }
 
 .searchButton{

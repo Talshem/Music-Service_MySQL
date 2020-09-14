@@ -98,8 +98,8 @@ const adminDelete = admin === 1 ? deleteButton : '';
 
 return (
 <li key={e.name} className="grid-item">
-<p>
 <span style={{cursor:'pointer'}} onClick={() => isLiked(e)}>{like} {" "} </span>
+<p>
 <NavLink className="navTo" to="/AlbumData" onClick={() => props.album(e)}>
 {e.name}
 </NavLink>

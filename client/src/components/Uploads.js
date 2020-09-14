@@ -82,12 +82,13 @@ setToggle(!toggle)
 
 const makeLists = (songs, albums, artists, playlists) => {
 
+let z =1000
 let sArray = songs.map(e => {
-
+z--;
 const deleteButton = <button onClick={() => deleteSong(e)} style={{ width:"130px"}} className="deleteButton">Delete song</button>;
 
 return (
-<li key={e.youtube_id} className="hov">
+<li key={e.youtube_id} style={{zIndex: z}} className="hov">
 <p>
 <NavLink className="navTo" to="/SongData" onClick={() => props.song(e)}>{e.title}</NavLink>
 </p>
@@ -95,14 +96,17 @@ return (
 <br/>
 {deleteButton}
 </li>
-)}
+)
+
+}
 )
 
 
 let alArray = albums.map(e => {
 const deleteButton = <button onClick={() => deleteAlbum(e)} style={{ width:"130px"}} className="deleteButton">Delete album</button>;
+z--;
 return (
-<li key={e.name} className="hov">
+<li style={{zIndex: z}} key={e.name} className="hov">
 <p>
 <NavLink className="navTo" to="/AlbumData" onClick={() => props.album(e)}>
 {e.name}
@@ -119,8 +123,9 @@ return (
 
 let arArray = artists.map(e => {
 const deleteButton = <button onClick={() => deleteArtist(e)} style={{ width:"130px"}} className="deleteButton">Delete artist</button>;
+z--;
 return (
-<li key={e.name} className="hov">
+<li style={{zIndex: z}} key={e.name} className="hov">
 <p>
 <NavLink className="navTo" to="/ArtistData" onClick={() => props.artist(e)}>
 {e.name}
@@ -136,8 +141,9 @@ return (
 ) 
 let pArray = playlists.map(e => {
 const deleteButton = <button onClick={() => deletePlaylist(e)} style={{ width:"130px"}} className="deleteButton">Delete playlist</button>;
+z--
 return (
-<li key={e.name} className="hov">
+<li style={{zIndex: z}} key={e.name} className="hov">
 <p>
 <NavLink className="navTo" to="/PlaylistData" onClick={() => props.playlist(e)}>
 {e.name}
