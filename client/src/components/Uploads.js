@@ -109,7 +109,7 @@ return (
 </NavLink>
 </p>
 <NavLink className="navTo" to="/AlbumData" onClick={() => props.album(e)}>
-<img alt={e.name} width="125" height="125" src={e.cover_img}></img>
+<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="125" height="125" src={e.cover_img}></img>
 </NavLink>
 <br/>
 {deleteButton}
@@ -127,7 +127,7 @@ return (
 </NavLink>
 </p>
 <NavLink className="navTo" to="/ArtistData" onClick={() => props.artist(e)}>
-<img alt={e.name} width="125" height="125" src={e.cover_img}></img>
+<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="125" height="125" src={e.cover_img}></img>
 </NavLink>
 <br/>
 {deleteButton}
@@ -144,7 +144,7 @@ return (
 </NavLink>
 </p>
 <NavLink className="navTo" to="/PlaylistData" onClick={() => props.playlist(e)}>
-<img alt={e.name} width="125" height="125" src={e.cover_img}></img>
+<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="125" height="125" src={e.cover_img}></img>
 </NavLink>
 <br/>
 {deleteButton}
