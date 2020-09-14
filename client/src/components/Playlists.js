@@ -7,20 +7,14 @@ import {
 } from "react-router-dom";
 import LoadingOverlay from 'react-loading-overlay';
 import ClipLoader from "react-spinners/ClipLoader";
-import generator from 'generate-password'
 
 function Playlists(props) {
 const [list, setList] = useState([])
 const [search, setSearch] = useState('')
 const [preferences, setPreferences] = useState("[]")
 const [admin, setAdmin] = useState(0)
-const [user, setUser] = useState(generator.generate({
-    length: 20,
-    numbers: true
-}))
-const [toggleDelete, setToggleDelete] = useState(false)
+const [toggle, setToggle] = useState(false)
 const [favorites, setFavorites] = useState(false)
-const [togglePref, setTogglePref] = useState(false)
 const [loading, setLoading] = useState(true);
 
 useEffect(() => {
@@ -32,20 +26,19 @@ setPreferences(data[0].preferences)
 return
 }
 }; getPreferences();
-}, [togglePref])
+}, [toggle])
 
 useEffect(() => {
 if(props.user){
-let user = props.user.email;
-setUser(user)
 let isAdmin = props.user.is_admin;
 setAdmin(isAdmin)
 }}, [props.user])
 
 
 useEffect(() => {
-    const fetchData = async () => {
+  const fetchData = async () => {
       let x = JSON.parse(preferences)
+      try{
       const playlists = await (await axios.get(`/top_playlists?name=${search}`)).data;
       let list = playlists.filter(e => e.name.toUpperCase().includes(search.toUpperCase()))
       if (!favorites) {
@@ -53,14 +46,22 @@ useEffect(() => {
       } else {
       let favoriteList = list.filter(e => x.includes(`playlist: ${e.id}`))
       makePlaylists(favoriteList)
-      }
-      setLoading(false)
+      }} catch(response) {
+    setLoading(false)
+    return alert(response)
+  }
     }; fetchData();
-   }, [user, favorites, search, toggleDelete, preferences])
+   }, [toggle, favorites, preferences])
+
+
+const handleSearch = () => {
+setToggle(!toggle)
+setLoading(true)
+}
 
 const deletePlaylist = async (e) => {
 await axios.delete(`/playlist/${e.id}`);
-setToggleDelete(!toggleDelete)
+setToggle(!toggle)
 };
 
 const isLiked = async (e) => {
@@ -68,20 +69,20 @@ let x = JSON.parse(preferences)
 if (preferences.includes(`playlist: ${e.id}`)){
 await axios.put(`/playlist/like`, {
 toggle: 'unlike',
-is_liked: e.is_liked - 1,
+is_liked: e.is_liked,
 preferences: x,
 user: props.user.email,
 id: e.id,
 });
-setTogglePref(!togglePref)
+setToggle(!toggle)
 } else {
 await axios.put(`/playlist/like`, {
 toggle: 'like',
-is_liked: e.is_liked + 1,
+is_liked: e.is_liked,
 user: props.user.email,
 id: e.id,
 });
-setTogglePref(!togglePref)
+setToggle(!toggle)
 }
 }
 
@@ -91,11 +92,11 @@ const makePlaylists = (playlists) => {
 let x = JSON.parse(preferences)
 
 let array = playlists.map(e => {
-const heart = x.includes(`playlist: ${e.id}`) ? <i className="fas fa-heart"></i> : <i className="far fa-heart"></i>
+const heart = x.includes(`playlist: ${e.id}`) ? <i className="like fas fa-heart"></i> : <i className="like far fa-heart"></i>
 const like = props.user ? heart :  '';
 
 const deleteButton = <button onClick={() => deletePlaylist(e)} className="deleteButton">Delete</button>;
-const adminDelete = admin === 1 || e.user === user ? deleteButton : '';
+const adminDelete = admin === 1 ? deleteButton : '';
 
 return (
 <li key={e.name} className="grid-item">
@@ -112,6 +113,7 @@ return (
 )}
 )
 setList(array)
+setLoading(false)
 }
 
 const filterFavorites = favorites ?  <i className="fas fa-heart"></i> : <i className="far fa-heart"></i>
@@ -135,9 +137,11 @@ const override =`
   <p style={{left:"0", top:"-15px", zIndex:"1007", background:"rgb(0,0,0,0.5)", position:"fixed", width:"100vw", height:"100vh"}}></p> : ''
   }
   </LoadingOverlay>
-<p className='listTitle'>Playlists</p>
+<p className='listTitle'>
+<NavLink className="fa fa-plus-square-o add" to="/PostPlaylist"></NavLink>  
+{" "} Playlists</p>
 <input className="filterList" placeholder="Search..." onChange={(event) => setSearch(event.target.value)} /> 
-<NavLink className="fa fa-plus-square-o add" to="/PostPlaylist"></NavLink>
+<button onClick={() => handleSearch()} className="searchButton">Search</button>
 {props.user ? <i className="filterFavorites" onClick={() => setFavorites(!favorites)}>{filterFavorites}</i> : ''}
 <ul className="grid-container">
 {list}

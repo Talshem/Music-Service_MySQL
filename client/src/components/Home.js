@@ -22,11 +22,11 @@ useEffect(() => {
       const albums = await axios.get(`/top_albums`);
       const artists = await axios.get(`/top_artists`);
       const playlists = await axios.get(`/top_playlists`);
-      console.log(songs)
       makeLists(songs.data[0], albums.data, artists.data, playlists.data)
       setLoading(false)
-      } catch {
+      } catch(response) {
       setLoading(false)
+      return alert(response)
       }
     }; fetchData();
    }, [])
@@ -123,7 +123,7 @@ const override =`
   }
   </LoadingOverlay>
 
-<h3>Hello, {props.user ? props.user.name : 'Guest'}</h3>
+<h3>Hello, {props.user ? props.user.username : 'Guest'}</h3>
 <div className="lists"> 
 <div >
 <h4> Top Songs </h4> 

@@ -4,24 +4,17 @@ import axios from 'axios';
 import YouTube from 'react-youtube';
 import {
   NavLink,
-  HashRouter
 } from "react-router-dom";
 import LoadingOverlay from 'react-loading-overlay';
 import ClipLoader from "react-spinners/ClipLoader";
-import generator from 'generate-password'
 
 function Songs(props) {
 const [list, setList] = useState([])
 const [search, setSearch] = useState('')
 const [preferences, setPreferences] = useState("[]")
 const [admin, setAdmin] = useState(0)
-const [user, setUser] = useState(generator.generate({
-    length: 20,
-    numbers: true
-}))
-const [toggleDelete, setToggleDelete] = useState(false)
 const [favorites, setFavorites] = useState(false)
-const [togglePref, setTogglePref] = useState(false)
+const [toggle, setToggle] = useState(false)
 const [loading, setLoading] = useState(true);
 
 useEffect(() => {
@@ -33,13 +26,11 @@ setPreferences(data[0].preferences)
 return
 }
 }; getPreferences();
-}, [togglePref])
+}, [toggle])
 
 useEffect(() => {
 if(props.user){
-let user = props.user.email;
 let isAdmin = props.user.is_admin;
-setUser(user)
 setAdmin(isAdmin)
 }}, [props.user])
 
@@ -55,17 +46,23 @@ useEffect(() => {
       let favoriteList = list.filter(e => x.includes(`song: ${e.youtube_id}`))
       makeSongs(favoriteList)
       }
-      setLoading(false)
-    } catch {
-    setLoading(false)
+    } catch(response) {
+    setLoading(false)  
+    return alert(response)
     }
     }; fetchData();
-   }, [user, favorites, search, toggleDelete, preferences])
+   }, [toggle, favorites, preferences])
+
+
+const handleSearch = () => {
+setToggle(!toggle)
+setLoading(true)
+}
 
 const deleteSong = async (e) => {
 const newId = e.youtube_id.replace(`'`,`''`);
 await axios.delete(`/song/${newId}`);
-setToggleDelete(!toggleDelete)
+setToggle(!toggle)
 };
 
 const playCount = async (e) => {
@@ -81,34 +78,32 @@ let x = JSON.parse(preferences)
 if (x.includes(`song: ${e.youtube_id}`)){
 await axios.put(`/song/like`, {
 toggle: 'unlike',
-is_liked: e.is_liked - 1,
+is_liked: e.is_liked,
 preferences: x,
 user: props.user.email,
 youtube_id: e.youtube_id,
 });
-setTogglePref(!togglePref)
 } else {
 await axios.put(`/song/like`, {
 toggle: 'like',
-is_liked: e.is_liked + 1,
+is_liked: e.is_liked,
 user: props.user.email,
 youtube_id: e.youtube_id,
 });
-setTogglePref(!togglePref)
 }
+setToggle(!toggle)
 }
-
 
 const makeSongs = (songs) => {
 
 let x = JSON.parse(preferences);
 
 let array = songs.map(e => {
-const heart = x.includes(`song: ${e.youtube_id}`) ? <i className="fas fa-heart"></i> : <i className="far fa-heart"></i>
+const heart = x.includes(`song: ${e.youtube_id}`) ?  <i className="like fas fa-heart"></i> : <i className="like far fa-heart"></i>
 const like = props.user ? heart :  '';
 
 const deleteButton = <button style={{marginTop:"20px"}} onClick={() => deleteSong(e)} className="deleteButton">Delete</button>;
-const adminDelete = admin === 1 || e.user === user ? deleteButton : '';
+const adminDelete = admin === 1 ? deleteButton : '';
 
 return (
 <li key={e.youtube_id} className="grid-item">
@@ -121,6 +116,7 @@ return (
 )}
 )
 setList(array)
+setLoading(false)
 }
 
 const filterFavorites = favorites ?  <i className="fas fa-heart"></i> : <i className="far fa-heart"></i>
@@ -144,11 +140,11 @@ const override =`
   <p style={{left:"0", top:"-15px", zIndex:"1007", background:"rgb(0,0,0,0.5)", position:"fixed", width:"100vw", height:"100vh"}}></p> : ''
   }
   </LoadingOverlay>
-<p className='listTitle'>Songs</p>
+<p className='listTitle'>
+<NavLink className="fa fa-plus-square-o add" to="/PostSong"></NavLink>  
+{" "} Songs</p>
 <input className="filterList" placeholder="Search..." onChange={(event) => setSearch(event.target.value)} /> 
-<HashRouter>
-<NavLink className="fa fa-plus-square-o add" to="/PostSong"></NavLink>
-</HashRouter>
+<button onClick={() => handleSearch()} className="searchButton">Search</button>
 {props.user ? <i className="filterFavorites" onClick={() => setFavorites(!favorites)}>{filterFavorites}</i> : ''}
 <ul className="grid-container">
 {list}

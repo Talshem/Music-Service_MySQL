@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
@@ -30,6 +31,7 @@ import SongData from './components/SongData.js';
 import AlbumData from './components/AlbumData.js';
 import ArtistData from './components/ArtistData.js';
 import PlaylistData from './components/PlaylistData.js';
+import Uploads from './components/Uploads.js';
 
 function App() {
 const [registerOpen, setRegisterOpen] = useState(false)
@@ -44,6 +46,9 @@ const [playlist, setPlaylist] = useState('');
 
 useEffect(() => {
 let user = localStorage.getItem('session');
+if (user == 0) {
+return
+}
 const autoLogin = async () => {
 try {
 const { data } = await axios.get(`/auto/${user}`);
@@ -79,36 +84,39 @@ function validateEmail(mail) {
     numbers: true
 });
     try{
-    if(validateEmail(email)) {
-          if (password === repassword){
+    if(!validateEmail(email)) {
+     return document.getElementById('errorMessage').innerHTML='Please enter a valid email address';
+    }
+    if (password !== repassword){
+    return document.getElementById('errorMessage').innerHTML='Password fields do not match';
+           }
       const { data } = await axios.post(`/users`, {
-      name: name,
+      username: name,
       email: email,
       password: password,
       auto_code: code,
-      });
+      })
+if(data === 'Username is already in use'){
+return document.getElementById('errorMessage').innerHTML = data;
+}
 localStorage.setItem('session', code);
 setUser(data[0])
 setRegisterOpen(false)
-           } else {
-document.getElementById('errorMessage').innerHTML='Password fields do not match';
-           }
-          } else {
- document.getElementById('errorMessage').innerHTML='Please enter a valid email address';
-           }
-  } catch(response){
+  } catch (response){
   document.getElementById('errorMessage').innerHTML='The email you tried to register with is already in use';
   }; 
   }
 
 
     const handleLogin = async (email, password) => {
+    if(!validateEmail(email)) {
+    return document.getElementById('errorMessage').innerHTML='Please enter a valid email address';
+    }
     let code = generator.generate({
-    length: 20,
+    length: 50,
     numbers: true
 });
     try{
-    if(validateEmail(email)) {
       const { data } = await axios.put(`/users`, {
       email: email,
       password: password,
@@ -119,9 +127,6 @@ setLoginOpen(false)
 setTimeout(() => {
 setUser(data[0])
 }, 500);
-    } else {
- document.getElementById('errorMessage').innerHTML='Please enter a valid email address';
-    }
   } catch (response){
   document.getElementById('errorMessage').innerHTML='Either the email or password you entered is incorrect';
   }; 
@@ -185,7 +190,7 @@ return (
 
 function register(){
 let email;
-let name;
+let username;
 let password;
 let repassword
 
@@ -193,8 +198,8 @@ let repassword
         email = event.target.value;
       }
 
-      function insertName(event) {
-        name = event.target.value;
+      function insertUsername(event) {
+        username = event.target.value;
       }
 
       function insertPassword(event) {
@@ -224,12 +229,12 @@ return (
             fullWidth
           />
           <TextField
-            onChange={insertName}
+            onChange={insertUsername}
             autoFocus
             required
             margin="dense"
-            id="name"
-            label="Name"
+            id="username"
+            label="Username"
             type="name"
             fullWidth
           />
@@ -251,7 +256,7 @@ return (
             id="password"
             label="Confirm password"
             autoComplete=""
-            type="repassword"
+            type="password"
             fullWidth
           />
         </DialogContent>
@@ -260,7 +265,7 @@ return (
           <Button onClick={() => setRegisterOpen(false)} color="primary">
             Cancel
           </Button>
-          <Button onClick={() => handleRegister(email, name, password, repassword)} color="primary">
+          <Button onClick={() => handleRegister(email, username, password, repassword)} color="primary">
             Register
           </Button>
         </DialogActions>
@@ -326,6 +331,14 @@ const platform = user ? <h5> {logout} </h5> :  <h5> {login()} | {register()} </h
              <NavLink className="navItem" to="/Playlists">Playlists</NavLink>
             </NavText>
           </NavItem>
+           <NavItem eventKey="5">
+            <NavIcon>
+              <i className="fa fa-fw " style={{ fontSize: '1.75em' }} />
+            </NavIcon>
+            <NavText>
+             <NavLink className="navItem" to="/Uploads">Uploads</NavLink>
+            </NavText>
+          </NavItem>
         </SideNav.Nav>
       </SideNav>
   <Route exact path="/" component={() => <Home playlist={e => setPlaylist(e)} artist={e => setArtist(e)} album={e => setAlbum(e)} song={e => setSong(e)} user={user}/>}/>
@@ -333,14 +346,15 @@ const platform = user ? <h5> {logout} </h5> :  <h5> {login()} | {register()} </h
 <Route path="/Artists" component={() => <Artists artist={e => setArtist(e)} user={user}/>}/>
 <Route path="/Playlists" component={() => <Playlists playlist={e => setPlaylist(e)} user={user}/>}/>
 <Route path="/Albums" component={() => <Albums album={e => setAlbum(e)} user={user}/>}/>
+<Route path="/Uploads" component={() => <Uploads  playlist={e => setPlaylist(e)} artist={e => setArtist(e)} album={e => setAlbum(e)} song={e => setSong(e)} user={user}/>}/>
 <Route path="/PostSong" component={() => <PostSong user={user}/>}/>
 <Route path="/PostAlbum" component={() => <PostAlbum user={user}/>}/>
 <Route path="/PostArtist" component={() => <PostArtist user={user}/>}/>
 <Route path="/PostPlaylist" component={() => <PostPlaylist user={user}/>}/>
 <Route path="/SongData" component={() => <SongData song={song} user={user}/>}/>
-<Route path="/AlbumData" component={() => <AlbumData album={album} user={user}/>}/>
-<Route path="/ArtistData" component={() => <ArtistData artist={artist} user={user}/>}/>
-<Route path="/PlaylistData" component={() => <PlaylistData playlist={playlist} user={user}/>}/>
+<Route path="/AlbumData" component={() => <AlbumData song={e => setSong(e)} album={album} user={user}/>}/>
+<Route path="/ArtistData" component={() => <ArtistData song={e => setSong(e)} artist={artist} user={user}/>}/>
+<Route path="/PlaylistData" component={() => <PlaylistData song={e => setSong(e)} playlist={playlist} user={user}/>}/>
       </HashRouter>
     </div>
   );

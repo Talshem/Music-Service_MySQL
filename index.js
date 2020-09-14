@@ -79,14 +79,26 @@ UPDATE users SET remember_token = 0, auto_code = 0 WHERE email = '${body.email}'
 app.post('/users', (req, res, next) => {
 var date = new Date();
 const body = req.body;
+let occupied = false
   con.query(`
-  INSERT INTO users (name, email, created_at, upload_at, password, remember_token, preferences, auto_code) VALUES 
-  ('${body.name}', '${body.email}', '${date.toISOString().substring(0, 10)}', '${date.toISOString().substring(0, 10)}', '${body.password}', 1, '[]', '${body.auto_code}');
+  SELECT * FROM users WHERE username = '${body.username}';
+  `, function (err, result) {
+  if(result.length !== 0){
+  occupied = true
+  res.send('Username is already in use')
+  }
+  })
+  if(!occupied){
+  con.query(`
+  INSERT INTO users (username, email, created_at, upload_at, password, remember_token, preferences, auto_code) VALUES 
+  ('${body.username}', '${body.email}', '${date.toISOString().substring(0, 10)}', '${date.toISOString().substring(0, 10)}', '${body.password}', 1, '[]', '${body.auto_code}');
   SELECT * FROM users WHERE email = '${body.email}' AND password = '${body.password}';
   `, function (err, result) {
     if (err) return next(err);
-    res.send(result[1])
+    res.send(result[2])
+    console.log(5555)
   });
+}
 });
 
 
@@ -110,22 +122,19 @@ app.put('/song/like', (req, res, next) => {
   const body = req.body;
   if (body.toggle === 'like') {
   con.query(`
-UPDATE users SET preferences =
-JSON_ARRAY_APPEND (preferences, '$', 'song: ${body.youtube_id}')
-WHERE email = '${body.user}';
-UPDATE songs SET is_liked = ${body.is_liked} WHERE youtube_id = '${body.youtube_id}';
+UPDATE users SET preferences =JSON_ARRAY_APPEND (preferences, '$', 'song: ${body.youtube_id}')WHERE email = '${body.user}';
+UPDATE songs SET is_liked = ${body.is_liked + 1} WHERE youtube_id = '${body.youtube_id}';
 SELECT preferences FROM users WHERE email = '${body.user}';
     `, function (err, result) {
-    if (err) console.log(err);
+    if (err) return next(err);
     res.send(result[2])
     })
-  } else if (body.toggle === 'unlike') {
+  } else {
 let preferences = body.preferences;
 let x = preferences.filter(e => JSON.stringify(e) !== JSON.stringify(`song: ${body.youtube_id}`))
 con.query(`
-UPDATE users SET preferences = '${JSON.stringify(x)}'
-WHERE email = '${body.user}';
-UPDATE songs SET is_liked = ${body.is_liked} WHERE youtube_id = '${body.song_id}';
+UPDATE users SET preferences = '${JSON.stringify(x)}'WHERE email = '${body.user}';
+UPDATE songs SET is_liked =${body.is_liked - 1} WHERE youtube_id = '${body.youtube_id}';
 SELECT preferences FROM users WHERE email = '${body.user}';
     `, function (err, result) {
     if (err) return next(err);
@@ -142,19 +151,19 @@ app.put('/album/like', (req, res, next) => {
 UPDATE users SET preferences =
 JSON_ARRAY_APPEND (preferences, '$', 'album: ${body.name}')
 WHERE email = '${body.user}';
-UPDATE albums SET is_liked = ${body.is_liked} WHERE name = '${body.name}';
+UPDATE albums SET is_liked = ${body.is_liked + 1} WHERE name = '${body.name}';
 SELECT preferences FROM users WHERE email = '${body.user}';
     `, function (err, result) {
     if (err) console.log(err);
     res.send(result[2])
     })
-  } else if (body.toggle === 'unlike') {
+  } else {
 let preferences = body.preferences;
 let x = preferences.filter(e => JSON.stringify(e) !== JSON.stringify(`album: ${body.name}`))
 con.query(`
 UPDATE users SET preferences = '${JSON.stringify(x)}'
 WHERE email = '${body.user}';
-UPDATE albums SET is_liked = ${body.is_liked} WHERE name = '${body.name}';
+UPDATE albums SET is_liked = ${body.is_liked - 1} WHERE name = '${body.name}';
 SELECT preferences FROM users WHERE email = '${body.user}';
     `, function (err, result) {
     if (err) return next(err);
@@ -171,19 +180,19 @@ app.put('/artist/like', (req, res, next) => {
 UPDATE users SET preferences =
 JSON_ARRAY_APPEND (preferences, '$', 'artist: ${body.name}')
 WHERE email = '${body.user}';
-UPDATE artists SET is_liked = ${body.is_liked} WHERE name = '${body.name}';
+UPDATE artists SET is_liked = ${body.is_liked + 1} WHERE name = '${body.name}';
 SELECT preferences FROM users WHERE email = '${body.user}';
     `, function (err, result) {
     if (err) return next(err);
     res.send(result[2])
     })
-  } else if (body.toggle === 'unlike') {
+  } else {
 let preferences = body.preferences;
 let x = preferences.filter(e => JSON.stringify(e) !== JSON.stringify(`artist: ${body.name}`))
 con.query(`
 UPDATE users SET preferences = '${JSON.stringify(x)}'
 WHERE email = '${body.user}';
-UPDATE artists SET is_liked = ${body.is_liked} WHERE name = '${body.name}';
+UPDATE artists SET is_liked = ${body.is_liked - 1} WHERE name = '${body.name}';
 SELECT preferences FROM users WHERE email = '${body.user}';
     `, function (err, result) {
     if (err) return next(err);
@@ -194,13 +203,13 @@ SELECT preferences FROM users WHERE email = '${body.user}';
 
  // toggle playlist in user's preferneces
 app.put('/playlist/like', (req, res, next) => {
-  const body = req.body;
+  const body = req.body;s
   if (body.toggle === 'like') {
   con.query(`
 UPDATE users SET preferences =
 JSON_ARRAY_APPEND (preferences, '$', 'playlist: ${body.id}')
 WHERE email = '${body.user}';
-UPDATE playlists SET is_liked = ${body.is_liked} WHERE id = ${body.id};
+UPDATE playlists SET is_liked = ${body.is_liked + 1} WHERE id = ${body.id};
 SELECT preferences FROM users WHERE email = '${body.user}';
     `, function (err, result) {
     if (err) return next(err);
@@ -212,7 +221,7 @@ let x = preferences.filter(e => JSON.stringify(e) !== JSON.stringify(`playlist: 
 con.query(`
 UPDATE users SET preferences = '${JSON.stringify(x)}'
 WHERE email = '${body.user}';
-UPDATE playlists SET is_liked = ${body.is_liked} WHERE id = ${body.id};
+UPDATE playlists SET is_liked = ${body.is_liked - 1} WHERE id = ${body.id};
 SELECT preferences FROM users WHERE email = '${body.user}';
     `, function (err, result) {
     if (err) return next(err);

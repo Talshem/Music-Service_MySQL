@@ -21,7 +21,6 @@ useEffect(() => {
     if(props.album){
       const { data } = await axios.get(`/top_songs?album=${props.album.name}`);
       setSongs(data[1])
-      console.log(songs)
           }
     }; fetchData();
    }, [props.album])

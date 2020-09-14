@@ -33,7 +33,7 @@ const [songs, setSongs] = useState([])
     songs: newSongs, 
     cover_img: image,
     user: props.user.email,
-    user_name:props.user_name,
+    user_name:props.user.username,
     })
   document.getElementById("playlistForm").reset();
 } catch (response){
@@ -61,7 +61,7 @@ let song;
 let selectSong = songs.map(e => ({ value: e.youtube_id, label: `${e.title} - ${e.artist}` }))
 
 return (
- <form id="playlistForm" className="playlistForm" onSubmit={() => addPlaylist(name, song, image)}>
+ <form style={{marginTop:"150px"}} id="playlistForm" className="playlistForm" onSubmit={() => addPlaylist(name, song, image)}>
    <div>
     <label> Name of the Playlist: </label><br/>
     <input id="playlist_name" required type="text" defaultValue={name} onChange={insertName}/> <br/><br/>

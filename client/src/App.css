@@ -38,11 +38,11 @@ margin-top:178px;
 }
 
 .hov:hover a{
-color: rgb(95, 206, 171)
+color: rgb(149, 243, 215, 1)
 }
 
 .hov:hover .video, .hov:hover img{
- border: 2px solid rgb(95, 206, 171); 
+ border: 2px solid rgb(149, 243, 215, 1); 
 }
 
 
@@ -70,6 +70,7 @@ list-style-type: none;
 /* width */
 ::-webkit-scrollbar {
   width: 6px;
+  height: 6px
 }
 
 /* Track */
@@ -89,13 +90,8 @@ background: rgb(256,256,256,0.1);
 text-decoration: none;
 color:rgb(149, 243, 215);
 cursor: pointer;
-margin-left:670px;
-margin-top:117.5px;
-font-size: 44px;
-position: absolute;
 }
 
-.add:hover{color:rgb(95, 206, 171)}
 
 .filterFavorites{
 text-decoration: none;
@@ -107,7 +103,6 @@ font-size: 44px;
 position: absolute;
 }
 
-.filterFavorites:hover {color:rgb(95, 206, 171)}
 
 .filterList{
   margin-top:120px;
@@ -145,16 +140,16 @@ border: 2px solid white;
 
 img{
 word-wrap: break-word;
-min-height:150px;
-min-width:150px;
+min-height:125px;
+min-width:125px;
 }
 
-.grid-item:hover a{
-color: rgb(95, 206, 171)
+.grid-item2:hover .video, .grid-item:hover img, .grid-item:hover .video, .grid-item:hover img{
+ border: 2px solid rgb(149, 243, 215, 1)
 }
 
-.grid-item:hover .video, .grid-item:hover img{
- border: 2px solid rgb(95, 206, 171); 
+.grid-item:hover a, .grid-item2:hover a{
+color: rgb(149, 243, 215, 1)
 }
 
 .video{
@@ -162,14 +157,28 @@ margin-bottom: -21px;
 }
 
 .grid-item p {
-overflow:auto;
-word-wrap: break-word;
-height:28px;
+height:32px;
+white-space: nowrap;
+overflow-x: auto;
+overflow-y: hidden;
+padding-top:10px;
+margin-bottom:15px;
+padding-left:10px;
 color:white;
 text-align: left;
-width:155px;
+width:144px;
 font-size:20px;
 }
+
+.fa-heart{
+color:rgb(199, 60, 60);
+transition:0.5s;
+}
+
+.like:active{
+transform: scale(2);
+}
+
 
 .grid-item {
 width:150px;
@@ -180,6 +189,7 @@ height:250px;
   overflow:hidden;
   text-align: center;
 }
+
 
 
 .grid-item2 {
@@ -242,6 +252,7 @@ margin-top:-10px;
 }
 
 .songsTitle{
+text-shadow:2px 0px 0px rgb(0, 0, 0);
 position:absolute;
 text-align: center;
 top:75px;
@@ -251,35 +262,29 @@ width:625px;
 }
 
 .dataSongs p{
-overflow: auto;
 max-height:30px;
 width:154px;
-height:22px;
+height:26px;
 text-align: left;
-word-wrap: break-word;
+white-space: nowrap;
+overflow-x: auto;
+overflow-y: hidden;
 }
 
 .lists p{
-overflow: auto;
+white-space: nowrap;
+overflow-x: auto;
+overflow-y: hidden;
 max-height:30px;
-word-wrap: break-word;
 margin-right:10px;
 font-size:20px;
 }
-
-
 
 
 .navTo{
 text-decoration: none;
 color:white;
 }
-
-.fa-heart{
-color:rgb(149, 243, 215)
-}
-
-.fa-heart:hover {color:rgb(95, 206, 171)}
 
 .listTitle{
 margin-left:100px;
@@ -351,8 +356,6 @@ margin-left:105px;
 margin-top:-25px;
 }
 
-.post:hover{color:rgb(95, 206, 171)}
-.back:hover{color:rgb(95, 206, 171)}
 
 .tooltip {
   float:right;
@@ -372,7 +375,6 @@ margin-top:-25px;
   text-align: center;
   border-radius: 6px;
   padding: 5px 0;
-
   position: absolute;
   z-index: 1;
 }
@@ -440,4 +442,77 @@ margin-top:200px;
 }
 .artistForm input{
   width:900px;
+}
+
+.uploadsList{
+position: relative;
+width:850px;
+left:47px;
+top:150px;
+display: grid;
+grid-template-columns: auto auto;
+height:300px;
+}
+
+.upload{
+width:470px;
+background:rgb(10, 10, 10);
+height: 205px;
+margin-right:20px;
+overflow:auto;
+margin-bottom:20px;
+display: flex;
+border: 1px solid white;
+border-radius: 10px;
+}
+
+.upload p{
+white-space: nowrap;
+overflow-x: auto;
+overflow-y: hidden;
+margin-top:-0px;
+max-height:30px;
+width:130px;
+height:28px;
+text-align: left;
+}
+
+.upload li{
+padding-right:10px;
+padding-left:15px;
+}
+
+.searchButton{
+text-decoration: none;
+color:rgb(149, 243, 215);
+background: transparent;
+border: 2px solid rgb(149, 243, 215);
+border-radius: 10px; 
+cursor: pointer;
+margin-left:620px;
+font-size: 26px;
+margin-left:670px;
+margin-top:120px;
+position: absolute;
+}
+.searchButton:hover{
+color: rgb(95, 206, 171);
+border:2px solid rgb(95, 206, 171);
+}
+
+button:focus {outline:0;}
+
+.add:hover, .post:hover, .back:hover, .filterFavorites:hover{
+color:rgb(95, 206, 171)
+}
+
+.upload h6{
+position: absolute;
+color:rgb(255, 255, 255);
+margin-left:380px;
+font-size: 20px;
+height:30px;
+font-weight: 100;
+margin-top:-21px;
+text-shadow:1px 0px 0px rgb(0, 0, 0);
 }

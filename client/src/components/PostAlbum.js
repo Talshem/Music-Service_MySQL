@@ -14,20 +14,10 @@ const [artists, setArtists] = useState([]);
     }; fetchData();
    }, []);
   
-function validateDate(date) {
- if (/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/.test(date))
-  {
-    return (true)
-  }
-    return (false)
-}
 
   const addAlbum = async (name, image, artist, created_at) => {
    let regex = /'/gi
   const newCreated_at = created_at.slice(0,10)
-    if (!validateDate(newCreated_at)) {
-    return document.getElementById('albumError').innerHTML = "Release date form is invalid";
-    }
     if (!props.user) {
     return document.getElementById('albumError').innerHTML = 'Only registered users can post new albums to the website!';
     }
@@ -72,6 +62,20 @@ let artist;
         artist = event;
       }
 
+var today = new Date();
+var dd = today.getDate();
+var mm = today.getMonth()+1;
+var yyyy = today.getFullYear();
+ if(dd<10){
+        dd='0'+dd
+    } 
+    if(mm<10){
+        mm='0'+mm
+    } 
+
+today = yyyy+'-'+mm+'-'+dd;
+
+
 let selectArtist = artists.map(e => ({ value: e.name, label: e.name }))
 
 return (
@@ -87,8 +91,8 @@ return (
     </Select><br/>
     <label> Cover image URL </label><br/>
     <input id="album_img" required type="text" defaultValue={image} onChange={insertImage}/><br/><br/>
-    <label> Release date: </label><i class='tooltip fas fa-info'> <span class="tooltiptext">Y Y Y Y - M M - D D</span></i><br/>
-    <input id="album_release" required type="text" defaultValue={created_at} onChange={insertRelease}/><br/><br/>
+    <label> Release date: </label><br/>
+   <input max={today} style={{height:"32px"}} id="album_date" required type="date" defaultValue={created_at} onChange={insertRelease}/><br/><br/>
     <input type='submit' style={{left:'410px'}} className="post" value="Post Album"/>
     </div>
     </form>
