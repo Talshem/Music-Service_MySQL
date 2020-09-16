@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import LoadingOverlay from 'react-loading-overlay';
 import ClipLoader from "react-spinners/ClipLoader";
+import ScrollContainer from 'react-indiana-drag-scroll'
 
 function Home(props) {
 const [songs, setSongs] = useState([]);
@@ -22,7 +23,7 @@ useEffect(() => {
       const albums = await axios.get(`/top_albums`);
       const artists = await axios.get(`/top_artists`);
       const playlists = await axios.get(`/top_playlists`);
-      makeLists(songs.data[0], albums.data, artists.data, playlists.data)
+      makeLists(songs.data[0], albums.data[0], artists.data, playlists.data)
       setLoading(false)
       }
        catch(response) {
@@ -40,13 +41,16 @@ count: e.play_count + 1,
 };
 
 const makeLists = (songs, albums, artists, playlists) => {
+let z =30;
+
 let sArray = songs.map(e => {
+z--;
 return (
-<li key={e.youtube_id} className="hov">
+<li style={{zIndex: z}} key={e.youtube_id} className="hov">
 <p>
-<NavLink className="navTo" to="/SongData" onClick={() => props.song(e)}>{e.title}</NavLink>
+<NavLink className="navTo" to="/songs" >{e.title}</NavLink>
 </p>
-<YouTube className="video" onPlay={() => playCount(e)}videoId={e.youtube_id} id="video" opts={{width:"150",height:"150"}}/>
+<YouTube className="video" onPlay={() => playCount(e)}videoId={e.youtube_id} id="video" opts={{width:"250",height:"250"}}/>
 <br/><br/>
 </li>
 )}
@@ -55,45 +59,50 @@ return (
 
 
 let alArray = albums.map(e => {
+z--;
 return (
-<li key={e.name} className="hov">
+<li style={{zIndex: z}} key={e.name} className="hov">
 <p>
-<NavLink className="navTo" to="/AlbumData" onClick={() => props.album(e)}>
+<NavLink className="navTo" to="/albums" >
 {e.name}
 </NavLink>
 </p>
-<NavLink className="navTo" to="/AlbumData" onClick={() => props.album(e)}>
-<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="150" height="150" src={e.cover_img}></img>
+<NavLink className="navTo" to="/albums" >
+<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
 </NavLink>
 <br/><br/>
 </li>
 )}
 )
+
 let arArray = artists.map(e => {
+z--;
 return (
-<li key={e.name} className="hov">
+<li style={{zIndex: z}} key={e.name} className="hov">
 <p>
-<NavLink className="navTo" to="/ArtistData" onClick={() => props.artist(e)}>
+<NavLink className="navTo" to="/artists">
 {e.name}
 </NavLink>
 </p>
-<NavLink className="navTo" to="/ArtistData" onClick={() => props.artist(e)}>
-<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="150" height="150" src={e.cover_img}></img>
+<NavLink className="navTo" to="/artists">
+<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
 </NavLink>
 <br/><br/>
 </li>
 )}
 )
+
 let pArray = playlists.map(e => {
+z--;
 return (
-<li key={e.name} className="hov">
+<li style={{zIndex: z}} key={e.name} className="hov">
 <p>
-<NavLink className="navTo" to="/PlaylistData" onClick={() => props.playlist(e)}>
+<NavLink className="navTo" to="/playlists">
 {e.name}
 </NavLink>
 </p>
-<NavLink className="navTo" to="/PlaylistData" onClick={() => props.playlist(e)}>
-<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="150" height="150" src={e.cover_img}></img>
+<NavLink className="navTo" to="/playlists">
+<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
 </NavLink>
 <br/><br/>
 </li>
@@ -106,12 +115,13 @@ setPlaylists(pArray)
 }
 
 const override =`
-  display: block;
   position:absolute;
   width:200px;
   height:200px;
-  left: 375px;
+  margin-top:-190px;
+  left: 40%;
 `;
+
 
   return (
     <div>
@@ -124,28 +134,39 @@ const override =`
   }
   </LoadingOverlay>
 
+
 <h3>Hello, {props.user ? props.user.username : 'Guest'}</h3>
+
 <div className="lists"> 
 <div >
 <h4> Top Songs </h4> 
-<ul className="songs" >{songs}</ul>
+<ScrollContainer
+hideScrollbars={false}
+className="songs">
+{songs}
+</ScrollContainer>
 </div>
-
 
 <div>  
 <h4> Top Albums </h4>  
-<ul className="albums">{albums}</ul>
+<ScrollContainer className="albums">
+{albums}
+</ScrollContainer>
 </div>
 
 
 <div >
 <h4>Top Artists</h4>
-<ul className="artists">{artists}</ul>
+<ScrollContainer className="artists">
+  {artists}
+</ScrollContainer>
 </div>
 
 <div>
 <h4>Top Playlists</h4>
-<ul className="playlists">{playlists}</ul>
+<ScrollContainer className="playlists">
+{playlists}
+</ScrollContainer>
 </div>
 </div>
 </div>

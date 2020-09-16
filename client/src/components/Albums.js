@@ -2,12 +2,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
+  Switch,
+  Route,
   NavLink,
+  useRouteMatch,
   } from "react-router-dom";
 import LoadingOverlay from 'react-loading-overlay';
 import ClipLoader from "react-spinners/ClipLoader";
+import AlbumData from './AlbumData.js';
 
-function Albums(props) {
+
+function AlbumsList(props) {
 const [list, setList] = useState([])
 const [search, setSearch] = useState('')
 const [preferences, setPreferences] = useState("[]")
@@ -15,6 +20,9 @@ const [admin, setAdmin] = useState(0)
 const [toggle, setToggle] = useState(false)
 const [favorites, setFavorites] = useState(false)
 const [loading, setLoading] = useState(true);
+const [disabled, setDisabled] = useState(false)
+
+let match = useRouteMatch();
 
 useEffect(() => {
 const getPreferences = async () => {
@@ -38,7 +46,7 @@ useEffect(() => {
       let x = JSON.parse(preferences)
       try{
       const albums = await (await axios.get(`/top_albums?name=${search}`)).data;
-      let list = albums.filter(e => e.name.toUpperCase().includes(search.toUpperCase()))
+      let list = albums[0].filter(e => e.name.toUpperCase().includes(search.toUpperCase()))
       if (!favorites) {
       makeAlbums(list) 
       } else {
@@ -61,8 +69,23 @@ const newName = e.name.replace(`'`,`''`);
 await axios.delete(`/album/${newName}`);
 setToggle(!toggle)
 };
+const isLiked= (e) => {
+const promise = new Promise((resolve, reject) => {
+    resolve(setDisabled(true));
+})
+const promise2 = new Promise((resolve, reject) => {
+    resolve(handleLike(e));
+})
+promise.then(() => promise2)
+promise2.then(() => {
+  setTimeout(() => {
+    setDisabled(false)
+  }, 2000);
+})
 
-const isLiked = async (e) => {
+}
+
+const handleLike = async (e) => {
 let x = JSON.parse(preferences)
 if (x.includes(`album: ${e.name}`)){
 await axios.put(`/album/like`, {
@@ -90,7 +113,9 @@ const makeAlbums = (albums) => {
 let x = JSON.parse(preferences);
 
 let array = albums.map(e => {
-const heart = x.includes(`album: ${e.name}`) ? <i className="like fas fa-heart"></i> : <i className="like far fa-heart"></i>
+const heart = x.includes(`album: ${e.name}`) ?
+<button  onClick={() => isLiked(e)} disabled={disabled} className="like fas fa-heart"/> :
+<button  onClick={() => isLiked(e)} disabled={disabled} className="like far fa-heart"/>
 const like = props.user ? heart :  '';
 
 const deleteButton = <button onClick={() => deleteAlbum(e)} className="deleteButton">Delete</button>;
@@ -98,14 +123,14 @@ const adminDelete = admin === 1 ? deleteButton : '';
 
 return (
 <li key={e.name} className="grid-item">
-<span style={{cursor:'pointer'}} onClick={() => isLiked(e)}>{like} {" "} </span>
+<span style={{cursor:'pointer'}}>{like} {" "} </span>
 <p>
-<NavLink className="navTo" to="/AlbumData" onClick={() => props.album(e)}>
+<NavLink className="navTo" to={`${match.url}/${e.id}`}>
 {e.name}
 </NavLink>
 </p>
-<NavLink className="navTo" to="/AlbumData" onClick={() => props.album(e)}>
-<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="150" height="150" src={e.cover_img}></img>
+<NavLink className="navTo" to={`${match.url}/${e.id}`}>
+<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
 </NavLink>
 {adminDelete}
 </li>
@@ -119,12 +144,11 @@ setLoading(false)
 const filterFavorites = favorites ?  <i className="fas fa-heart"></i> : <i className="far fa-heart"></i>
 
 const override =`
-  display: block;
   position:absolute;
   width:200px;
   height:200px;
-    top:200px;
-  left: 375px;
+  margin-top:200px;
+  left: 40%;
 `;
 
   return (
@@ -150,4 +174,21 @@ const override =`
   );
 }
 
+function Albums(props){
+
+let match = useRouteMatch();
+
+return(
+      <Switch>
+        <Route path={`${match.path}/:albumId`}>
+          <AlbumData user={props.user}/>
+        </Route>
+        <Route path={match.path}>
+          <AlbumsList user={props.user}/>
+        </Route>
+      </Switch>
+)
+}
+
 export default Albums;
+

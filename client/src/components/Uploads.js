@@ -8,6 +8,7 @@ import {
 import LoadingOverlay from 'react-loading-overlay';
 import ClipLoader from "react-spinners/ClipLoader";
 import generator from 'generate-password'
+import ScrollContainer from 'react-indiana-drag-scroll'
 
 function Uploads(props) {
 const [songs, setSongs] = useState([]);
@@ -85,14 +86,14 @@ const makeLists = (songs, albums, artists, playlists) => {
 let z =1000
 let sArray = songs.map(e => {
 z--;
-const deleteButton = <button onClick={() => deleteSong(e)} style={{ width:"130px"}} className="deleteButton">Delete</button>;
+const deleteButton = <button onClick={() => deleteSong(e)} className="deleteButton">Delete</button>;
 
 return (
 <li key={e.youtube_id} style={{zIndex: z}} className="hov">
 <p>
-<NavLink className="navTo" to="/SongData" onClick={() => props.song(e)}>{e.title}</NavLink>
+<NavLink className="navTo" to="/songs" onClick={() => props.song(e)}>{e.title}</NavLink>
 </p>
-<YouTube className="video" onPlay={() => playCount(e)}videoId={e.youtube_id} id="video" opts={{width:"125",height:"125"}}/>
+<YouTube className="video" onPlay={() => playCount(e)}videoId={e.youtube_id} id="video" opts={{width:"250",height:"250"}}/>
 <br/>
 {deleteButton}
 </li>
@@ -108,12 +109,12 @@ z--;
 return (
 <li style={{zIndex: z}} key={e.name} className="hov">
 <p>
-<NavLink className="navTo" to="/AlbumData" onClick={() => props.album(e)}>
+<NavLink className="navTo" to="/albums" onClick={() => props.album(e)}>
 {e.name}
 </NavLink>
 </p>
-<NavLink className="navTo" to="/AlbumData" onClick={() => props.album(e)}>
-<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="125" height="125" src={e.cover_img}></img>
+<NavLink className="navTo" to="/albums" onClick={() => props.album(e)}>
+<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
 </NavLink>
 <br/>
 {deleteButton}
@@ -122,17 +123,17 @@ return (
 )
 
 let arArray = artists.map(e => {
-const deleteButton = <button onClick={() => deleteArtist(e)} style={{ width:"130px"}} className="deleteButton">Delete</button>;
+const deleteButton = <button onClick={() => deleteArtist(e)} className="deleteButton">Delete</button>;
 z--;
 return (
 <li style={{zIndex: z}} key={e.name} className="hov">
 <p>
-<NavLink className="navTo" to="/ArtistData" onClick={() => props.artist(e)}>
+<NavLink className="navTo" to="/artists" onClick={() => props.artist(e)}>
 {e.name}
 </NavLink>
 </p>
-<NavLink className="navTo" to="/ArtistData" onClick={() => props.artist(e)}>
-<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="125" height="125" src={e.cover_img}></img>
+<NavLink className="navTo" to="/artists" onClick={() => props.artist(e)}>
+<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
 </NavLink>
 <br/> 
 {deleteButton}
@@ -145,12 +146,12 @@ z--
 return (
 <li style={{zIndex: z}} key={e.name} className="hov">
 <p>
-<NavLink className="navTo" to="/PlaylistData" onClick={() => props.playlist(e)}>
+<NavLink className="navTo" to="/playlists" onClick={() => props.playlist(e)}>
 {e.name}
 </NavLink>
 </p>
-<NavLink className="navTo" to="/PlaylistData" onClick={() => props.playlist(e)}>
-<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="125" height="125" src={e.cover_img}></img>
+<NavLink className="navTo" to="/playlists" onClick={() => props.playlist(e)}>
+<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
 </NavLink>
 <br/>
 {deleteButton}
@@ -165,12 +166,11 @@ setLoading(false)
 }
 
 const override =`
-  display: block;
   position:absolute;
   width:200px;
   height:200px;
-  top:180px;
-  left: 375px;
+  margin-top:200px;
+  left: 40%;
 `;
 
   return (
@@ -183,14 +183,32 @@ const override =`
   <p style={{left:"0", top:"-15px", zIndex:"1007", background:"rgb(0,0,0,0.5)", position:"fixed", width:"100vw", height:"100vh"}}></p> : ''
   }
   </LoadingOverlay>
-<p style={{marginLeft:"47px", marginTop:"10px"}}className='listTitle'>My Uploads</p>
-<input style={{marginLeft:"47px",marginTop:'95px'}} className="filterList" onChange={(event) => setSearch(event.target.value)} /> 
-<button style={{marginLeft:"620px" ,marginTop:'95px'}}onClick={() => handleSearch()} className="searchButton">Search</button>
+  <br/>
+<p className='listTitle'>My Uploads</p>
+<input className="filterList" onChange={(event) => setSearch(event.target.value)} /> 
+<button onClick={() => handleSearch()} className="searchButton">Search</button>
+
 <div className='uploadsList'>
-<div className="upload" ><h6 className="upTitle">Songs</h6>{songs}</div>
-<div className="upload" ><h6 className="upTitle">Albums</h6>{albums}</div>
-<div className="upload" ><h6 className="upTitle">Artists</h6>{artists}</div>
-<div className="upload" ><h6 className="upTitle">Playlists</h6>{playlists}</div>
+<ScrollContainer className="upload" >
+<h6 className="upTitle">Songs</h6>
+{songs}
+</ScrollContainer>
+
+<ScrollContainer className="upload" >
+<h6 className="upTitle">Albums</h6>
+{albums}
+</ScrollContainer>
+
+<ScrollContainer className="upload" >
+<h6 className="upTitle">Artists</h6>
+{artists}
+</ScrollContainer>
+
+<ScrollContainer className="upload" >
+  <h6 className="upTitle">
+  Playlists</h6>
+  {playlists}
+  </ScrollContainer>
 </div>
 </div>
   );

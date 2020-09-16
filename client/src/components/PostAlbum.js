@@ -36,7 +36,7 @@ const [artists, setArtists] = useState([]);
     })
   document.getElementById("albumForm").reset();
 } catch (response){
-   document.getElementById('albumError').innerHTML = "Album already exists";
+   document.getElementById('albumError').innerHTML = "Undetected Error";
   }; 
 };
 
@@ -83,17 +83,20 @@ return (
    <div>
     <label> Name of the Album: </label><br/>
     <input id="album_name" required type="text" defaultValue={name} onChange={insertName}/> <br/><br/>
+    <br/>
     <label>Artist: </label><i class='tooltip fas fa-info'> <span class="tooltiptext">You can only post albums of uploaded artists</span></i><br/>
     <Select style={{}} required maxMenuHeight={160}
     defaultValue={artist}
     onChange={insertArtist}
     options={selectArtist}>
-    </Select><br/>
+    </Select><br/><br/>
     <label> Cover image URL </label><br/>
     <input id="album_img" required type="text" defaultValue={image} onChange={insertImage}/><br/><br/>
+    <br/>
     <label> Release date: </label><br/>
    <input max={today} style={{height:"32px"}} id="album_date" required type="date" defaultValue={created_at} onChange={insertRelease}/><br/><br/>
-    <input type='submit' style={{left:'410px'}} className="post" value="Post Album"/>
+    <br/>
+    <input type='submit' style={{left:'485px'}} className="post" value="Post Album"/>
     </div>
     </form>
 

@@ -2,12 +2,18 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
+  Switch,
+  Route,
   NavLink,
+  useRouteMatch,
 } from "react-router-dom";
 import LoadingOverlay from 'react-loading-overlay';
 import ClipLoader from "react-spinners/ClipLoader";
+import ArtistData from './ArtistData.js';
 
-function Artists(props) {
+
+
+function ArtistsList(props) {
 const [list, setList] = useState([])
 const [search, setSearch] = useState('')
 const [preferences, setPreferences] = useState("[]")
@@ -15,6 +21,9 @@ const [admin, setAdmin] = useState(0)
 const [favorites, setFavorites] = useState(false)
 const [toggle, setToggle] = useState(false)
 const [loading, setLoading] = useState(true);
+const [disabled, setDisabled] = useState(false)
+
+let match = useRouteMatch();
 
 useEffect(() => {
 const getPreferences = async () => {
@@ -63,7 +72,24 @@ await axios.delete(`/artist/${newName}`);
 setToggle(!toggle)
 };
 
-const isLiked = async (e) => {
+const isLiked= (e) => {
+const promise = new Promise((resolve, reject) => {
+    resolve(setDisabled(true));
+})
+const promise2 = new Promise((resolve, reject) => {
+    resolve(handleLike(e));
+})
+promise.then(() => promise2)
+promise2.then(() => {
+  setTimeout(() => {
+    setDisabled(false)
+  }, 2000);
+})
+
+}
+
+
+const handleLike = async (e) => {
 let x = JSON.parse(preferences)
 if (x.includes(`artist: ${e.name}`)){
 await axios.put(`/artist/like`, {
@@ -91,7 +117,9 @@ const makeArtists = (artists) => {
 let x = JSON.parse(preferences);
 
 let array = artists.map(e => {
-const heart = x.includes(`artist: ${e.name}`) ? <i className="like fas fa-heart"></i> : <i className="like far fa-heart"></i>
+const heart = x.includes(`song: ${e.name}`) ? 
+<button  onClick={() => isLiked(e)} disabled={disabled} className="like fas fa-heart"/> :
+<button  onClick={() => isLiked(e)} disabled={disabled} className="like far fa-heart"/>
 const like = props.user ? heart :  '';
 
 const deleteButton = <button onClick={() => deleteArtist(e)} className="deleteButton">Delete</button>;
@@ -99,14 +127,14 @@ const adminDelete = admin === 1 ? deleteButton : '';
 
 return (
 <li key={e.name} className="grid-item">
-<span style={{cursor:'pointer'}} onClick={() => isLiked(e)}>{like} {" "}</span>
+<span style={{cursor:'pointer'}}>{like} {" "}</span>
 <p>
-<NavLink className="navTo" to="/ArtistData" onClick={() => props.artist(e)}>
+<NavLink className="navTo" to={`${match.url}/${e.id}`}>
 {e.name}
 </NavLink>
 </p>
-<NavLink className="navTo" to="/ArtistData" onClick={() => props.artist(e)}>
-<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="150" height="150" src={e.cover_img}></img>
+<NavLink className="navTo"to={`${match.url}/${e.id}`}>
+<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
 </NavLink>
 {adminDelete}
 </li>
@@ -116,15 +144,15 @@ setList(array)
 setLoading(false)
 }
 
+
 const filterFavorites = favorites ?  <i className="fas fa-heart"></i> : <i className="far fa-heart"></i>
 
 const override =`
-  display: block;
-    top:200px;
   position:absolute;
   width:200px;
   height:200px;
-  left: 375px;
+  margin-top:200px;
+  left: 40%;
 `;
 
   return (
@@ -138,7 +166,7 @@ const override =`
   }
   </LoadingOverlay>
 <p className='listTitle'>
-<NavLink className="fa fa-plus-square-o add" to="/PostArtist"></NavLink>  
+<NavLink className="fa fa-plus-square-o add" to="/Artists"></NavLink>  
 {" "} Artists</p>
 <input className="filterList" placeholder="Search..." onChange={(event) => setSearch(event.target.value)} /> 
 <button onClick={() => handleSearch()} className="searchButton">Search</button>
@@ -149,5 +177,20 @@ const override =`
 </div>
   );
 }
+
+function Artists(props){
+
+let match = useRouteMatch();
+
+return(
+      <Switch>
+        <Route path={`${match.path}/:artistId`}>
+          <ArtistData user={props.user}/>
+        </Route>
+        <Route path={match.path}>
+          <ArtistsList user={props.user}/>
+        </Route>
+      </Switch>
+)}
 
 export default Artists;

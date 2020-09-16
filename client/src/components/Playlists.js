@@ -3,12 +3,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
+  Switch,
+  Route,
   NavLink,
+  useRouteMatch,
 } from "react-router-dom";
 import LoadingOverlay from 'react-loading-overlay';
 import ClipLoader from "react-spinners/ClipLoader";
+import PlaylistData from './PlaylistData.js';
 
-function Playlists(props) {
+function PlaylistsList(props) {
 const [list, setList] = useState([])
 const [search, setSearch] = useState('')
 const [preferences, setPreferences] = useState("[]")
@@ -16,6 +20,9 @@ const [admin, setAdmin] = useState(0)
 const [toggle, setToggle] = useState(false)
 const [favorites, setFavorites] = useState(false)
 const [loading, setLoading] = useState(true);
+const [disabled, setDisabled] = useState(false)
+
+let match = useRouteMatch();
 
 useEffect(() => {
 const getPreferences = async () => {
@@ -64,7 +71,24 @@ await axios.delete(`/playlist/${e.id}`);
 setToggle(!toggle)
 };
 
-const isLiked = async (e) => {
+const isLiked= (e) => {
+const promise = new Promise((resolve, reject) => {
+    resolve(setDisabled(true));
+})
+const promise2 = new Promise((resolve, reject) => {
+    resolve(handleLike(e));
+})
+promise.then(() => promise2)
+promise2.then(() => {
+  setTimeout(() => {
+    setDisabled(false)
+  }, 2000);
+})
+
+}
+
+
+const handleLike = async (e) => {
 let x = JSON.parse(preferences)
 if (preferences.includes(`playlist: ${e.id}`)){
 await axios.put(`/playlist/like`, {
@@ -91,7 +115,9 @@ const makePlaylists = (playlists) => {
 let x = JSON.parse(preferences)
 
 let array = playlists.map(e => {
-const heart = x.includes(`playlist: ${e.id}`) ? <i className="like fas fa-heart"></i> : <i className="like far fa-heart"></i>
+const heart = x.includes(`playlist: ${e.id}`) ?
+<button  onClick={() => isLiked(e)} disabled={disabled} className="like fas fa-heart"/> :
+<button  onClick={() => isLiked(e)} disabled={disabled} className="like far fa-heart"/>
 const like = props.user ? heart :  '';
 
 const deleteButton = <button onClick={() => deletePlaylist(e)} className="deleteButton">Delete</button>;
@@ -99,14 +125,14 @@ const adminDelete = admin === 1 ? deleteButton : '';
 
 return (
 <li key={e.name} className="grid-item">
-<span style={{cursor:'pointer'}} onClick={() => isLiked(e)}>{like} </span>
+<span style={{cursor:'pointer'}} >{like} </span>
 <p>
-<NavLink className="navTo" to="/PlaylistData" onClick={() => props.playlist(e)}>
+<NavLink className="navTo"  to={`${match.url}/${e.id}`}>
 {e.name}
 </NavLink>
 </p>
-<NavLink className="navTo" to="/PlaylistData" onClick={() => props.playlist(e)}>
-<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="150" height="150" src={e.cover_img}></img>
+<NavLink className="navTo" to={`${match.url}/${e.id}`}>
+<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
 </NavLink>
 {adminDelete}
 </li>
@@ -119,12 +145,11 @@ setLoading(false)
 const filterFavorites = favorites ?  <i className="fas fa-heart"></i> : <i className="far fa-heart"></i>
 
 const override =`
-  display: block;
   position:absolute;
   width:200px;
   height:200px;
-  top:200px;
-  left: 375px;
+  margin-top:200px;
+  left: 40%;
 `;
 
   return (
@@ -149,6 +174,23 @@ const override =`
 </div>
   );
 }
+
+function Playlists(props){
+
+let match = useRouteMatch();
+
+return(
+      <Switch>
+        <Route path={`${match.path}/:playlistId`}>
+          <PlaylistData user={props.user}/>
+        </Route>
+        <Route path={match.path}>
+          <PlaylistsList user={props.user}/>
+        </Route>
+      </Switch>
+)}
+
+
 
 
 export default Playlists;

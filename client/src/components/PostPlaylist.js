@@ -61,10 +61,11 @@ let song;
 let selectSong = songs.map(e => ({ value: e.youtube_id, label: `${e.title} - ${e.artist}` }))
 
 return (
- <form style={{marginTop:"150px"}} id="playlistForm" className="playlistForm" onSubmit={() => addPlaylist(name, song, image)}>
+ <form style={{marginTop:"150px"}} id="playlistForm" onSubmit={() => addPlaylist(name, song, image)}>
    <div>
     <label> Name of the Playlist: </label><br/>
     <input id="playlist_name" required type="text" defaultValue={name} onChange={insertName}/> <br/><br/>
+    <br/>
     <label> Songs: </label><br/>
     <Select
     required
@@ -74,19 +75,21 @@ return (
     onChange={insertSongs}
     options={selectSong}>
     </Select><br/>
+    <br/>
     <label> Cover image URL </label><br/>
     <input id="artist_img" required type="text" defaultValue={image} onChange={insertImage}/><br/><br/>
-    <input type='submit' style={{left:'400px'}} className="post" value="Post Playlist"/>
+  <br/>
+    <input type='submit' style={{left:'385px'}} className="post" value="Post Playlist"/>
     </div>
     </form>
 
 )}
 
   return (
-<div> 
+<div className="playlistForm"> 
 {form()}
-<NavLink className="fa fa-arrow-left back" style={{left:"83px"}} to="/Playlists"></NavLink>
-<p id="playlistError" style={{marginTop:"-2px", marginLeft:"120px", fontSize:'20px', color:"red"}}></p>
+<NavLink className="fa fa-arrow-left back"  to="/Playlists"></NavLink>
+<p id="playlistError" style={{marginLeft:"120px", fontSize:'20px', color:"red"}}></p>
 </div>
   );
   }
