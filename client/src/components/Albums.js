@@ -57,7 +57,7 @@ useEffect(() => {
     return alert(response)
       }
     }; fetchData();
-   }, [toggle, favorites, preferences])
+   }, [disabled, toggle, favorites, preferences])
 
 const handleSearch = () => {
 setToggle(!toggle)
@@ -80,7 +80,7 @@ promise.then(() => promise2)
 promise2.then(() => {
   setTimeout(() => {
     setDisabled(false)
-  }, 2000);
+  }, 1500);
 })
 
 }
@@ -157,14 +157,11 @@ const override =`
   active={loading}
   spinner={<ClipLoader css={override} color="white" style={{zIndex:1010}} size={150}/>}
   >
-  {loading ?
-  <p style={{left:"0", top:"-15px", zIndex:"1007", background:"rgb(0,0,0,0.5)", position:"fixed", width:"100vw", height:"100vh"}}></p> : ''
-  }
   </LoadingOverlay>
 <p className='listTitle'>
 <NavLink className="fa fa-plus-square-o add" to="/PostAlbum"></NavLink>  
 {" "} Albums</p>
-<input className="filterList" placeholder="Search..." onChange={(event) => setSearch(event.target.value)} /> 
+<input className="filterList" onChange={(event) => setSearch(event.target.value)} /> 
 <button onClick={() => handleSearch()} className="searchButton">Search</button>
 {props.user ? <i className="filterFavorites" onClick={() => setFavorites(!favorites)}>{filterFavorites}</i> : ''}
 <ul className="grid-container">
@@ -176,7 +173,7 @@ const override =`
 
 function Albums(props){
 
-let match = useRouteMatch();
+let match = useRouteMatch(); 
 
 return(
       <Switch>
@@ -189,6 +186,7 @@ return(
       </Switch>
 )
 }
+
 
 export default Albums;
 

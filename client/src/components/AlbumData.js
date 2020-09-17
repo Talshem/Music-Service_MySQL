@@ -105,9 +105,6 @@ const override =`
   active={loading}
   spinner={<ClipLoader css={override} color="white" style={{zIndex:1010}} size={150}/>}
   >
-  {loading ?
-  <p style={{left:"0", top:"-15px", zIndex:"1007", background:"rgb(0,0,0,0.5)", position:"fixed", width:"100vw", height:"100vh"}}></p> : ''
-  }
   </LoadingOverlay>
 {album}
 </div>

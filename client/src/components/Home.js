@@ -7,7 +7,10 @@ import {
 } from "react-router-dom";
 import LoadingOverlay from 'react-loading-overlay';
 import ClipLoader from "react-spinners/ClipLoader";
-import ScrollContainer from 'react-indiana-drag-scroll'
+import {
+  ButtonBack, ButtonNext, CarouselProvider, Slide, Slider,
+} from 'pure-react-carousel';
+import 'pure-react-carousel/dist/react-carousel.es.css';
 
 function Home(props) {
 const [songs, setSongs] = useState([]);
@@ -15,6 +18,11 @@ const [albums, setAlbums] = useState([]);
 const [artists, setArtists] = useState([]);
 const [playlists, setPlaylists] = useState([]);
 const [loading, setLoading] = useState(true);
+
+const [songsLength, setSongsLength] = useState(0);
+const [albumsLength, setAlbumsLength] = useState(0);
+const [artistsLength, setArtistsLength] = useState(0);
+const [playlistsLength, setPlaylistsLength] = useState(0);
 
 useEffect(() => {
     const fetchData = async () => {
@@ -42,70 +50,78 @@ count: e.play_count + 1,
 
 const makeLists = (songs, albums, artists, playlists) => {
 let z =30;
+let index= 0;
 
 let sArray = songs.map(e => {
+setSongsLength(songs.length)
+index++;
 z--;
 return (
-<li style={{zIndex: z}} key={e.youtube_id} className="hov">
+<Slide index={index} style={{zIndex: z}} key={e.youtube_id} className="hov carouselist">
+<div>
 <p>
-<NavLink className="navTo" to="/songs" >{e.title}</NavLink>
+<NavLink className="navTo" to={`/songs/${e.youtube_id}`} >{e.title}</NavLink>
 </p>
 <YouTube className="video" onPlay={() => playCount(e)}videoId={e.youtube_id} id="video" opts={{width:"250",height:"250"}}/>
 <br/><br/>
-</li>
+</div>
+</Slide>
 )}
 )
 
 
 
 let alArray = albums.map(e => {
+setAlbumsLength(albums.length)
 z--;
 return (
-<li style={{zIndex: z}} key={e.name} className="hov">
+<Slide style={{zIndex: z}} key={e.name} className="hov carouselist">
 <p>
-<NavLink className="navTo" to="/albums" >
+<NavLink className="navTo" to={`/albums/${e.id}`} >
 {e.name}
 </NavLink>
 </p>
-<NavLink className="navTo" to="/albums" >
+<NavLink className="navTo" to={`/albums/${e.id}`} >
 <img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
 </NavLink>
 <br/><br/>
-</li>
+</Slide>
 )}
 )
 
 let arArray = artists.map(e => {
 z--;
+setArtistsLength(artists.length)
 return (
-<li style={{zIndex: z}} key={e.name} className="hov">
+<Slide style={{zIndex: z}} key={e.name} className="hov carouselist">
 <p>
-<NavLink className="navTo" to="/artists">
+<NavLink className="navTo" to={`/artists/${e.id}`}>
 {e.name}
 </NavLink>
 </p>
-<NavLink className="navTo" to="/artists">
+<NavLink className="navTo" to={`/artists/${e.id}`}>
 <img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
 </NavLink>
 <br/><br/>
-</li>
+</Slide>
 )}
 )
 
 let pArray = playlists.map(e => {
 z--;
+setPlaylistsLength(playlists.length)
 return (
-<li style={{zIndex: z}} key={e.name} className="hov">
+<Slide style={{zIndex: z}} key={e.name} className="hov carouselist">
 <p>
-<NavLink className="navTo" to="/playlists">
+<NavLink className="navTo" to={`/playlists/${e.id}`}>
 {e.name}
 </NavLink>
 </p>
-<NavLink className="navTo" to="/playlists">
+<NavLink className="navTo" to={`/playlists/${e.id}`}>
 <img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
 </NavLink>
 <br/><br/>
-</li>
+</Slide>
 )}
 )
 setSongs(sArray)
@@ -122,6 +138,7 @@ const override =`
   left: 40%;
 `;
 
+const arrowColor = loading ? 'rgb(10, 10, 10)' : 'rgb(149, 243, 215)';
 
   return (
     <div>
@@ -129,46 +146,79 @@ const override =`
   active={loading}
   spinner={<ClipLoader css={override} color="white" style={{zIndex:1010}} size={150}/>}
   >
-  {loading ?
-  <p style={{left:"0", top:"-15px", zIndex:"1007", background:"rgb(0,0,0,0.5)", position:"fixed", width:"100vw", height:"100vh"}}></p> : ''
-  }
   </LoadingOverlay>
 
 
 <h3>Hello, {props.user ? props.user.username : 'Guest'}</h3>
 
-<div className="lists"> 
-<div >
+
+<div style={{marginTop:"500px", marginLeft:"61px",background:"rgb(10, 10, 10)", paddingLeft:'10px', paddingRight:'10px'}}>
 <h4> Top Songs </h4> 
-<ScrollContainer
-hideScrollbars={false}
-className="songs">
+  <CarouselProvider
+    naturalSlideWidth={25}
+    naturalSlideHeight={35}
+    visibleSlides={4}
+    totalSlides={songsLength}
+    step={4}
+    infinite
+  >
+<Slider>
 {songs}
-</ScrollContainer>
-</div>
+</Slider>
+    <ButtonBack style={{color:arrowColor}} className="arrow fa fa-arrow-left" ></ButtonBack>
+    <ButtonNext style={{color:arrowColor, float:"right"}}  className="arrow fa fa-arrow-right"></ButtonNext>
+</CarouselProvider>
 
-<div>  
-<h4> Top Albums </h4>  
-<ScrollContainer className="albums">
+
+<h4> Top Albums </h4> 
+  <CarouselProvider
+    naturalSlideWidth={25}
+    naturalSlideHeight={35}
+    visibleSlides={4}
+    totalSlides={albumsLength}
+    step={4}
+    infinite
+  >
+<Slider>
 {albums}
-</ScrollContainer>
-</div>
+</Slider>
+    <ButtonBack style={{color:arrowColor}} className="arrow fa fa-arrow-left" ></ButtonBack>
+    <ButtonNext style={{color:arrowColor, float:"right"}} className="arrow fa fa-arrow-right"></ButtonNext>
+</CarouselProvider>
 
+<h4> Top Artists </h4> 
+  <CarouselProvider
+    naturalSlideWidth={25}
+    naturalSlideHeight={35}
+    visibleSlides={4}
+    totalSlides={artistsLength}
+    step={4}
+    infinite
+  >
+<Slider>
+{artists}
+</Slider>
+    <ButtonBack style={{color:arrowColor}} className="arrow fa fa-arrow-left" ></ButtonBack>
+    <ButtonNext style={{color:arrowColor, float:"right"}} className="arrow fa fa-arrow-right"></ButtonNext>
+</CarouselProvider>
 
-<div >
-<h4>Top Artists</h4>
-<ScrollContainer className="artists">
-  {artists}
-</ScrollContainer>
-</div>
-
-<div>
-<h4>Top Playlists</h4>
-<ScrollContainer className="playlists">
+<h4> Top Playlists </h4> 
+  <CarouselProvider
+    naturalSlideWidth={25}
+    naturalSlideHeight={35}
+    visibleSlides={4}
+    totalSlides={playlistsLength}
+    step={4}
+    infinite
+  >
+<Slider>
 {playlists}
-</ScrollContainer>
+</Slider>
+    <ButtonBack style={{color:arrowColor}}className="arrow fa fa-arrow-left" ></ButtonBack>
+    <ButtonNext style={{color:arrowColor, float:"right"}} className="arrow fa fa-arrow-right"></ButtonNext>
+</CarouselProvider>
 </div>
-</div>
+
 </div>
   );
 }

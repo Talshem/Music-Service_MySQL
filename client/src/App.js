@@ -1,6 +1,7 @@
 /* eslint-disable eqeqeq */
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import './Page.css';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import SideNav, {
  NavItem, NavIcon, NavText,
@@ -14,7 +15,7 @@ import {
   Route,
   Link,
   Switch,
-  Redirect
+  withRouter
 } from "react-router-dom";
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -30,6 +31,43 @@ import PostPlaylist from './components/PostPlaylist.js';
 import generator from 'generate-password'
 import Uploads from './components/Uploads.js';
 import NoFound from './NoFound.js';
+import { CSSTransition, TransitionGroup } from "react-transition-group";
+import Slide from '@material-ui/core/Slide';
+
+/*
+const routes = [
+{ path: '/Songs', Component: Songs },
+{ path: '/artists', Component: Artists },
+{ path: '/playlists', Component: Playlists },
+{ path: '/albums', Component: Albums },
+{ path: '/Uploads',  Component: Uploads },
+{ path: '/PostSong', Component: PostSong },
+{ path: '/PostPlaylist', Component: PostPlaylist },
+{ path: '/PostAlbum', Component: PostAlbum },
+{ path: '/PostArtist', Component: PostArtist },
+{ path: '*', Component: NoFound},
+]
+
+{routes.map(({path, Component}) => (
+            <Route key={path} path={path}>
+              {({ match }) => (
+                <CSSTransition
+                  in={match != null}
+                  timeout={300}
+                  classNames="page"
+                  unmountOnExit
+                >
+                    <Component user={user}/>
+                </CSSTransition>
+              )}
+            </Route>
+          ))
+}
+*/
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="down" ref={ref} {...props} />;
+});
 
 function App() {
 const [registerOpen, setRegisterOpen] = useState(false)
@@ -141,7 +179,7 @@ return (
 <Button style={{fontSize:"20px", marginLeft:'255px'}} variant="text" color="inherit" onClick={() => setLoginOpen(true)}>
         Login
       </Button>
-      <Dialog open={loginOpen} onClose={() => setLoginOpen(false)} aria-labelledby="form-dialog-title">
+      <Dialog TransitionComponent={Transition} open={loginOpen} onClose={() => setLoginOpen(false)} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Login</DialogTitle>
         <DialogContent>
           <TextField
@@ -207,7 +245,7 @@ return (
 <Button style={{fontSize:"20px"}} variant="text" color="inherit" onClick={() => setRegisterOpen(true)}>
         Register
       </Button>
-      <Dialog open={registerOpen} onClose={() => setRegisterOpen(false)} aria-labelledby="form-dialog-title">
+      <Dialog TransitionComponent={Transition} open={registerOpen} onClose={() => setRegisterOpen(false)} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Register</DialogTitle>
         <DialogContent>
           <TextField
@@ -266,11 +304,31 @@ return (
 )}
 
 const logout =
-<Button style={{fontSize:"20px", marginLeft:'365px'}} variant="text" color="inherit" onClick={handleLogout}>
+<Button style={{fontSize:"20px"}} variant="text" color="inherit" onClick={handleLogout}>
 Logout
 </Button>
 
 const platform = user ? <h5> {logout} </h5> :  <h5> {login()} | {register()} </h5>
+
+
+const AnimatedSwitch = withRouter(({ location }) => (
+  <TransitionGroup >
+    <CSSTransition key={location.key} classNames="page" timeout={1000}>
+      <Switch location={location}>
+<Route exact path="/" component={() => <Home user={user}/>}/>
+<Route path="/songs" component={() => <Songs user={user}/>}/>
+<Route path="/artists" component={() => <Artists user={user}/>}/>
+<Route path="/playlists" component={() => <Playlists user={user}/>}/>
+<Route path="/albums" component={() => <Albums user={user}/>}/>
+<Route path="/Uploads" component={() => <Uploads user={user}/>}/>
+<Route path="/PostSong" component={() => <PostSong user={user}/>}/>
+<Route path="/PostAlbum" component={() => <PostAlbum user={user}/>}/>
+<Route path="/PostArtist" component={() => <PostArtist user={user}/>}/>
+<Route path="/PostPlaylist" component={() => <PostPlaylist user={user}/>}/>
+      </Switch>
+    </CSSTransition>
+  </TransitionGroup>
+));
 
   return (
 <div className="App">
@@ -330,24 +388,10 @@ const platform = user ? <h5> {logout} </h5> :  <h5> {login()} | {register()} </h
           </NavItem>
         </SideNav.Nav>
       </SideNav>
-      <Switch>  
-<Route exact path="/" component={Home}/>
-<Route path="/songs" component={() => <Songs user={user}/>}/>
-<Route path="/artists" component={() => <Artists user={user}/>}/>
-<Route path="/playlists" component={() => <Playlists user={user}/>}/>
-<Route path="/albums" component={() => <Albums user={user}/>}/>
-<Route path="/Uploads" component={() => <Uploads user={user}/>}/>
-<Route path="/PostSong" component={() => <PostSong user={user}/>}/>
-<Route path="/PostAlbum" component={() => <PostAlbum user={user}/>}/>
-<Route path="/PostArtist" component={() => <PostArtist user={user}/>}/>
-<Route path="/PostPlaylist" component={() => <PostPlaylist user={user}/>}/>
-<Route path="*" component={() => <NoFound user={user}/>}/>
-      </Switch>
+      <AnimatedSwitch />
     </div>
   );
 }
 
+
 export default App;
-
-
-

@@ -73,6 +73,7 @@ if (/^([0-5]?[0-9]|2[0-3]):[0-5][0-9]$/.test(length)) {
     lyrics: newLyrics, 
     created_at: newCreated_at,
     user: props.user.email,
+    user_name: props.user.username
     })
   document.getElementById("songForm").reset();
   document.getElementById('songError').innerHTML = "";

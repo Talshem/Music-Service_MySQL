@@ -64,6 +64,17 @@ SELECT * FROM users WHERE email = '${body.email}' AND password = '${body.passwor
     })
   })
 
+// get an user
+app.get('/user/:name', (req, res, next) => {
+var date = new Date();
+  con.query(`
+SELECT * FROM users WHERE username = '${req.params.name}';
+    `, function (err, result) {
+    if (result.length === 0) return next(err);
+    res.send(result)
+    })
+  }) 
+
       // logout user
 app.put('/logout', (req, res, next) => {
 const body = req.body
@@ -343,9 +354,9 @@ app.get('/top_playlists', (req, res, next) => {
 app.post('/song', (req, res, next) => {
 const body = req.body;
 var date = new Date();
-  let sql = `INSERT INTO songs (title, album, artist, created_at, length, lyrics, track_number, upload_at, youtube_id, user) VALUES 
+  let sql = `INSERT INTO songs (title, album, artist, created_at, length, lyrics, track_number, upload_at, youtube_id, user, user_name) VALUES 
   ('${body.title}', '${body.album}', '${body.artist}', '${body.created_at}', '${body.length}', '${body.lyrics}',
-  ${body.track_number}, '${date.toISOString().substring(0, 10)}', '${body.youtube_id}', '${body.user}')`;
+  ${body.track_number}, '${date.toISOString().substring(0, 10)}', '${body.youtube_id}', '${body.user}', '${body.user_name}')`;
   con.query(sql, function (err, result) {
     if (err) return next(err);
     res.send(result)
@@ -357,8 +368,8 @@ var date = new Date();
 app.post('/artist', (req, res, next) => {
 const body = req.body;
 var date = new Date();
-  let sql = `INSERT INTO artists (name, cover_img, upload_at, user) VALUES 
-  ('${body.name}', '${body.cover_img}', '${date.toISOString().substring(0, 10)}', '${body.lyrics}')`;
+  let sql = `INSERT INTO artists (name, cover_img, upload_at, user, user_name) VALUES 
+  ('${body.name}', '${body.cover_img}', '${date.toISOString().substring(0, 10)}', '${body.lyrics}', '${body.user_name}')`;
   con.query(sql, function (err, result) {
     if (err) return next(err);
     res.send(result)
@@ -370,9 +381,9 @@ var date = new Date();
 app.post('/album', (req, res, next) => {
 const body = req.body;
 var date = new Date();
-  let sql = `INSERT INTO albums (name, artist, cover_img, created_at, upload_at, user) VALUES 
+  let sql = `INSERT INTO albums (name, artist, cover_img, created_at, upload_at, user, user_name) VALUES 
   ('${body.name}', '${body.artist}', '${body.cover_img}', '${body.created_at}',
-  '${date.toISOString().substring(0, 10)}', '${body.lyrics}')`;
+  '${date.toISOString().substring(0, 10)}', '${body.lyrics}', '${body.user_name}')`;
   con.query(sql, function (err, result) {
     if (err) return next(err);
     res.send(result)

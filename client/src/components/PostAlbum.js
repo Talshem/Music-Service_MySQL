@@ -33,6 +33,7 @@ const [artists, setArtists] = useState([]);
     cover_img: image,
     created_at: newCreated_at,
     user: props.user.email,
+    user_name: props.user.username
     })
   document.getElementById("albumForm").reset();
 } catch (response){

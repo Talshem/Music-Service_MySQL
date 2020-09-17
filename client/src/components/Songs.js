@@ -30,7 +30,7 @@ try {
 const { data } = await axios.get(`/preferences/${props.user.email}`)
 setPreferences(data[0].preferences)
 } catch(error) {
-return
+return 
 }
 }; getPreferences();
 }, [toggle])
@@ -91,7 +91,7 @@ promise.then(() => promise2)
 promise2.then(() => {
   setTimeout(() => {
     setDisabled(false)
-  }, 2000);
+  }, 1500);
 })
 
 }
@@ -161,14 +161,11 @@ const override =`
   active={loading}
   spinner={<ClipLoader css={override} color="white" style={{zIndex:1010}} size={150}/>}
   >
-  {loading ?
-  <p style={{left:"0", top:"-15px", zIndex:"1007", background:"rgb(0,0,0,0.5)", position:"fixed", width:"100vw", height:"100vh"}}></p> : ''
-  }
   </LoadingOverlay>
 <p className='listTitle'>
 <NavLink className="fa fa-plus-square-o add" to="/PostSong"></NavLink>  
 {" "} Songs</p>
-<input className="filterList" placeholder="Search..." onChange={(event) => setSearch(event.target.value)} /> 
+<input className="filterList" onChange={(event) => setSearch(event.target.value)} /> 
 <button onClick={() => handleSearch()} className="searchButton">Search</button>
 {props.user ? <i className="filterFavorites" onClick={() => setFavorites(!favorites)}>{filterFavorites}</i> : ''}
 <ul className="grid-container"><br/>
@@ -181,6 +178,7 @@ const override =`
 function Songs(props){
 
 let match = useRouteMatch();
+console.log(match)
 
 return(
       <Switch>

@@ -36,7 +36,7 @@ useEffect(() => {
       }
   } catch(response) {
         setLoading(false)
-    return setArtist(<h3 style={{top:"400px", fontSize:"120px",textAlign:"right",width:"1230px"}} className="listTitle">Unknown artist</h3>)
+    return setArtist(<p style={{top:"400px", fontSize:"120px",textAlign:"right",width:"1230px"}} className="listTitle">Unknown artist</p>)
   }
     }; fetchData();
    }, [songs, albums])
@@ -45,20 +45,14 @@ useEffect(() => {
    useEffect(() => {
     const fetchData = async () => {
       try {
-      const { data } = await axios.get(`/top_songs?artist=${name}`);
-      setSongs(data[2])
+      const album = await axios.get(`/top_albums?artist=${name}`);
+      setAlbums(album.data[1])
+      const song = await axios.get(`/top_songs?artist=${name}`);
+      setSongs(song.data[2])
     } catch { return }
     }; fetchData();
    }, [name])
 
-   useEffect(() => {
-    const fetchData = async () => {
-      try{
-      const { data } = await axios.get(`/top_albums?artist=${name}`);
-      setAlbums(data[1])
-      } catch { return }
-    }; fetchData();
-   }, [name])
 
 function makeID(e){
 

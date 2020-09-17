@@ -14,6 +14,7 @@ function PostArtist(props) {
     name: newName, 
     cover_img: image,
     user: props.user.email,
+    user_name: props.user.username
     })
   document.getElementById("artistForm").reset();
 } catch (response){
