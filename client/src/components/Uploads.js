@@ -88,6 +88,8 @@ let capitalUserId = userId.charAt(0).toUpperCase() + userId.slice(1)
 if (props.user) {
 if(props.user.username.toUpperCase() === userId.toUpperCase()){
 setUser('My Uploads') 
+} else {
+setUser(`${capitalUserId}'s Uploads`)
 }
 } else {
 setUser(`${capitalUserId}'s Uploads`)
@@ -101,7 +103,9 @@ const deleteButton = props.user && props.user.email === e.user ? <button onClick
 return (
 <li key={e.youtube_id} style={{zIndex: z}} className="hov">
 <p>
-<NavLink className="navTo" to="/songs" onClick={() => props.song(e)}>{e.title}</NavLink>
+<NavLink className="navTo" to="/songs" onClick={() => props.song(e)}>
+{e.title}  - {e.artist}
+</NavLink>
 </p>
 <YouTube className="video" onPlay={() => playCount(e)}videoId={e.youtube_id} id="video" opts={{width:"250",height:"250"}}/>
 <br/>
@@ -120,7 +124,7 @@ return (
 <li style={{zIndex: z}} key={e.name} className="hov">
 <p>
 <NavLink className="navTo" to="/albums" onClick={() => props.album(e)}>
-{e.name}
+{e.name} - {e.artist}
 </NavLink>
 </p>
 <NavLink className="navTo" to="/albums" onClick={() => props.album(e)}>
@@ -220,6 +224,8 @@ const override =`
   Playlists</h6>
   {playlists}
   </ScrollContainer>
+   <NavLink className="fa fa-arrow-left back"  to="/Uploads"></NavLink>
+<br/><br/>
 </div>
 </div>
   );
@@ -231,7 +237,6 @@ const [search, setSearch] = useState('')
 
 let match = useRouteMatch();
 
-
 return(
 <div style={{position:'absolute', width:"92%", top:'0px'}}>
 <p className='listTitle'>Search user</p>
@@ -241,7 +246,7 @@ return(
 </NavLink>
 { props.user ? 
 <NavLink to={`${match.url}/${props.user.username}`}>
-<button style={{top:"550px", left:"970px"}} className="post">To my page</button>
+<button style={{width:"100%", marginTop:"545px"}} className="post">To my page</button>
 </NavLink> : '' }
 </div>
 )
@@ -249,9 +254,11 @@ return(
 
 function Uploads(props){
 
+
 let match = useRouteMatch();
 
 return(
+<div>
       <Switch>
         <Route path={`${match.path}/:userId`}>
           <UploadsData user={props.user}/>
@@ -260,6 +267,7 @@ return(
           <UploadsSearch user={props.user}/>
         </Route>
       </Switch>
+</div>
 )
 }
 

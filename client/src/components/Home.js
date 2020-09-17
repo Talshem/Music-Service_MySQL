@@ -60,7 +60,7 @@ return (
 <Slide index={index} style={{zIndex: z}} key={e.youtube_id} className="hov carouselist">
 <div>
 <p>
-<NavLink className="navTo" to={`/songs/${e.youtube_id}`} >{e.title}</NavLink>
+<NavLink className="navTo" to={`/songs/${e.youtube_id}`} >{e.title} - {e.artist}</NavLink>
 </p>
 <YouTube className="video" onPlay={() => playCount(e)}videoId={e.youtube_id} id="video" opts={{width:"250",height:"250"}}/>
 <br/><br/>
@@ -78,7 +78,7 @@ return (
 <Slide style={{zIndex: z}} key={e.name} className="hov carouselist">
 <p>
 <NavLink className="navTo" to={`/albums/${e.id}`} >
-{e.name}
+{e.name} - {e.artist}
 </NavLink>
 </p>
 <NavLink className="navTo" to={`/albums/${e.id}`} >
@@ -152,7 +152,7 @@ const arrowColor = loading ? 'rgb(10, 10, 10)' : 'rgb(149, 243, 215)';
 <h3>Hello, {props.user ? props.user.username : 'Guest'}</h3>
 
 
-<div style={{marginTop:"500px", marginLeft:"61px",background:"rgb(10, 10, 10)", paddingLeft:'10px', paddingRight:'10px'}}>
+<div className="homeLists">
 <h4> Top Songs </h4> 
   <CarouselProvider
     naturalSlideWidth={25}

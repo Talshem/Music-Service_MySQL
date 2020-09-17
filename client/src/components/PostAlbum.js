@@ -15,8 +15,9 @@ const [artists, setArtists] = useState([]);
    }, []);
   
 
-  const addAlbum = async (name, image, artist, created_at) => {
-   let regex = /'/gi
+  const addAlbum = async (event, name, image, artist, created_at) => {
+   event.preventDefault();
+    let regex = /'/gi
   const newCreated_at = created_at.slice(0,10)
     if (!props.user) {
     return document.getElementById('albumError').innerHTML = 'Only registered users can post new albums to the website!';
@@ -80,7 +81,7 @@ today = yyyy+'-'+mm+'-'+dd;
 let selectArtist = artists.map(e => ({ value: e.name, label: e.name }))
 
 return (
- <form id="albumForm" className="albumForm" onSubmit={() => addAlbum(name, image, artist, created_at)}>
+ <form id="albumForm" className="albumForm" onSubmit={(event) => addAlbum(event, name, image, artist, created_at)}>
    <div>
     <label> Name of the Album: </label><br/>
     <input id="album_name" required type="text" defaultValue={name} onChange={insertName}/> <br/><br/>
@@ -97,7 +98,8 @@ return (
     <label> Release date: </label><br/>
    <input max={today} style={{height:"32px"}} id="album_date" required type="date" defaultValue={created_at} onChange={insertRelease}/><br/><br/>
     <br/>
-    <input type='submit' style={{left:'485px'}} className="post" value="Post Album"/>
+    <input type='submit' className="post" value="Post Album"/>
+    <NavLink className="fa fa-arrow-left back" to="/Albums"></NavLink>
     </div>
     </form>
 
@@ -106,7 +108,6 @@ return (
   return (
 <div> 
 {form()}
-<NavLink className="fa fa-arrow-left back" style={{left:"84px"}} to="/Albums"></NavLink>
 <p id="albumError" style={{marginTop:"0px", marginLeft:"130px", fontSize:'20px', color:"red"}}></p>
 </div>
   );

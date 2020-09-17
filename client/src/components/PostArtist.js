@@ -6,7 +6,8 @@ import {
 
 function PostArtist(props) {
 
-  const addArtist = async (name, image) => {
+  const addArtist = async (event, name, image) => {
+  event.preventDefault();
   let regex = /'/gi
   const newName = name.replace(regex,`''`);
     try{
@@ -35,7 +36,7 @@ let image;
       }
 
 return (
- <form id="artistForm" onSubmit={() => addArtist(name, image)}>
+ <form id="artistForm" onSubmit={(event) => addArtist(event, name, image)}>
    <div>
     <label> Name of the Artist: </label><br/>
     <input id="artist_name" required type="text" defaultValue={name} onChange={insertName}/> <br/><br/>
@@ -43,7 +44,8 @@ return (
     <label> Artist image URL </label><br/>
     <input id="artist_img" required type="text" defaultValue={image} onChange={insertImage}/><br/><br/>
   <br/> <br/>
-    <input type='submit' style={{left:'492px'}} className="post" value="Post Artist"/>
+    <input type='submit' className="post" value="Post Artist"/>
+    <NavLink className="fa fa-arrow-left back" to="/Artists"></NavLink>
     </div>
     </form>
 
@@ -52,7 +54,6 @@ return (
   return (
 <div className="artistForm"> 
 {form()}
-<NavLink className="fa fa-arrow-left back" style={{left:"83px"}} to="/Artists"></NavLink>
 <p id="artistError" style={{marginTop:"-2px", marginLeft:"120px", fontSize:'20px', color:"red"}}></p>
 </div>
   );

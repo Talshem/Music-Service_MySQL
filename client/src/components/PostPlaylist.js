@@ -14,7 +14,8 @@ const [songs, setSongs] = useState([])
     }; fetchData();
    }, []); 
 
-  const addPlaylist = async (name, songs, image) => {
+  const addPlaylist = async (event, name, songs, image) => {
+  event.preventDefault();
   let regex = /'/gi
   let newSongs = []
   for (let song of songs){
@@ -61,7 +62,7 @@ let song;
 let selectSong = songs.map(e => ({ value: e.youtube_id, label: `${e.title} - ${e.artist}` }))
 
 return (
- <form style={{marginTop:"150px"}} id="playlistForm" onSubmit={() => addPlaylist(name, song, image)}>
+ <form style={{marginTop:"150px"}} id="playlistForm" onSubmit={(event) => addPlaylist(event, name, song, image)}>
    <div>
     <label> Name of the Playlist: </label><br/>
     <input id="playlist_name" required type="text" defaultValue={name} onChange={insertName}/> <br/><br/>
@@ -79,7 +80,8 @@ return (
     <label> Cover image URL </label><br/>
     <input id="artist_img" required type="text" defaultValue={image} onChange={insertImage}/><br/><br/>
   <br/>
-    <input type='submit' style={{left:'385px'}} className="post" value="Post Playlist"/>
+    <input type='submit' className="post" value="Post Playlist"/>
+   <NavLink className="fa fa-arrow-left back"  to="/Playlists"></NavLink>
     </div>
     </form>
 
@@ -87,9 +89,7 @@ return (
 
   return (
 <div className="playlistForm"> 
-{form()}
-<NavLink className="fa fa-arrow-left back"  to="/Playlists"></NavLink>
-<p id="playlistError" style={{marginLeft:"120px", fontSize:'20px', color:"red"}}></p>
+{form()}<p id="playlistError" style={{marginLeft:"120px", fontSize:'20px', color:"red"}}></p>
 </div>
   );
   }

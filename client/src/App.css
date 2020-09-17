@@ -25,12 +25,6 @@ margin-bottom:50px;
 min-height:550px;
 }
 
-
-.sideNav{
-margin-top:1px;
-}
-
-
 .carouselist{
 background: rgb(10, 10, 10);
 transition: 0.5s;
@@ -47,8 +41,14 @@ border: 2px solid white;
 }
 
 .carouselist:hover iframe, .carouselist:hover img{
-margin-top:30px;
 transform: scale(1.2);
+margin-top:15px;
+}
+
+.carouselist:hover p{
+margin-top:60px;
+overflow: hidden;
+width:270px;
 }
 
 .carousel{
@@ -57,13 +57,14 @@ min-height:493px;
 
 
 .carouselist p{
-background: rgb(10, 10, 10);
+background: transparent;
 overflow: hidden;
 width:235px;
-border-right: 35px solid rgb(10, 10, 10);
+border-right: 35px solid transparent;
 font-size: 35px;
 height:38px;
 margin-bottom:20px;
+transition: 0.5s;
 text-align: left;
 margin-left:35px;
 }
@@ -185,7 +186,7 @@ margin-left:0px;
 padding-left: 10px;
 padding-bottom: 20px;
 padding-right: 45px;
-height:300px;
+height:305px;
   font-size: 16px;
   overflow:hidden;
 }
@@ -207,8 +208,8 @@ margin-bottom: -21px;
 
 @keyframes movement {
 100% {
-padding-right:300px;
-margin-left:-300px;
+padding-right:500px;
+margin-left:-500px;
 }}
 
 
@@ -234,6 +235,7 @@ cursor: pointer;
 height:32px;
 z-index: 0;
 position: relative;
+background: transparent;
 white-space: nowrap;
 overflow: hidden;
 margin-left:37px;
@@ -241,7 +243,8 @@ margin-bottom:6px;
 margin-top:-0px;
 color:white;
 text-align: left;
-width:217px;
+width:210px;
+border-right: 50px solid transparent;
 font-size:20px;
 }
 
@@ -294,15 +297,17 @@ border: 1px solid white;
 border-radius: 10px;
 background:rgb(10, 10, 10);
 margin-left:25px;
-padding-left:20px;
+padding-left:40px;
 overflow-y: auto;
 height:680px;
-width:758px;
+width:738px;
 margin-top:-10px;
 }
 
 .grid-item2 {
-width:243px;
+width:210px;
+background: transparent;
+border-right: 30px solid transparent;
 color:white;
 display: inline-block;
 height:260px;
@@ -312,7 +317,7 @@ height:260px;
 }
 
 .grid-item2 p{
-margin-left:48px;
+margin-left:28px;
 font-size: 20px;
 }
 
@@ -394,6 +399,12 @@ margin-bottom:-2px;
   color: black; 
 }
 
+.homeLists{
+box-shadow: 0 0 15px 15px rgb(10, 10, 10);
+margin-top: 500px;
+margin-left: 61px;
+background: rgb(10, 10, 10);
+}
 
 form input{
   border-radius: 5px;
@@ -412,16 +423,14 @@ font-size:18px;
 }
 
 .post{
-border-radius: 5px;
+margin-left:10px;
 color:rgb(149, 243, 215, 1);
 cursor: pointer;
 font-size: 44px;
-padding: 10px;
-position: absolute;
-background-color: rgb(149, 243, 215, 0);
-border: 2px solid rgb(149, 243, 215, 0);
-margin-left:180px;
-margin-top:-25px;
+text-align: right;
+border: none;
+background: transparent;
+margin-top:-15px;
 }
 
 
@@ -471,8 +480,7 @@ margin-left:-26px;
 text-decoration: none;
 color:rgb(149, 243, 215);
 cursor: pointer;
-margin-left:86px;
-margin-top:-10px;
+margin-top:-45px;
 font-size: 36px;
 position: absolute;
 }
@@ -494,31 +502,31 @@ left:210px;
 }
 
 .albumForm{
-width:1200px;
+width:92%;
 margin-top:85px;
 }
 .albumForm input{
-  width:1200px;
+  width:100%;
 }
 
 .playlistForm{
-width:1283px;
+width:98%;
 position: relative;
 top:-20px;
 }
 
 
 .playlistForm input{
-  width:1200px;
+  width:100%;
 }
 
 
 .artistForm{
 margin-top:180px;
-width:1200px;
+width:98%;
 }
 .artistForm input{
-  width:1200px;
+  width:100%;
 }
 
 .uploadsList{
@@ -533,7 +541,7 @@ padding-bottom:150px;
 width:1202px;
 margin-right:20px;
 background:rgb(10, 10, 10);
-height: 340px;
+height: 350px;
 display:flex;
 justify-content:flex-start;
 overflow:auto;

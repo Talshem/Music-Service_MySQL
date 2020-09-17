@@ -91,7 +91,7 @@ return (
 <br/>
 <i><strong>{e.is_liked}</strong> people liked this artist</i><br/>
 <br/><br/><br/><br/><br/>
-<NavLink style={{marginLeft:"0px"}} className="fa fa-arrow-left back" to="/Albums"></NavLink>
+<NavLink style={{marginLeft:"0px",marginTop:"0px"}} className="fa fa-arrow-left back" to="/Albums"></NavLink>
 </div>
 <div>
 <div style={{height:"300px"}} className="dataSongs">

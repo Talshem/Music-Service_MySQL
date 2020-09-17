@@ -82,7 +82,7 @@ return (
 <br/><br/><br/><br/>
 <i><strong>Created by:</strong>{" "} 000</i>
 <br/><br/>
-<NavLink style={{marginLeft:"0px"}} className="fa fa-arrow-left back" to="/playlists"></NavLink>
+<NavLink style={{marginLeft:"0px",marginTop:"0px"}} className="fa fa-arrow-left back" to="/playlists"></NavLink>
 </div>
 <div className="dataSongs">
 <h6 className="songsTitle">Songs</h6>

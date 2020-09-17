@@ -90,16 +90,13 @@ UPDATE users SET remember_token = 0, auto_code = 0 WHERE email = '${body.email}'
 app.post('/users', (req, res, next) => {
 var date = new Date();
 const body = req.body;
-let occupied = false
   con.query(`
   SELECT * FROM users WHERE username = '${body.username}';
   `, function (err, result) {
   if(result.length !== 0){
-  occupied = true
   res.send('Username is already in use')
-  }
-  })
-  if(!occupied){
+  return
+  } else {
   con.query(`
   INSERT INTO users (username, email, created_at, upload_at, password, remember_token, preferences, auto_code) VALUES 
   ('${body.username}', '${body.email}', '${date.toISOString().substring(0, 10)}', '${date.toISOString().substring(0, 10)}', '${body.password}', 1, '[]', '${body.auto_code}');
@@ -109,6 +106,7 @@ let occupied = false
     res.send(result[2])
   });
 }
+});
 });
 
 

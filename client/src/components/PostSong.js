@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useForceUpdate } from 'react';
 import axios from 'axios';
 import {
   NavLink,
@@ -9,9 +9,19 @@ function PostSong(props) {
 const [albums, setAlbums] = useState([]);
 const [artists, setArtists] = useState([]);
 
+const [selectAlbum, setSelectAlbum] = useState(undefined)
+const [title, setTitle] = useState(undefined)
+const [length, setLength] = useState(undefined)
+const [youtube_id, setYoutube_id] = useState(undefined)
+const [artist, setArtist] = useState(undefined)
+const [album, setAlbum] = useState(undefined)
+const [lyrics, setLyrics] = useState(undefined)
+const [track_number, setTrack_number] = useState(undefined)
+const [created_at, setCreated_at] = useState(undefined)
+
   useEffect(() => {
     const fetchData = async () => {
-      setAlbums(await (await axios.get(`/top_albums`)).data);
+      setAlbums(await (await axios.get(`/top_albums`)).data[0]);
       setArtists(await (await axios.get(`/top_artists`)).data);
     }; fetchData();
    }, []);
@@ -32,7 +42,9 @@ if (/^([0-5]?[0-9]|2[0-3]):[0-5][0-9]$/.test(length)) {
     return (false)
 }
 
-  const addSong = async (title, length, youtube_id, artist, album, track_number, lyrics, created_at) => {
+const addSong = async (event, title, length, youtube_id, artist, album, track_number, lyrics, created_at) => {
+console.log(title, length, youtube_id, artist, album, track_number, lyrics, created_at)
+event.preventDefault();
     let regex = /'/gi
     let enter = /\n/gi
 
@@ -57,11 +69,6 @@ if (/^([0-5]?[0-9]|2[0-3]):[0-5][0-9]$/.test(length)) {
     if(!validateTrack(track_number)) {
     return document.getElementById('songError').innerHTML = "Track number field must be a 2-digit number";
     }
-    if(!album.label.includes(artist.value)) {
-    return document.getElementById('songError').innerHTML = "Album and song must be of the same artist";
-    }
-
-
     try{
     await axios.post(`/song`, {
     title: newTitle, 
@@ -74,54 +81,47 @@ if (/^([0-5]?[0-9]|2[0-3]):[0-5][0-9]$/.test(length)) {
     created_at: newCreated_at,
     user: props.user.email,
     user_name: props.user.username
-    })
-  document.getElementById("songForm").reset();
-  document.getElementById('songError').innerHTML = "";
+    }
+    )
+  window.location.reload(false);
 } catch (response){
-   document.getElementById('songError').innerHTML = "Song already exists";
+  return document.getElementById('songError').innerHTML = "Song already exists";
   }; 
 };
 
-
 function form(){
-let title;
-let youtube_id;
-let length;
-let track_number;
-let lyrics;
-let created_at;
-let artist;
-let album;
 
       function insertTitle(event) {
-        title = event.target.value;
+        setTitle(event.target.value);
       }
       function insertLength(event) {
-        length = event.target.value;
+        setLength(event.target.value);
       }
       function insertYoutube(event) {
-        youtube_id = event.target.value;
+        setYoutube_id(event.target.value);
       }
       function insertTrack(event) {
-        track_number = event.target.value;
+        setTrack_number(event.target.value);
       }
 
       function insertLyrics(event) {
-        lyrics = event.target.value;
+        setLyrics(event.target.value);
       }
       function insertRelease(event) {
-        created_at = event.target.value;
+        setCreated_at(event.target.value);
       }
       function insertArtist(event) {
-        artist = event;
+       let x = event.value
+       setArtist(event);
+       setSelectAlbum(albumList.filter(e => e.label.includes(x)));
       }
        function insertAlbum(event) {
-        album = event;
+        setAlbum(event);
       }
-
+      
 let selectArtist = artists.map(e => ({ value: e.name, label: e.name }))
+let albumList = albums.map(e => ({value: e.name, label: `${e.name} - ${e.artist}` }))
 
-let selectAlbum = albums.map(e => ({value: e.name, label: `${e.name} - ${e.artist}` }))
 
 var today = new Date();
 var dd = today.getDate();
@@ -136,7 +136,7 @@ var yyyy = today.getFullYear();
 today = yyyy+'-'+mm+'-'+dd;
 
 return (
- <form id="songForm" className="songForm" onSubmit={() => addSong(title, length, youtube_id, artist, album, track_number, lyrics, created_at)}>
+ <form id="songForm" className="songForm" onSubmit={(event) => addSong(event, title, length, youtube_id, artist, album, track_number, lyrics, created_at)}>
    <div>
     <label> Name of the song: </label><br/>
     <input id="song_img" required type="text" defaultValue={title} onChange={insertTitle}/> <br/><br/>
@@ -158,13 +158,14 @@ return (
     </Select><br/>
     <label> Track number: </label><br/>
     <input id="song_track" required type="text" defaultValue={track_number} onChange={insertTrack}/><br/><br/>
+    <NavLink style={{marginTop:"0px"}} className="fa fa-arrow-left back" to="/Songs"> </NavLink>
      </div>
      <div>
     <label> Lyrics: </label><br/>
     <textarea rows="12" required type="text" defaultValue={lyrics} onChange={insertLyrics}/> <br/><br/>
     <label> Release date: </label><br/>
     <input max={today} style={{height:"32px"}} id="song_date" required type="date" defaultValue={created_at} onChange={insertRelease}/><br/><br/>
-    <input type='submit' className="post" value="Post Song"/>
+    <input style={{width:"550px"}} type='submit' className="post" value="Post Song"/>
     </div>
     </form>
 
@@ -173,7 +174,6 @@ return (
   return (
 <div> 
 {form()}
-<NavLink className="fa fa-arrow-left back" to="/Songs"></NavLink>
 <p id="songError" style={{marginTop:"10px", marginLeft:"20px", fontSize:'20px', color:"red"}}></p>
 </div>
   );

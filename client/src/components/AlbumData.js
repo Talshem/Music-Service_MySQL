@@ -74,7 +74,7 @@ return (
 <i><strong>Artist:</strong>{" "} {e.artist}</i><br/>
 <i><strong>Release date:</strong>{" "} {e.created_at.substr(0, 10)}</i>
 <br/><br/>
-<NavLink style={{marginLeft:"0px"}} className="fa fa-arrow-left back" to="/albums"></NavLink>
+<NavLink style={{marginLeft:"0px",marginTop:"0px"}} className="fa fa-arrow-left back" to="/albums"></NavLink>
 </div>
 <div className="dataSongs">
   <h6 className="songsTitle">Songs</h6>

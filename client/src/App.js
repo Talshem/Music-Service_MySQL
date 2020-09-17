@@ -120,15 +120,18 @@ function validateEmail(mail) {
     if (password !== repassword){
     return document.getElementById('errorMessage').innerHTML='Password fields do not match';
            }
+
       const { data } = await axios.post(`/users`, {
       username: name,
       email: email,
       password: password,
       auto_code: code,
       })
-if(data === 'Username is already in use'){
-return document.getElementById('errorMessage').innerHTML = data;
-}
+
+    if(data === 'Username is already in use'){
+    return document.getElementById('errorMessage').innerHTML = data;
+    }
+    
 localStorage.setItem('session', code);
 setUser(data[0])
 setRegisterOpen(false)
@@ -334,6 +337,7 @@ const AnimatedSwitch = withRouter(({ location }) => (
 <div className="App">
 {platform}
    <SideNav
+        style={{background:'rgb(114, 51, 51)', borderRight:"2px solid white"}}
         className="sideNav"
         expanded={true}
         onToggle={() => {return}}
