@@ -246,7 +246,7 @@ return(
 </NavLink>
 { props.user ? 
 <NavLink to={`${match.url}/${props.user.username}`}>
-<button style={{width:"100%", marginTop:"545px"}} className="post">To my page</button>
+<button style={{position:'absolute', width:"108%", marginTop:"545px"}} className="post">To my page</button>
 </NavLink> : '' }
 </div>
 )

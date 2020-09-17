@@ -167,12 +167,13 @@ position: absolute;
 }
 
 .grid-container{
-  top:150px;
+  top:0px;
   left:16px;
   position: relative;
   margin-left:34px;
   padding: 10px;
   width:98.5%;
+  top:200px;
   margin-bottom:250px;
   overflow: auto;
 
@@ -181,10 +182,9 @@ position: absolute;
 .grid-item {
 width:250px;
 display:inline-block;
-margin-top:50px;
 margin-left:0px;
 padding-left: 10px;
-padding-bottom: 20px;
+padding-bottom: 70px;
 padding-right: 45px;
 height:305px;
   font-size: 16px;
@@ -575,7 +575,7 @@ padding-right:30px;
 .searchButton{
 text-decoration: none;
 color:rgb(149, 243, 215);
-background: transparent;
+background:transparent;
 border: 2px solid rgb(149, 243, 215);
 border-radius: 10px; 
 cursor: pointer;
