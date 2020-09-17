@@ -1,6 +1,6 @@
 # My Streaming app
 
-# https://istreamit.herokuapp.com/#/
+# https://istreamit.herokuapp.com/
 
 ![image](App_Image.png)
 
@@ -14,7 +14,9 @@
 - songs are sorted by play count
 - albums, artists and playlists are sorted by most users' favoriting
 - clicking an item will display its information
-- uploads page where users can view the items they
+- uploads page where users can view their other users' uploads
+
+
 
 ### App Upload -
 - using heroku & jawsDB addon
