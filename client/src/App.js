@@ -319,7 +319,6 @@ const AnimatedSwitch = withRouter(({ location }) => (
     <CSSTransition key={location.key} classNames="page" timeout={1000}>
       <Switch location={location}>
 <Route exact path="/" component={() => <Home user={user}/>}/>
-<Route exact path="*" component={() => <NoFound user={user}/>}/>
 <Route path="/songs" component={() => <Songs user={user}/>}/>
 <Route path="/artists" component={() => <Artists user={user}/>}/>
 <Route path="/playlists" component={() => <Playlists user={user}/>}/>
@@ -329,6 +328,7 @@ const AnimatedSwitch = withRouter(({ location }) => (
 <Route path="/PostAlbum" component={() => <PostAlbum user={user}/>}/>
 <Route path="/PostArtist" component={() => <PostArtist user={user}/>}/>
 <Route path="/PostPlaylist" component={() => <PostPlaylist user={user}/>}/>
+<Route path="*" component={() => <NoFound user={user}/>}/>
       </Switch>
     </CSSTransition>
   </TransitionGroup>
