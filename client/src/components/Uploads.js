@@ -238,7 +238,7 @@ const [search, setSearch] = useState('')
 let match = useRouteMatch();
 
 return(
-<div style={{position:'absolute', width:"92%", top:'0px'}}>
+<div style={{position:'relative', width:"92%", top:'0px'}}>
 <p className='listTitle'>Search user</p>
 <input className="filterList" onChange={(event) => setSearch(event.target.value)} /> 
 <NavLink to={`${match.url}/${search}`}>
