@@ -1,6 +1,6 @@
 # My Streaming app
 
-# https://istreamit.herokuapp.com/#/
+# https://istreamit.herokuapp.com/
 
 ![image](App_Image.png)
 
