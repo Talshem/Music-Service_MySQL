@@ -8,6 +8,7 @@ import {
     Switch,
     useRouteMatch,
     useParams,
+    Redirect
 } from "react-router-dom";
 import LoadingOverlay from 'react-loading-overlay';
 import ClipLoader from "react-spinners/ClipLoader";
@@ -21,7 +22,7 @@ const [playlists, setPlaylists] = useState([]);
 const [loading, setLoading] = useState(true);
 const [search, setSearch] = useState('');
 const [toggle, setToggle] = useState(false);
-const [user, setUser] = useState('')
+const [user, setUser] = useState('Uploads')
 
 let { userId } = useParams()
 
@@ -233,7 +234,7 @@ const override =`
 
 
 function UploadsSearch(props){
-const [search, setSearch] = useState('')
+const [search, setSearch] = useState(undefined)
 
 let match = useRouteMatch();
 
@@ -241,7 +242,7 @@ return(
 <div style={{position:'relative', width:"92%", top:'0px'}}>
 <p className='listTitle'>Search user</p>
 <input className="filterList" onChange={(event) => setSearch(event.target.value)} /> 
-<NavLink to={`${match.url}/${search}`}>
+<NavLink to={search ? `${match.url}/${search}` : `${match.url}`}>
 <button className="searchButton">Search</button>
 </NavLink>
 { props.user ? 
@@ -264,7 +265,8 @@ return(
           <UploadsData user={props.user}/>
         </Route>
         <Route path={match.path}>
-          <UploadsSearch user={props.user}/>
+          <
+            UploadsSearch user={props.user}/>
         </Route>
       </Switch>
 </div>
