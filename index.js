@@ -42,11 +42,13 @@ SELECT preferences FROM users WHERE email = '${req.params.user}';
 
     // auto login via local storage
 app.get('/auto/:user', (req, res, next) => {
+var date = new Date();
   con.query(`
+UPDATE users SET last_login = '${date.toISOString().substring(0, 10)}' WHERE auto_code = '${req.params.user}' AND remember_token = 1;
 SELECT * FROM users WHERE auto_code = '${req.params.user}' AND remember_token = 1;
     `, function (err, result) {
     if (err) return next(err);
-    res.send(result)
+    res.send(result[1])
     })
   })
 
@@ -56,7 +58,7 @@ const body = req.body
 var date = new Date();
   con.query(`
 UPDATE users SET remember_token = 1, auto_code = '${body.auto_code}' WHERE email = '${body.email}';
-UPDATE users SET upload_at = '${date.toISOString().substring(0, 10)}' WHERE auto_code = '${body.email}';
+UPDATE users SET last_login = '${date.toISOString().substring(0, 10)}' WHERE auto_code = '${body.email}';
 SELECT * FROM users WHERE email = '${body.email}' AND password = '${body.password}';
     `, function (err, result) {
     if (result[2].length === 0) return next(err);
@@ -68,9 +70,9 @@ SELECT * FROM users WHERE email = '${body.email}' AND password = '${body.passwor
 app.get('/user/:name', (req, res, next) => {
 var date = new Date();
   con.query(`
-SELECT * FROM users WHERE username = '${req.params.name}';
+SELECT username, created_at, last_login FROM users WHERE username = '${req.params.name}';
     `, function (err, result) {
-    if (result.length === 0) return next(err);
+    if(err) return next(err);
     res.send(result)
     })
   }) 
@@ -91,22 +93,13 @@ app.post('/users', (req, res, next) => {
 var date = new Date();
 const body = req.body;
   con.query(`
-  SELECT * FROM users WHERE username = '${body.username}';
-  `, function (err, result) {
-  if(result.length !== 0){
-  res.send('Username is already in use')
-  return
-  } else {
-  con.query(`
-  INSERT INTO users (username, email, created_at, upload_at, password, remember_token, preferences, auto_code) VALUES 
+  INSERT INTO users (username, email, created_at, last_login, password, remember_token, preferences, auto_code) VALUES 
   ('${body.username}', '${body.email}', '${date.toISOString().substring(0, 10)}', '${date.toISOString().substring(0, 10)}', '${body.password}', 1, '[]', '${body.auto_code}');
   SELECT * FROM users WHERE email = '${body.email}' AND password = '${body.password}';
   `, function (err, result) {
     if (err) return next(err);
     res.send(result[2])
   });
-}
-});
 });
 
 
@@ -498,13 +491,13 @@ const body = req.body;
 
 */
 
-
-
-const unknownEndpoint = (request, response) => {
-  response.status(404).send( 'page not found' )
-}
-
-app.use(unknownEndpoint)
+app.get('/*', function(req, res) {   
+  res.sendFile(path.join(__dirname + '/client/build/index.html'), function(err) {
+    if (err) {
+      res.status(500).send(err)
+    }
+  })
+})
 
 const errorHandler = (error, request, response, next) => {
   console.error(error.message)

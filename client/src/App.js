@@ -113,28 +113,34 @@ function validateEmail(mail) {
     length: 50,
     numbers: true
 });
+
     try{
     if(!validateEmail(email)) {
      return document.getElementById('errorMessage').innerHTML='Please enter a valid email address';
+    }
+     if(name.length > 10) {
+     return document.getElementById('errorMessage').innerHTML='Username can not exceed 10 characters';
     }
     if (password !== repassword){
     return document.getElementById('errorMessage').innerHTML='Password fields do not match';
            }
 
+      let occupied = await axios.get(`user/${name}`)  
+console.log(occupied.data)
+console.log(occupied.data.length)
+      if(occupied.data.length !== 0){
+      return document.getElementById('errorMessage').innerHTML = 'Username is already in use';
+      } else {
       const { data } = await axios.post(`/users`, {
       username: name,
       email: email,
       password: password,
       auto_code: code,
       })
-
-    if(data === 'Username is already in use'){
-    return document.getElementById('errorMessage').innerHTML = data;
-    }
-    
 localStorage.setItem('session', code);
 setUser(data[0])
 setRegisterOpen(false)
+    }
   } catch (response){
   document.getElementById('errorMessage').innerHTML='The email you tried to register with is already in use';
   }; 

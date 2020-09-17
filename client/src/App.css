@@ -262,6 +262,7 @@ position: absolute;
 margin-top:-450px;
 color: rgb(245, 245, 245);
 font-size:120px;
+word-break: break-all;
 margin-left:60px;
 text-shadow:
 3px 3px 0px rgb(48, 145, 114);
@@ -403,6 +404,7 @@ margin-bottom:-2px;
 box-shadow: 0 0 15px 15px rgb(10, 10, 10);
 margin-top: 500px;
 margin-left: 61px;
+position: relative;
 background: rgb(10, 10, 10);
 }
 
