@@ -4,48 +4,49 @@ import axios from 'axios';
 import YouTube from 'react-youtube';
 import {
   NavLink,
+    Route,
+    Switch,
+    useRouteMatch,
+    useParams,
 } from "react-router-dom";
 import LoadingOverlay from 'react-loading-overlay';
 import ClipLoader from "react-spinners/ClipLoader";
-import generator from 'generate-password'
+import ScrollContainer from 'react-indiana-drag-scroll'
 
-function Uploads(props) {
+function UploadsData(props) {
 const [songs, setSongs] = useState([]);
 const [albums, setAlbums] = useState([]);
 const [artists, setArtists] = useState([]);
 const [playlists, setPlaylists] = useState([]);
 const [loading, setLoading] = useState(true);
 const [search, setSearch] = useState('');
-const [user, setUser] = useState(generator.generate({
-    length: 20,
-    numbers: true
-}))
 const [toggle, setToggle] = useState(false);
+const [user, setUser] = useState('')
 
-useEffect(() => {
-if(props.user){
-let user = props.user.email;
-setUser(user)
-}}, [props.user])
+let { userId } = useParams()
 
 useEffect(() => {
     const fetchData = async () => {
       try {
+      await axios.get(`/user/${userId}`)
       const songs = await axios.get(`/top_songs?name=${search}`)
       const albums = await axios.get(`/top_albums?name=${search}`);
       const artists = await axios.get(`/top_artists?name=${search}`);
       const playlists = await axios.get(`/top_playlists?name=${search}`);
-      let songList = songs.data[0].filter(e => e.user === user);
-      let albumList = albums.data.filter(e => e.user === user);
-      let artistList = artists.data.filter(e => e.user === user);
-      let playlistList = playlists.data.filter(e => e.user === user);
+      let songList = songs.data[0].filter(e => e.user_name === userId);
+      let albumList = albums.data[0].filter(e => e.user_name === userId);
+      let artistList = artists.data.filter(e => e.user_name === userId);
+      let playlistList = playlists.data.filter(e => e.user_name === userId);
       makeLists(songList, albumList, artistList, playlistList)
       } catch(response) {
     setLoading(false)
-    return alert(response)
+    return document.getElementById('uploadsPage').innerHTML = 
+    `<p style="top:400px; font-size:120px; text-align:right; width:1230px;" class=listTitle>
+    User doesn't exist
+    </p>`
       }
     }; fetchData();
-   }, [toggle, user])
+   }, [toggle, props.user])
 
 const handleSearch = () => {
 setToggle(!toggle)
@@ -79,37 +80,55 @@ await axios.delete(`/playlist/${e.id}`);
 setToggle(!toggle)
 };
 
-
+console.log(user)
 const makeLists = (songs, albums, artists, playlists) => {
 
-let sArray = songs.map(e => {
+let capitalUserId = userId.charAt(0).toUpperCase() + userId.slice(1)
 
-const deleteButton = <button onClick={() => deleteSong(e)} style={{ width:"130px"}} className="deleteButton">Delete song</button>;
+if (props.user) {
+if(props.user.username.toUpperCase() === userId.toUpperCase()){
+setUser('My Uploads') 
+} else {
+setUser(`${capitalUserId}'s Uploads`)
+}
+} else {
+setUser(`${capitalUserId}'s Uploads`)
+}
+
+let z =1000
+let sArray = songs.map(e => {
+z--;
+const deleteButton = props.user && props.user.email === e.user ? <button onClick={() => deleteSong(e)} className="deleteButton">Delete</button> : ''
 
 return (
-<li key={e.youtube_id} className="hov">
+<li key={e.youtube_id} style={{zIndex: z}} className="hov">
 <p>
-<NavLink className="navTo" to="/SongData" onClick={() => props.song(e)}>{e.title}</NavLink>
+<NavLink className="navTo" to="/songs" onClick={() => props.song(e)}>
+{e.title}  - {e.artist}
+</NavLink>
 </p>
-<YouTube className="video" onPlay={() => playCount(e)}videoId={e.youtube_id} id="video" opts={{width:"125",height:"125"}}/>
+<YouTube className="video" onPlay={() => playCount(e)}videoId={e.youtube_id} id="video" opts={{width:"250",height:"250"}}/>
 <br/>
 {deleteButton}
 </li>
-)}
+)
+
+}
 )
 
 
 let alArray = albums.map(e => {
-const deleteButton = <button onClick={() => deleteAlbum(e)} style={{ width:"130px"}} className="deleteButton">Delete album</button>;
+const deleteButton = props.user && props.user.email === e.user ? <button onClick={() => deleteAlbum(e)} className="deleteButton">Delete</button> : ''
+z--;
 return (
-<li key={e.name} className="hov">
+<li style={{zIndex: z}} key={e.name} className="hov">
 <p>
-<NavLink className="navTo" to="/AlbumData" onClick={() => props.album(e)}>
-{e.name}
+<NavLink className="navTo" to="/albums" onClick={() => props.album(e)}>
+{e.name} - {e.artist}
 </NavLink>
 </p>
-<NavLink className="navTo" to="/AlbumData" onClick={() => props.album(e)}>
-<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="125" height="125" src={e.cover_img}></img>
+<NavLink className="navTo" to="/albums" onClick={() => props.album(e)}>
+<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
 </NavLink>
 <br/>
 {deleteButton}
@@ -118,16 +137,17 @@ return (
 )
 
 let arArray = artists.map(e => {
-const deleteButton = <button onClick={() => deleteArtist(e)} style={{ width:"130px"}} className="deleteButton">Delete artist</button>;
+const deleteButton = props.user && props.user.email === e.user ? <button onClick={() => deleteArtist(e)} className="deleteButton">Delete</button> : ''
+z--;
 return (
-<li key={e.name} className="hov">
+<li style={{zIndex: z}} key={e.name} className="hov">
 <p>
-<NavLink className="navTo" to="/ArtistData" onClick={() => props.artist(e)}>
+<NavLink className="navTo" to="/artists" onClick={() => props.artist(e)}>
 {e.name}
 </NavLink>
 </p>
-<NavLink className="navTo" to="/ArtistData" onClick={() => props.artist(e)}>
-<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="125" height="125" src={e.cover_img}></img>
+<NavLink className="navTo" to="/artists" onClick={() => props.artist(e)}>
+<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
 </NavLink>
 <br/> 
 {deleteButton}
@@ -135,16 +155,17 @@ return (
 )}
 ) 
 let pArray = playlists.map(e => {
-const deleteButton = <button onClick={() => deletePlaylist(e)} style={{ width:"130px"}} className="deleteButton">Delete playlist</button>;
+const deleteButton = props.user && props.user.email === e.user ? <button onClick={() => deletePlaylist(e)} className="deleteButton">Delete</button> : ''
+z--
 return (
-<li key={e.name} className="hov">
+<li style={{zIndex: z}} key={e.name} className="hov">
 <p>
-<NavLink className="navTo" to="/PlaylistData" onClick={() => props.playlist(e)}>
+<NavLink className="navTo" to="/playlists" onClick={() => props.playlist(e)}>
 {e.name}
 </NavLink>
 </p>
-<NavLink className="navTo" to="/PlaylistData" onClick={() => props.playlist(e)}>
-<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="125" height="125" src={e.cover_img}></img>
+<NavLink className="navTo" to="/playlists" onClick={() => props.playlist(e)}>
+<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
 </NavLink>
 <br/>
 {deleteButton}
@@ -159,35 +180,96 @@ setLoading(false)
 }
 
 const override =`
-  display: block;
   position:absolute;
   width:200px;
   height:200px;
-  top:180px;
-  left: 375px;
+  margin-top:200px;
+  left: 40%;
 `;
 
+
+
   return (
-    <div>
+    <div id="uploadsPage">
 <LoadingOverlay
   active={loading}
   spinner={<ClipLoader css={override} color="white" style={{zIndex:1010}} size={150}/>}
   >
-  {loading ?
-  <p style={{left:"0", top:"-15px", zIndex:"1007", background:"rgb(0,0,0,0.5)", position:"fixed", width:"100vw", height:"100vh"}}></p> : ''
-  }
   </LoadingOverlay>
-<p style={{marginLeft:"47px", marginTop:"10px"}}className='listTitle'>My Uploads</p>
-<input style={{marginLeft:"47px",marginTop:'95px'}} className="filterList" onChange={(event) => setSearch(event.target.value)} /> 
-<button style={{marginLeft:"620px" ,marginTop:'95px'}}onClick={() => handleSearch()} className="searchButton">Search</button>
+  <br/>
+
+ 
+<p id="listTitle" className='listTitle'>{user}</p>
+<input className="filterList" onChange={(event) => setSearch(event.target.value)} /> 
+<button onClick={() => handleSearch()} className="searchButton">Search</button>
+
 <div className='uploadsList'>
-<div className="upload" ><h6 className="upTitle">Songs</h6>{songs}</div>
-<div className="upload" ><h6 className="upTitle">Albums</h6>{albums}</div>
-<div className="upload" ><h6 className="upTitle">Artists</h6>{artists}</div>
-<div className="upload" ><h6 className="upTitle">Playlists</h6>{playlists}</div>
+<ScrollContainer className="upload" >
+<h6 className="upTitle">Songs</h6>
+{songs}
+</ScrollContainer>
+
+<ScrollContainer className="upload" >
+<h6 className="upTitle">Albums</h6>
+{albums}
+</ScrollContainer>
+
+<ScrollContainer className="upload" >
+<h6 className="upTitle">Artists</h6>
+{artists}
+</ScrollContainer>
+
+<ScrollContainer className="upload" >
+  <h6 className="upTitle">
+  Playlists</h6>
+  {playlists}
+  </ScrollContainer>
+   <NavLink className="fa fa-arrow-left back"  to="/Uploads"></NavLink>
+<br/><br/>
 </div>
 </div>
   );
   }
+
+
+function UploadsSearch(props){
+const [search, setSearch] = useState('')
+
+let match = useRouteMatch();
+
+return(
+<div style={{position:'absolute', width:"92%", top:'0px'}}>
+<p className='listTitle'>Search user</p>
+<input className="filterList" onChange={(event) => setSearch(event.target.value)} /> 
+<NavLink to={`${match.url}/${search}`}>
+<button className="searchButton">Search</button>
+</NavLink>
+{ props.user ? 
+<NavLink to={`${match.url}/${props.user.username}`}>
+<button style={{width:"100%", marginTop:"545px"}} className="post">To my page</button>
+</NavLink> : '' }
+</div>
+)
+}
+
+function Uploads(props){
+
+
+let match = useRouteMatch();
+
+return(
+<div>
+      <Switch>
+        <Route path={`${match.path}/:userId`}>
+          <UploadsData user={props.user}/>
+        </Route>
+        <Route path={match.path}>
+          <UploadsSearch user={props.user}/>
+        </Route>
+      </Switch>
+</div>
+)
+}
+
 
 export default Uploads;

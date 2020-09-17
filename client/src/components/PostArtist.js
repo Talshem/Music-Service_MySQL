@@ -6,7 +6,8 @@ import {
 
 function PostArtist(props) {
 
-  const addArtist = async (name, image) => {
+  const addArtist = async (event, name, image) => {
+  event.preventDefault();
   let regex = /'/gi
   const newName = name.replace(regex,`''`);
     try{
@@ -14,10 +15,11 @@ function PostArtist(props) {
     name: newName, 
     cover_img: image,
     user: props.user.email,
+    user_name: props.user.username
     })
   document.getElementById("artistForm").reset();
 } catch (response){
-   document.getElementById('artistError').innerHTML = "Artist already exists";
+   document.getElementById('artistError').innerHTML = "Undetected Error";
   }; 
 };
 
@@ -34,22 +36,24 @@ let image;
       }
 
 return (
- <form id="artistForm" className="artistForm" onSubmit={() => addArtist(name, image)}>
+ <form id="artistForm" onSubmit={(event) => addArtist(event, name, image)}>
    <div>
     <label> Name of the Artist: </label><br/>
     <input id="artist_name" required type="text" defaultValue={name} onChange={insertName}/> <br/><br/>
+  <br/> <br/>
     <label> Artist image URL </label><br/>
     <input id="artist_img" required type="text" defaultValue={image} onChange={insertImage}/><br/><br/>
-    <input type='submit' style={{left:'418px'}} className="post" value="Post Artist"/>
+  <br/> <br/>
+    <input type='submit' className="post" value="Post Artist"/>
+    <NavLink className="fa fa-arrow-left back" to="/Artists"></NavLink>
     </div>
     </form>
 
 )}
 
   return (
-<div> 
+<div className="artistForm"> 
 {form()}
-<NavLink className="fa fa-arrow-left back" style={{left:"83px"}} to="/Artists"></NavLink>
 <p id="artistError" style={{marginTop:"-2px", marginLeft:"120px", fontSize:'20px', color:"red"}}></p>
 </div>
   );

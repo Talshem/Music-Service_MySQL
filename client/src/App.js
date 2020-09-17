@@ -1,6 +1,7 @@
 /* eslint-disable eqeqeq */
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import './Page.css';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import SideNav, {
  NavItem, NavIcon, NavText,
@@ -12,8 +13,9 @@ import Playlists from './components/Playlists.js'
 import Albums from './components/Albums.js'
 import {
   Route,
-  NavLink,
-  HashRouter
+  Link,
+  Switch,
+  withRouter
 } from "react-router-dom";
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -27,22 +29,50 @@ import PostAlbum from './components/PostAlbum.js';
 import PostArtist from './components/PostArtist.js';
 import PostPlaylist from './components/PostPlaylist.js';
 import generator from 'generate-password'
-import SongData from './components/SongData.js';
-import AlbumData from './components/AlbumData.js';
-import ArtistData from './components/ArtistData.js';
-import PlaylistData from './components/PlaylistData.js';
 import Uploads from './components/Uploads.js';
+import NoFound from './NoFound.js';
+import { CSSTransition, TransitionGroup } from "react-transition-group";
+import Slide from '@material-ui/core/Slide';
+
+/*
+const routes = [
+{ path: '/Songs', Component: Songs },
+{ path: '/artists', Component: Artists },
+{ path: '/playlists', Component: Playlists },
+{ path: '/albums', Component: Albums },
+{ path: '/Uploads',  Component: Uploads },
+{ path: '/PostSong', Component: PostSong },
+{ path: '/PostPlaylist', Component: PostPlaylist },
+{ path: '/PostAlbum', Component: PostAlbum },
+{ path: '/PostArtist', Component: PostArtist },
+{ path: '*', Component: NoFound},
+]
+
+{routes.map(({path, Component}) => (
+            <Route key={path} path={path}>
+              {({ match }) => (
+                <CSSTransition
+                  in={match != null}
+                  timeout={300}
+                  classNames="page"
+                  unmountOnExit
+                >
+                    <Component user={user}/>
+                </CSSTransition>
+              )}
+            </Route>
+          ))
+}
+*/
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="down" ref={ref} {...props} />;
+});
 
 function App() {
 const [registerOpen, setRegisterOpen] = useState(false)
 const [loginOpen,setLoginOpen] = useState(false)
 const [user, setUser] = useState(undefined);
-
-const [song, setSong] = useState('')
-const [album, setAlbum] = useState('')
-const [artist, setArtist] = useState('');
-const [playlist, setPlaylist] = useState('');
-
 
 useEffect(() => {
 let user = localStorage.getItem('session');
@@ -90,15 +120,18 @@ function validateEmail(mail) {
     if (password !== repassword){
     return document.getElementById('errorMessage').innerHTML='Password fields do not match';
            }
+
       const { data } = await axios.post(`/users`, {
       username: name,
       email: email,
       password: password,
       auto_code: code,
       })
-if(data === 'Username is already in use'){
-return document.getElementById('errorMessage').innerHTML = data;
-}
+
+    if(data === 'Username is already in use'){
+    return document.getElementById('errorMessage').innerHTML = data;
+    }
+    
 localStorage.setItem('session', code);
 setUser(data[0])
 setRegisterOpen(false)
@@ -146,10 +179,10 @@ let password;
 
 return (
   <span>
-<Button variant="text" color="inherit" onClick={() => setLoginOpen(true)}>
+<Button style={{fontSize:"20px", marginLeft:'255px'}} variant="text" color="inherit" onClick={() => setLoginOpen(true)}>
         Login
       </Button>
-      <Dialog open={loginOpen} onClose={() => setLoginOpen(false)} aria-labelledby="form-dialog-title">
+      <Dialog TransitionComponent={Transition} open={loginOpen} onClose={() => setLoginOpen(false)} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Login</DialogTitle>
         <DialogContent>
           <TextField
@@ -212,10 +245,10 @@ let repassword
 
 return (
   <span>
-<Button variant="text" color="inherit" onClick={() => setRegisterOpen(true)}>
+<Button style={{fontSize:"20px"}} variant="text" color="inherit" onClick={() => setRegisterOpen(true)}>
         Register
       </Button>
-      <Dialog open={registerOpen} onClose={() => setRegisterOpen(false)} aria-labelledby="form-dialog-title">
+      <Dialog TransitionComponent={Transition} open={registerOpen} onClose={() => setRegisterOpen(false)} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Register</DialogTitle>
         <DialogContent>
           <TextField
@@ -274,19 +307,37 @@ return (
 )}
 
 const logout =
-<Button style={{marginLeft:'85px'}} variant="text" color="inherit" onClick={handleLogout}>
+<Button style={{fontSize:"20px"}} variant="text" color="inherit" onClick={handleLogout}>
 Logout
 </Button>
 
 const platform = user ? <h5> {logout} </h5> :  <h5> {login()} | {register()} </h5>
 
-  return (
-    
-<div className="App">
 
+const AnimatedSwitch = withRouter(({ location }) => (
+  <TransitionGroup >
+    <CSSTransition key={location.key} classNames="page" timeout={1000}>
+      <Switch location={location}>
+<Route exact path="/" component={() => <Home user={user}/>}/>
+<Route path="/songs" component={() => <Songs user={user}/>}/>
+<Route path="/artists" component={() => <Artists user={user}/>}/>
+<Route path="/playlists" component={() => <Playlists user={user}/>}/>
+<Route path="/albums" component={() => <Albums user={user}/>}/>
+<Route path="/Uploads" component={() => <Uploads user={user}/>}/>
+<Route path="/PostSong" component={() => <PostSong user={user}/>}/>
+<Route path="/PostAlbum" component={() => <PostAlbum user={user}/>}/>
+<Route path="/PostArtist" component={() => <PostArtist user={user}/>}/>
+<Route path="/PostPlaylist" component={() => <PostPlaylist user={user}/>}/>
+      </Switch>
+    </CSSTransition>
+  </TransitionGroup>
+));
+
+  return (
+<div className="App">
 {platform}
-    <HashRouter>
    <SideNav
+        style={{background:'rgb(114, 51, 51)', borderRight:"2px solid white"}}
         className="sideNav"
         expanded={true}
         onToggle={() => {return}}
@@ -297,14 +348,14 @@ const platform = user ? <h5> {logout} </h5> :  <h5> {login()} | {register()} </h
             <NavIcon>
               <i style={{ fontSize: '1.75em' }} />
             </NavIcon>
-              <NavLink to="/"><i style={{color:'white', fontSize:'44px', paddingTop:"3px"}} className="fa fa-fw fa-home" /></NavLink>
+              <Link to="/"><i style={{color:'white', fontSize:'44px', paddingTop:"3px"}} className="fa fa-fw fa-home" /></Link>
           </NavItem>
           <NavItem eventKey="1">
             <NavIcon>
               <i className="fa fa-fw " style={{ fontSize: '1.75em' }} />
             </NavIcon>
             <NavText>
-               <NavLink className="navItem" to="/Songs">Songs</NavLink>
+               <Link className="navItem" to="/songs">Songs</Link>
             </NavText>
           </NavItem>
              <NavItem eventKey="2">
@@ -312,7 +363,7 @@ const platform = user ? <h5> {logout} </h5> :  <h5> {login()} | {register()} </h
               <i className="fa fa-fw " style={{ fontSize: '1.75em' }} />
             </NavIcon>
             <NavText>
-               <NavLink className="navItem" to="/Albums">Albums</NavLink>
+               <Link className="navItem" to="/albums">Albums</Link>
             </NavText>
           </NavItem>
           <NavItem eventKey="3">
@@ -320,7 +371,7 @@ const platform = user ? <h5> {logout} </h5> :  <h5> {login()} | {register()} </h
               <i className="fa fa-fw " style={{ fontSize: '1.75em' }} />
             </NavIcon>
             <NavText>
-           <NavLink className="navItem" to="/Artists">Artists</NavLink>
+           <Link className="navItem" to="/artists">Artists</Link>
             </NavText>
           </NavItem>
           <NavItem eventKey="4">
@@ -328,7 +379,7 @@ const platform = user ? <h5> {logout} </h5> :  <h5> {login()} | {register()} </h
               <i className="fa fa-fw " style={{ fontSize: '1.75em' }} />
             </NavIcon>
             <NavText>
-             <NavLink className="navItem" to="/Playlists">Playlists</NavLink>
+             <Link className="navItem" to="/playlists">Playlists</Link>
             </NavText>
           </NavItem>
            <NavItem eventKey="5">
@@ -336,28 +387,15 @@ const platform = user ? <h5> {logout} </h5> :  <h5> {login()} | {register()} </h
               <i className="fa fa-fw " style={{ fontSize: '1.75em' }} />
             </NavIcon>
             <NavText>
-             <NavLink className="navItem" to="/Uploads">Uploads</NavLink>
+             <Link className="navItem" to="/Uploads">Uploads</Link>
             </NavText>
           </NavItem>
         </SideNav.Nav>
       </SideNav>
-  <Route exact path="/" component={() => <Home playlist={e => setPlaylist(e)} artist={e => setArtist(e)} album={e => setAlbum(e)} song={e => setSong(e)} user={user}/>}/>
-<Route path="/Songs" component={() => <Songs song={e => setSong(e)} user={user}/>}/>
-<Route path="/Artists" component={() => <Artists artist={e => setArtist(e)} user={user}/>}/>
-<Route path="/Playlists" component={() => <Playlists playlist={e => setPlaylist(e)} user={user}/>}/>
-<Route path="/Albums" component={() => <Albums album={e => setAlbum(e)} user={user}/>}/>
-<Route path="/Uploads" component={() => <Uploads  playlist={e => setPlaylist(e)} artist={e => setArtist(e)} album={e => setAlbum(e)} song={e => setSong(e)} user={user}/>}/>
-<Route path="/PostSong" component={() => <PostSong user={user}/>}/>
-<Route path="/PostAlbum" component={() => <PostAlbum user={user}/>}/>
-<Route path="/PostArtist" component={() => <PostArtist user={user}/>}/>
-<Route path="/PostPlaylist" component={() => <PostPlaylist user={user}/>}/>
-<Route path="/SongData" component={() => <SongData song={song} user={user}/>}/>
-<Route path="/AlbumData" component={() => <AlbumData song={e => setSong(e)} album={album} user={user}/>}/>
-<Route path="/ArtistData" component={() => <ArtistData song={e => setSong(e)} artist={artist} user={user}/>}/>
-<Route path="/PlaylistData" component={() => <PlaylistData song={e => setSong(e)} playlist={playlist} user={user}/>}/>
-      </HashRouter>
+      <AnimatedSwitch />
     </div>
   );
 }
+
 
 export default App;

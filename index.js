@@ -64,6 +64,17 @@ SELECT * FROM users WHERE email = '${body.email}' AND password = '${body.passwor
     })
   })
 
+// get an user
+app.get('/user/:name', (req, res, next) => {
+var date = new Date();
+  con.query(`
+SELECT * FROM users WHERE username = '${req.params.name}';
+    `, function (err, result) {
+    if (result.length === 0) return next(err);
+    res.send(result)
+    })
+  }) 
+
       // logout user
 app.put('/logout', (req, res, next) => {
 const body = req.body
@@ -79,16 +90,13 @@ UPDATE users SET remember_token = 0, auto_code = 0 WHERE email = '${body.email}'
 app.post('/users', (req, res, next) => {
 var date = new Date();
 const body = req.body;
-let occupied = false
   con.query(`
   SELECT * FROM users WHERE username = '${body.username}';
   `, function (err, result) {
   if(result.length !== 0){
-  occupied = true
   res.send('Username is already in use')
-  }
-  })
-  if(!occupied){
+  return
+  } else {
   con.query(`
   INSERT INTO users (username, email, created_at, upload_at, password, remember_token, preferences, auto_code) VALUES 
   ('${body.username}', '${body.email}', '${date.toISOString().substring(0, 10)}', '${date.toISOString().substring(0, 10)}', '${body.password}', 1, '[]', '${body.auto_code}');
@@ -96,9 +104,9 @@ let occupied = false
   `, function (err, result) {
     if (err) return next(err);
     res.send(result[2])
-    console.log(5555)
   });
 }
+});
 });
 
 
@@ -230,6 +238,58 @@ SELECT preferences FROM users WHERE email = '${body.user}';
   }
   }) 
 
+///////////////////////////////////////////////////////////////// Get 1
+
+  // Get song
+app.get('/song/:id', (req, res,next) => {
+  let sql = `
+  SELECT * FROM songs WHERE youtube_id= '${req.params.id}';
+  `;
+  con.query(sql, function (err, result) {
+    if (err) return next(err);
+    res.send(result)
+    })
+  })
+
+
+  
+  // Get albums
+app.get('/album/:id', (req, res, next) => {
+  let sql = `
+  SELECT * FROM albums WHERE id= '${req.params.id}';
+  `;
+  con.query(sql, function (err, result) {
+    if (err) return next(err);
+    res.send(result)
+    })
+  })
+
+  // Get artist
+app.get('/artist/:id', (req, res, next) => {
+  let sql = `
+  SELECT * FROM artists WHERE id = '${req.params.id}';
+  `;
+  con.query(sql, function (err, result) {
+    if (err) return next(err);
+    res.send(result)
+    })
+  })
+
+
+
+  // Get playlist
+app.get('/playlist/:id', (req, res, next) => {
+  let sql = `
+  SELECT * FROM playlists WHERE id= '${req.params.id}';
+  `;
+  con.query(sql, function (err, result) {
+    if (err) return next(err);
+    res.send(result)
+    })
+  })
+
+
+
 ///////////////////////////////////////////////////////////////// Get TOP
 
   // Get top_songs
@@ -237,14 +297,11 @@ app.get('/top_songs', (req, res,next) => {
   const { name } = req.query;
   const { album } = req.query;
   const { artist } = req.query;
-  let pSongs;
-  if(req.body.playlistSongs){
-  pSongs = req.body.playlistSongs
-  }
   let sql = `
   SELECT * FROM songs WHERE title LIKE '%${name ? name : ''}%' ORDER BY play_count DESC LIMIT 20;
   SELECT * FROM songs WHERE album = '${album}' ORDER BY play_count DESC;
-  SELECT * FROM songs WHERE artist = '${artist}' ORDER BY play_count DESC;  `;
+  SELECT * FROM songs WHERE artist = '${artist}' ORDER BY play_count DESC;
+  `
   con.query(sql,function (err, result) {
     if (err) return next(err);
     res.send(result)
@@ -254,8 +311,12 @@ app.get('/top_songs', (req, res,next) => {
   
   // Get top_albums 
 app.get('/top_albums', (req, res, next) => {
+  const { artist } = req.query;
   const { name } = req.query;
-  let sql = `SELECT * FROM albums WHERE name LIKE "%${name ? name : ''}%" ORDER BY is_liked DESC LIMIT 20 `;
+  let sql = `
+  SELECT * FROM albums WHERE name LIKE "%${name ? name : ''}%" ORDER BY is_liked DESC LIMIT 20;
+  SELECT * FROM albums WHERE artist = '${artist}' ORDER BY is_liked DESC;
+  `;
   con.query(sql, function (err, result) {
     if (err) return next(err);
     res.send(result)
@@ -265,7 +326,7 @@ app.get('/top_albums', (req, res, next) => {
   // Get top_artists
 app.get('/top_artists', (req, res, next) => {
     const { name } = req.query;
-  let sql = `SELECT * FROM artists WHERE name LIKE "%${name ? name : ''}%" ORDER BY is_liked DESC LIMIT 20`;
+  let sql = `SELECT * FROM artists WHERE name LIKE "%${name ? name : ''}%" ORDER BY is_liked DESC LIMIT 20;`;
   con.query(sql, function (err, result) {
     if (err) return next(err);
     res.send(result)
@@ -283,45 +344,6 @@ app.get('/top_playlists', (req, res, next) => {
     })
   })
 
-///////////////////////////////////////////////////////////////// Get 1
-
-
-    // Get a song 
-app.get('/song/:title', (req, res, next) => {
-  let sql = `SELECT * FROM songs WHERE title = ${req.params.title}`;
-  con.query(sql, function (err, result) {
-    if (err) return next(err);
-    res.send(result)
-    })
-  })
-
-      // Get an artist
-app.get('/artist/:name', (req, res, next) => {
-  let sql = `SELECT * FROM artists WHERE name = ${req.params.name}`;
-  con.query(sql, function (err, result) {
-    if (err) return next(err);
-    res.send(result)
-    })
-  })
-
-      // Get an album
-app.get('/album/:name', (req, res, next) => {
-  let sql = `SELECT * FROM albums WHERE name = ${req.params.name}`;
-  con.query(sql, function (err, result) {
-    if (err) return next(err);
-    res.send(result)
-    })
-  })
-
-      // Get a song LIMIT 20
-app.get('/playlist/:name', (req, res, next) => {
-  let sql = `SELECT * FROM playlists WHERE name = ${req.params.name}`;
-  con.query(sql, function (err, result) {
-    if (err) return next(err);
-    res.send(result)
-    })
-  })
-
 
 ///////////////////////////////////////////////////////////////// POST
 
@@ -330,10 +352,9 @@ app.get('/playlist/:name', (req, res, next) => {
 app.post('/song', (req, res, next) => {
 const body = req.body;
 var date = new Date();
-console.log(body)
-  let sql = `INSERT INTO songs (title, album, artist, created_at, length, lyrics, track_number, upload_at, youtube_id, user) VALUES 
+  let sql = `INSERT INTO songs (title, album, artist, created_at, length, lyrics, track_number, upload_at, youtube_id, user, user_name) VALUES 
   ('${body.title}', '${body.album}', '${body.artist}', '${body.created_at}', '${body.length}', '${body.lyrics}',
-  ${body.track_number}, '${date.toISOString().substring(0, 10)}', '${body.youtube_id}', '${body.user}')`;
+  ${body.track_number}, '${date.toISOString().substring(0, 10)}', '${body.youtube_id}', '${body.user}', '${body.user_name}')`;
   con.query(sql, function (err, result) {
     if (err) return next(err);
     res.send(result)
@@ -345,8 +366,8 @@ console.log(body)
 app.post('/artist', (req, res, next) => {
 const body = req.body;
 var date = new Date();
-  let sql = `INSERT INTO artists (name, cover_img, upload_at, user) VALUES 
-  ('${body.name}', '${body.cover_img}', '${date.toISOString().substring(0, 10)}', '${body.lyrics}')`;
+  let sql = `INSERT INTO artists (name, cover_img, upload_at, user, user_name) VALUES 
+  ('${body.name}', '${body.cover_img}', '${date.toISOString().substring(0, 10)}', '${body.lyrics}', '${body.user_name}')`;
   con.query(sql, function (err, result) {
     if (err) return next(err);
     res.send(result)
@@ -358,9 +379,9 @@ var date = new Date();
 app.post('/album', (req, res, next) => {
 const body = req.body;
 var date = new Date();
-  let sql = `INSERT INTO albums (name, artist, cover_img, created_at, upload_at, user) VALUES 
+  let sql = `INSERT INTO albums (name, artist, cover_img, created_at, upload_at, user, user_name) VALUES 
   ('${body.name}', '${body.artist}', '${body.cover_img}', '${body.created_at}',
-  '${date.toISOString().substring(0, 10)}', '${body.lyrics}')`;
+  '${date.toISOString().substring(0, 10)}', '${body.lyrics}', '${body.user_name}')`;
   con.query(sql, function (err, result) {
     if (err) return next(err);
     res.send(result)
@@ -480,7 +501,7 @@ const body = req.body;
 
 
 const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' })
+  response.status(404).send( 'page not found' )
 }
 
 app.use(unknownEndpoint)

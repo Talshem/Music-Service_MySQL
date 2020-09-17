@@ -3,12 +3,16 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import YouTube from 'react-youtube';
 import {
+  Switch,
+  Route,
   NavLink,
+  useRouteMatch,
 } from "react-router-dom";
 import LoadingOverlay from 'react-loading-overlay';
 import ClipLoader from "react-spinners/ClipLoader";
+import SongData from './SongData.js';
 
-function Songs(props) {
+function SongsList(props) {
 const [list, setList] = useState([])
 const [search, setSearch] = useState('')
 const [preferences, setPreferences] = useState("[]")
@@ -16,14 +20,17 @@ const [admin, setAdmin] = useState(0)
 const [favorites, setFavorites] = useState(false)
 const [toggle, setToggle] = useState(false)
 const [loading, setLoading] = useState(true);
+const [disabled, setDisabled] = useState(false)
+
+let match = useRouteMatch();
 
 useEffect(() => {
 const getPreferences = async () => {
 try {
 const { data } = await axios.get(`/preferences/${props.user.email}`)
 setPreferences(data[0].preferences)
-} catch {
-return
+} catch(error) {
+return 
 }
 }; getPreferences();
 }, [toggle])
@@ -39,6 +46,7 @@ useEffect(() => {
       let x = JSON.parse(preferences)
       try {
       const songs = await (await axios.get(`/top_songs?name=${search}`)).data[0];
+
       let list = songs.filter(e => e.title.toUpperCase().includes(search.toUpperCase()))
       if (!favorites) {
       makeSongs(list) 
@@ -51,7 +59,7 @@ useEffect(() => {
     return alert(response)
     }
     }; fetchData();
-   }, [toggle, favorites, preferences])
+   }, [disabled, toggle, favorites, preferences])
 
 
 const handleSearch = () => {
@@ -72,8 +80,24 @@ count: e.play_count + 1,
 });
 };
 
+const isLiked= (e) => {
+const promise = new Promise((resolve, reject) => {
+    resolve(setDisabled(true));
+})
+const promise2 = new Promise((resolve, reject) => {
+    resolve(handleLike(e));
+})
+promise.then(() => promise2)
+promise2.then(() => {
+  setTimeout(() => {
+    setDisabled(false)
+  }, 1500);
+})
 
-const isLiked = async (e) => {
+}
+
+
+const handleLike = async (e) => {
 let x = JSON.parse(preferences)
 if (x.includes(`song: ${e.youtube_id}`)){
 await axios.put(`/song/like`, {
@@ -95,11 +119,12 @@ setToggle(!toggle)
 }
 
 const makeSongs = (songs) => {
-
 let x = JSON.parse(preferences);
 
 let array = songs.map(e => {
-const heart = x.includes(`song: ${e.youtube_id}`) ?  <i className="like fas fa-heart"></i> : <i className="like far fa-heart"></i>
+const heart = x.includes(`song: ${e.youtube_id}`) ? 
+<button  onClick={() => isLiked(e)} disabled={disabled} className="like fas fa-heart"/> :
+<button  onClick={() => isLiked(e)} disabled={disabled} className="like far fa-heart"/>
 const like = props.user ? heart :  '';
 
 const deleteButton = <button style={{marginTop:"20px"}} onClick={() => deleteSong(e)} className="deleteButton">Delete</button>;
@@ -107,10 +132,11 @@ const adminDelete = admin === 1 ? deleteButton : '';
 
 return (
 <li key={e.youtube_id} className="grid-item">
-<p><span style={{cursor:'pointer'}} onClick={() => isLiked(e)}>{like} {" "} </span>
-<NavLink className="navTo" to="/SongData" onClick={() => props.song(e)}>{e.title}</NavLink>
+<span style={{cursor:'pointer'}} >{like}</span>
+<p>
+<NavLink className="navTo" to={`${match.url}/${e.youtube_id}`}>{e.title} - {e.artist}</NavLink>
 </p>
-<YouTube className="video" onPlay={() => playCount(e)} videoId={e.youtube_id} id="video" opts={{width:"150",height:"150"}}/>
+<YouTube className="video" onPlay={() => playCount(e)} videoId={e.youtube_id} id="video" opts={{width:"250",height:"250"}}/>
 {adminDelete}
 </li>
 )}
@@ -122,12 +148,11 @@ setLoading(false)
 const filterFavorites = favorites ?  <i className="fas fa-heart"></i> : <i className="far fa-heart"></i>
 
 const override =`
-  display: block;
   position:absolute;
   width:200px;
   height:200px;
-  left: 375px;
-    top:200px;
+  margin-top:200px;
+  left: 40%;
 `;
 
   return (
@@ -136,21 +161,35 @@ const override =`
   active={loading}
   spinner={<ClipLoader css={override} color="white" style={{zIndex:1010}} size={150}/>}
   >
-  {loading ?
-  <p style={{left:"0", top:"-15px", zIndex:"1007", background:"rgb(0,0,0,0.5)", position:"fixed", width:"100vw", height:"100vh"}}></p> : ''
-  }
   </LoadingOverlay>
 <p className='listTitle'>
 <NavLink className="fa fa-plus-square-o add" to="/PostSong"></NavLink>  
 {" "} Songs</p>
-<input className="filterList" placeholder="Search..." onChange={(event) => setSearch(event.target.value)} /> 
+<input className="filterList" onChange={(event) => setSearch(event.target.value)} /> 
 <button onClick={() => handleSearch()} className="searchButton">Search</button>
 {props.user ? <i className="filterFavorites" onClick={() => setFavorites(!favorites)}>{filterFavorites}</i> : ''}
-<ul className="grid-container">
+<ul className="grid-container"><br/>
 {list}
 </ul>
 </div>
   );
+}
+
+function Songs(props){
+
+let match = useRouteMatch();
+console.log(match)
+
+return(
+      <Switch>
+        <Route path={`${match.path}/:songId`}>
+          <SongData user={props.user}/>
+        </Route>
+        <Route path={match.path}>
+          <SongsList user={props.user}/>
+        </Route>
+      </Switch>
+)
 }
 
 export default Songs;
