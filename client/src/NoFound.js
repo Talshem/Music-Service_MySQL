@@ -16,7 +16,7 @@ useEffect(() => {
  let page =
 <div>
 <p style={{height:"100px", marginTop:"-50px", fontSize:"400px",textAlign:"center",width:"825px"}} className="dataTitle">404</p>
-<p style={{top:"400px", fontSize:"120px",textAlign:"right",width:"1230px"}} className="listTitle">Page not found</p>
+<p style={{position:'relative', top:"180px", fontSize:"120px",textAlign:"right",width:'95%'}} className="listTitle">Page not found</p>
 </div>
 
   const override =`

@@ -15,10 +15,10 @@ format("svg");
   border-radius: 25px;
 border: solid 2px white;
   top: 50px;
-  padding-right:30px;
-  padding-left:90px;
+  padding-right:2%;
+  padding-left:6%;
   padding-bottom:60px;
-  left: 50px;
+  left: 3.5%;
 position: absolute;
 width: 85%;
 margin-bottom:50px;
@@ -48,7 +48,7 @@ margin-top:15px;
 .carouselist:hover p{
 margin-top:60px;
 overflow: hidden;
-width:270px;
+width:78.5%;
 }
 
 .carousel{
@@ -59,14 +59,13 @@ min-height:493px;
 .carouselist p{
 background: transparent;
 overflow: hidden;
-width:235px;
-border-right: 35px solid transparent;
+width:73.5%;;
 font-size: 35px;
 height:38px;
 margin-bottom:20px;
 transition: 0.5s;
-text-align: left;
-margin-left:35px;
+text-align: center;
+margin-left:13%;
 }
 
 .hov:hover a{
@@ -209,7 +208,7 @@ margin-bottom: -21px;
 @keyframes movement {
 100% {
 padding-right:500px;
-margin-left:-500px;
+margin-left:-455px;
 }}
 
 
@@ -258,12 +257,15 @@ h5 {
 
 
 h3{
-position: absolute;
-margin-top:-450px;
+position: relative;
+margin-top:50px;
+margin-bottom:-150px;
 color: rgb(245, 245, 245);
 font-size:120px;
 word-break: break-all;
-margin-left:60px;
+left:100px;
+margin-right:100px;
+width:95%;
 text-shadow:
 3px 3px 0px rgb(48, 145, 114);
 }
@@ -287,58 +289,59 @@ margin-left:75px;
 
 .songDataPage{
 color: white;
-width:1260px;
+width:100%;
 margin-top:-80px;
 font-size:20px;
 display: inline-flex;
 }
 
 .dataSongs{
+position: relative;
 border: 1px solid white;
 border-radius: 10px;
 background:rgb(10, 10, 10);
-margin-left:25px;
-padding-left:40px;
-overflow-y: auto;
-height:680px;
-width:738px;
-margin-top:-10px;
+padding-left:2%;
+overflow-x: auto;
+overflow-y: hidden;
+height:100%;
+padding-bottom:40px;
+width:98.5%;
+margin-top:-115px;
 }
 
 .grid-item2 {
-width:210px;
-background: transparent;
+width:220px;;
+position: relative;
 border-right: 30px solid transparent;
 color:white;
 display: inline-block;
-height:260px;
-  font-size: 20px;
-  overflow:hidden;
-  text-align: center;
+height:100%;
+margin-top:5px;
+overflow:hidden;
 }
 
-.grid-item2 p{
-margin-left:28px;
-font-size: 20px;
-}
 
 .songsTitle{
 text-shadow:2px 0px 0px rgb(0, 0, 0);
-position:absolute;
+position: relative;;
 text-align: right;
-margin-top:-43px;
+margin-top:-52px;
+margin-bottom: 103px;
 font-weight:100;
+z-index:1000;
 font-size: 40px;
-width:750px;
-margin-left:-21px;
+width:96%;
 }
 
 .dataSongs p{
 max-height:30px;
-width:154px;
+width:90%;
+margin-top:5px;
+margin-left:5%;
 height:30px;
+font-size: 20px;
 text-align: left;
-margin-bottom:13px;
+margin-bottom:10px;
 white-space: nowrap;
 overflow: hidden;
 }
@@ -426,10 +429,12 @@ font-size:18px;
 
 .post{
 margin-left:10px;
+font-family: "Avenir Light";
 color:rgb(149, 243, 215, 1);
 cursor: pointer;
 font-size: 44px;
 text-align: right;
+font-weight: bold;
 border: none;
 background: transparent;
 margin-top:-15px;
@@ -444,7 +449,7 @@ margin-top:-15px;
 }
 
 .tooltip .tooltiptext {
-    font-family: "Avenir Light";
+  font-family: "Avenir Light";
   visibility: hidden;
   width:350px;
   margin-top:-5px;
@@ -482,7 +487,6 @@ margin-left:-26px;
 text-decoration: none;
 color:rgb(149, 243, 215);
 cursor: pointer;
-margin-top:-45px;
 font-size: 36px;
 position: absolute;
 }
@@ -534,13 +538,14 @@ width:98%;
 .uploadsList{
 position: relative;
 left:70px;
+width:100%;
 top:220px;
 display: inline-block;
-padding-bottom:150px;
+padding-bottom:200px;
 }
 
 .upload{
-width:1202px;
+width:92.5%;
 margin-right:20px;
 background:rgb(10, 10, 10);
 height: 350px;

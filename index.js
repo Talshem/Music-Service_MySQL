@@ -360,7 +360,7 @@ app.post('/artist', (req, res, next) => {
 const body = req.body;
 var date = new Date();
   let sql = `INSERT INTO artists (name, cover_img, upload_at, user, user_name) VALUES 
-  ('${body.name}', '${body.cover_img}', '${date.toISOString().substring(0, 10)}', '${body.lyrics}', '${body.user_name}')`;
+  ('${body.name}', '${body.cover_img}', '${date.toISOString().substring(0, 10)}', '${body.user}', '${body.user_name}')`;
   con.query(sql, function (err, result) {
     if (err) return next(err);
     res.send(result)
@@ -374,7 +374,7 @@ const body = req.body;
 var date = new Date();
   let sql = `INSERT INTO albums (name, artist, cover_img, created_at, upload_at, user, user_name) VALUES 
   ('${body.name}', '${body.artist}', '${body.cover_img}', '${body.created_at}',
-  '${date.toISOString().substring(0, 10)}', '${body.lyrics}', '${body.user_name}')`;
+  '${date.toISOString().substring(0, 10)}', '${body.user}', '${body.user_name}')`;
   con.query(sql, function (err, result) {
     if (err) return next(err);
     res.send(result)

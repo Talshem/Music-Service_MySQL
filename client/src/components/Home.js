@@ -162,7 +162,7 @@ const arrowColor = loading ? 'rgb(10, 10, 10)' : 'rgb(149, 243, 215)';
     step={4}
     infinite
   >
-<Slider>
+<Slider style={{maxHeight:"420px"}}>
 {songs}
 </Slider>
     <ButtonBack style={{color:arrowColor}} className="arrow fa fa-arrow-left" ></ButtonBack>
@@ -179,7 +179,7 @@ const arrowColor = loading ? 'rgb(10, 10, 10)' : 'rgb(149, 243, 215)';
     step={4}
     infinite
   >
-<Slider>
+<Slider style={{maxHeight:"420px"}}>
 {albums}
 </Slider>
     <ButtonBack style={{color:arrowColor}} className="arrow fa fa-arrow-left" ></ButtonBack>
@@ -195,7 +195,7 @@ const arrowColor = loading ? 'rgb(10, 10, 10)' : 'rgb(149, 243, 215)';
     step={4}
     infinite
   >
-<Slider>
+<Slider style={{maxHeight:"420px"}}>
 {artists}
 </Slider>
     <ButtonBack style={{color:arrowColor}} className="arrow fa fa-arrow-left" ></ButtonBack>
@@ -211,7 +211,7 @@ const arrowColor = loading ? 'rgb(10, 10, 10)' : 'rgb(149, 243, 215)';
     step={4}
     infinite
   >
-<Slider>
+<Slider style={{maxHeight:"420px"}}>
 {playlists}
 </Slider>
     <ButtonBack style={{color:arrowColor}}className="arrow fa fa-arrow-left" ></ButtonBack>

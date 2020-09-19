@@ -37,7 +37,7 @@ useEffect(() => {
       }
   } catch(response) {
         setLoading(false)
-    return setArtist(<p style={{top:"400px", fontSize:"120px",textAlign:"right",width:"1230px"}} className="listTitle">Unknown artist</p>)
+    return setArtist(<p style={{top:"440px", fontSize:"120px",textAlign:"right",width:"86%"}} className="listTitle">Unknown artist</p>)
   }
     }; fetchData();
    }, [songs, albums])
@@ -60,52 +60,57 @@ function makeID(e){
 
 let songList = songs.map(e => {
 return (
-<li key={e.youtube_id} className="grid-item2">
+<div key={e.youtube_id} className="grid-item2">
 <p>
 <NavLink className="navTo" to={`/songs/${e.youtube_id}?name=${artistId}`}>{e.title}</NavLink>
 </p>
-<YouTube className="video" onPlay={() => playCount(e)} videoId={e.youtube_id} id="video" opts={{width:"200",height:"200"}}/>
-</li>   
+<YouTube className="video xxx" onPlay={() => playCount(e)} videoId={e.youtube_id} opts={{width:'200', height:'200'}} id="video"/>
+</div>   
 )})
 
 let albumList = albums.map(e => {
 return (
-<li key={e.name} className="grid-item2">
+<div key={e.name} className="grid-item2">
 <p>
 <NavLink className="navTo" to={`/albums/${e.id}?name=${artistId}`}>{e.name}</NavLink>
 </p>
 <NavLink className="navTo" to={`/albums/${e.id}?name=${artistId}`}>
 <img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="200" height="200" src={e.cover_img}></img>
 </NavLink>
-</li>   
+</div>   
 )
 })    
 
 let x = () => {
 return (
-<div style={{marginLeft:'50px'}}>
+<div style={{marginLeft:'50px', width:"96.5%"}}>
 <p className="dataTitle">{e.name}</p>
 <br/><br/>
-<div style={{marginTop:'-105px', color:"white", display:"flex"}}>
-<div style={{fontSize:'20px'}}>
-<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="450" height="450" src={e.cover_img}></img>
+
+
+<div style={{width:'100%', marginTop:'-105px', color:"white", display:"flex"}}>
+
+<div style={{fontSize:'20px', width:'36%', marginRight:"2%"}}>
+<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="100%" height="66%" src={e.cover_img}></img>
 <br/>
 <i><strong>{e.is_liked}</strong> people liked this artist</i><br/>
-<br/><br/><br/><br/><br/>
-<NavLink style={{marginLeft:"0px",marginTop:"0px"}} className="fa fa-arrow-left back" to="/Albums"></NavLink>
+
 </div>
-<div>
-<div style={{height:"300px"}} className="dataSongs">
+
+
+<div style={{width:'62%'}}>
 <h6 className="songsTitle">Songs</h6>
+<div style={{marginBottom:"10%", height:"240px", whiteSpace:"nowrap"}} className="dataSongs">
 {songList}
 </div>
-<br/><br/><br/>
-<div style={{height:"300px"}} className="dataSongs">
 <h6 className="songsTitle">Albums</h6>
+<div style={{height:"240px", whiteSpace:"nowrap"}} className="dataSongs">
 {albumList}
 </div>
 </div>
+
 </div>
+<NavLink style={{marginTop:'-35px'}} className="fa fa-arrow-left back" to="/artists"></NavLink>
 </div>
 )}
 setArtist(x)

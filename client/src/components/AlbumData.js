@@ -43,7 +43,7 @@ useEffect(() => {
       }
       } catch(response) {
         setLoading(false)
-  return setAlbum(<p style={{top:"400px", fontSize:"120px",textAlign:"right",width:"1230px"}} className="listTitle">Unknown album</p>)
+  return setAlbum(<p style={{top:"440px", fontSize:"120px",textAlign:"right",width:"86%"}} className="listTitle">Unknown album</p>)
   }
     }; fetchData();
    }, [songs])
@@ -66,22 +66,27 @@ let x = () => {
 return (
 <div  style={{marginLeft:'50px'}}>
 <p className="dataTitle">{e.name}</p>
-<div style={{marginTop:'-60px', color:"white", display:"flex"}}>
-<div style={{fontSize:'20px'}}>
-<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="450" height="450" src={e.cover_img}></img>
+
+<div style={{width:'100%', marginTop:'-60px', color:"white", display:"flex"}}>
+
+<div style={{fontSize:'20px', width:'36%', marginRight:"2%"}}>
+<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="100%" height="66%" src={e.cover_img}></img>
 <br/>
 <i><strong>{e.is_liked}</strong> people liked this album</i><br/>
-<br/><br/><br/>
+<br/><br/>
 <i><strong>Artist:</strong>{" "} {e.artist}</i><br/>
 <i><strong>Release date:</strong>{" "} {e.created_at.substr(0, 10)}</i>
-<br/><br/>
-<NavLink style={{marginLeft:"0px",marginTop:"0px"}} className="fa fa-arrow-left back" to="/albums"></NavLink>
 </div>
+
+<div style={{width:'62%'}}>
+<h6 className="songsTitle">Songs</h6>
 <div className="dataSongs">
-  <h6 className="songsTitle">Songs</h6>
 {list}
 </div>
+
 </div>
+</div>
+<NavLink className="fa fa-arrow-left back" to="/albums"></NavLink>
 </div>
 );
 }

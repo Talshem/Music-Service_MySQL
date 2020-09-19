@@ -31,7 +31,7 @@ useEffect(() => {
       }
   } catch(response) {
         setLoading(false)
-    return setSong(<p style={{top:"400px", fontSize:"120px",textAlign:"right",width:"1230px"}} className="listTitle">Unknown song</p>)
+    return setSong(<p style={{top:"420px", fontSize:"120px",textAlign:"right",width:"86%"}} className="listTitle">Unknown song</p>)
   }
     }; fetchData();
    }, [])
@@ -64,7 +64,6 @@ return(
 <i><strong>Album:</strong>{" "}{e.album}</i><br/>
 <i><strong>Artist:</strong>{" "} {e.artist}</i><br/>
 <i><strong>Release date:</strong>{" "} {e.created_at.substr(0, 10)}</i><br/><br/>
-<NavLink style={{marginLeft:"0px",marginTop:"0px"}} className="fa fa-arrow-left back" to="/songs"></NavLink>
 </div>
 <div className="dataLyrics">
 <strong style={{fontSize:"30px"}}>Lyrics:</strong><br/>
@@ -72,6 +71,7 @@ return(
 {lyrics}
 </div>
 </div>
+<NavLink style={{marginTop:'-35px'}}  className="fa fa-arrow-left back" to="/songs"></NavLink>
 </div>
 )}
 setSong(x)

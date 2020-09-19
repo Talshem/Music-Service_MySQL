@@ -22,6 +22,7 @@ const [loading, setLoading] = useState(true);
 const [search, setSearch] = useState('');
 const [toggle, setToggle] = useState(false);
 const [user, setUser] = useState('Uploads')
+const [data, setData] = useState('')
 
 let { userId } = useParams()
 
@@ -29,21 +30,18 @@ useEffect(() => {
     const fetchData = async () => {
       try {
       await axios.get(`/user/${userId}`)
-      const songs = await axios.get(`/top_songs?name=${search}`)
-      const albums = await axios.get(`/top_albums?name=${search}`);
-      const artists = await axios.get(`/top_artists?name=${search}`);
-      const playlists = await axios.get(`/top_playlists?name=${search}`);
-      let songList = songs.data[0].filter(e => e.user_name === userId);
-      let albumList = albums.data[0].filter(e => e.user_name === userId);
-      let artistList = artists.data.filter(e => e.user_name === userId);
-      let playlistList = playlists.data.filter(e => e.user_name === userId);
+      const song = await axios.get(`/top_songs?name=${search}`)
+      const album = await axios.get(`/top_albums?name=${search}`);
+      const artist = await axios.get(`/top_artists?name=${search}`);
+      const playlist = await axios.get(`/top_playlists?name=${search}`);
+      let songList = song.data[0].filter(e => e.user_name === userId);
+      let albumList = album.data[0].filter(e => e.user_name === userId);
+      let artistList = artist.data.filter(e => e.user_name === userId);
+      let playlistList = playlist.data.filter(e => e.user_name === userId);
       makeLists(songList, albumList, artistList, playlistList)
       } catch(response) {
     setLoading(false)
-    return document.getElementById('uploadsPage').innerHTML = 
-    `<p style="top:400px; font-size:120px; text-align:right; width:1230px;" class=listTitle>
-    User doesn't exist
-    </p>`
+    setData(<p style={{top:"440px", fontSize:"120px",textAlign:"right",width:"86%"}} className="listTitle">User doesn't exist</p>)
       }
     }; fetchData();
    }, [toggle, props.user])
@@ -80,7 +78,7 @@ await axios.delete(`/playlist/${e.id}`);
 setToggle(!toggle)
 };
 
-console.log(user)
+
 const makeLists = (songs, albums, artists, playlists) => {
 
 let capitalUserId = userId.charAt(0).toUpperCase() + userId.slice(1)
@@ -172,10 +170,39 @@ return (
 </li>
 )}
 )
-setSongs(sArray)
-setAlbums(alArray)
-setArtists(arArray)
-setPlaylists(pArray)
+
+let x = () => {
+return(
+<div>
+<p id="listTitle" className='listTitle'>{user}</p>
+<input className="filterList" onChange={(event) => setSearch(event.target.value)} /> 
+<button onClick={() => handleSearch()} className="searchButton">Search</button>
+
+<h6 className="upTitle">Songs</h6>
+<div className='uploadsList'>
+<ScrollContainer className="upload" >
+{sArray}
+</ScrollContainer>
+
+<h6 className="upTitle">Albums</h6>
+<ScrollContainer className="upload" >
+{alArray}
+</ScrollContainer>
+
+<h6 className="upTitle">Artists</h6>
+<ScrollContainer className="upload" >
+{arArray}
+</ScrollContainer>
+  <h6 className="upTitle">Playlists</h6>
+<ScrollContainer className="upload" >
+  {pArray}
+  </ScrollContainer>
+   <NavLink className="fa fa-arrow-left back"  to="/Uploads"></NavLink>
+<br/><br/>
+</div>
+</div> 
+)}
+setData(x)
 setLoading(false)
 }
 
@@ -197,36 +224,7 @@ const override =`
   >
   </LoadingOverlay>
   <br/>
-
- 
-<p id="listTitle" className='listTitle'>{user}</p>
-<input className="filterList" onChange={(event) => setSearch(event.target.value)} /> 
-<button onClick={() => handleSearch()} className="searchButton">Search</button>
-
-<div className='uploadsList'>
-<ScrollContainer className="upload" >
-<h6 className="upTitle">Songs</h6>
-{songs}
-</ScrollContainer>
-
-<ScrollContainer className="upload" >
-<h6 className="upTitle">Albums</h6>
-{albums}
-</ScrollContainer>
-
-<ScrollContainer className="upload" >
-<h6 className="upTitle">Artists</h6>
-{artists}
-</ScrollContainer>
-
-<ScrollContainer className="upload" >
-  <h6 className="upTitle">
-  Playlists</h6>
-  {playlists}
-  </ScrollContainer>
-   <NavLink className="fa fa-arrow-left back"  to="/Uploads"></NavLink>
-<br/><br/>
-</div>
+  {data}
 </div>
   );
   }
@@ -240,7 +238,7 @@ let match = useRouteMatch();
 
 
 return(
-<div style={{position:'absolute', width:"92%", top:'0px'}}>
+<div style={{position:'relative', width:"92%", top:'0px'}}>
 <p className='listTitle'>Search user</p>
 <input className="filterList" onChange={(event) => setSearch(event.target.value)} /> 
 <NavLink to={search ? `${match.url}/${search}` : `${match.url}`}>
@@ -248,7 +246,7 @@ return(
 </NavLink>
 { props.user ? 
 <NavLink to={`${match.url}/${props.user.username}`}>
-<button style={{position:'absolute', width:"108%", marginTop:"545px"}} className="post">To my page</button>
+<button style={{position:'relative', textAlign:"right", width:"108%", top:"550px", marginBottom:"0px"}} className="post">To my page</button>
 </NavLink> : '' }
 </div>
 )

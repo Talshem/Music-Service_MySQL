@@ -36,7 +36,7 @@ const [artists, setArtists] = useState([]);
     user: props.user.email,
     user_name: props.user.username
     })
-  document.getElementById("albumForm").reset();
+  window.location.reload(false);
 } catch (response){
    document.getElementById('albumError').innerHTML = "Undetected Error";
   }; 
