@@ -14,10 +14,6 @@ import ClipLoader from "react-spinners/ClipLoader";
 import ScrollContainer from 'react-indiana-drag-scroll'
 
 function UploadsData(props) {
-const [songs, setSongs] = useState([]);
-const [albums, setAlbums] = useState([]);
-const [artists, setArtists] = useState([]);
-const [playlists, setPlaylists] = useState([]);
 const [loading, setLoading] = useState(true);
 const [search, setSearch] = useState('');
 const [toggle, setToggle] = useState(false);

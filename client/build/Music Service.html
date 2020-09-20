@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<!-- saved from url=(0022)http://localhost:3000/ -->
+<html lang="en" class="wf-roboto-n3-active wf-roboto-n4-active wf-roboto-n5-active wf-active"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <title>Music Service</title>
+<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:3000/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:3000/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:3000/favicon-16x16.png">
+<link rel="manifest" href="http://localhost:3000/site.webmanifest">
+    
+<script src="./Music Service_files/a076d05399.js.download"></script><link rel="stylesheet" href="./Music Service_files/free.min.css" media="all">
+<link rel="stylesheet" href="./Music Service_files/font-awesome.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#000000">
+    <meta name="description" content="Stream your music">
+  <style type="text/css">body {
+  background: #000 url("/742166.jpg");
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+</style><style type="text/css">@font-face { 
+font-family: "Avenir Light";
+src: url("//db.onlinewebfonts.com/t/116af611cbcd9e4bada60b4e700430c1.eot");
+src: url("//db.onlinewebfonts.com/t/116af611cbcd9e4bada60b4e700430c1.eot?#iefix")
+format("embedded-opentype"),url("//db.onlinewebfonts.com/t/116af611cbcd9e4bada60b4e700430c1.woff2")
+format("woff2"), url("//db.onlinewebfonts.com/t/116af611cbcd9e4bada60b4e700430c1.woff")
+format("woff"), url("//db.onlinewebfonts.com/t/116af611cbcd9e4bada60b4e700430c1.ttf")
+format("truetype"), url("//db.onlinewebfonts.com/t/116af611cbcd9e4bada60b4e700430c1.svg#Avenir Light")
+format("svg");
+}
+
+.App{
+  font-family: "Avenir Light";
+  background: rgb(20, 20, 20);
+  border-radius: 25px;
+border: solid 2px white;
+  top: 50px;
+  padding-right:2%;
+  padding-left:6%;
+  padding-bottom:60px;
+  left: 3.5%;
+position: absolute;
+width: 85%;
+margin-bottom:50px;
+min-height:550px;
+}
+
+.carouselist{
+background: rgb(10, 10, 10);
+transition: 0.5s;
+font-size: 25px;
+white-space: nowrap;
+text-align: center;
+}
+
+img, iframe{
+margin-top: -10px;
+border-radius: 5px;
+transition: 0.5s;
+border: 2px solid white;
+}
+
+.carouselist:hover iframe, .carouselist:hover img{
+transform: scale(1.2);
+margin-top:15px;
+}
+
+.carouselist:hover p{
+margin-top:60px;
+overflow: hidden;
+width:78.5%;
+}
+
+.carousel{
+min-height:493px;
+}
+
+
+.carouselist p{
+background: transparent;
+overflow: hidden;
+width:73.5%;;
+font-size: 35px;
+height:38px;
+margin-bottom:20px;
+transition: 0.5s;
+text-align: center;
+margin-left:13%;
+}
+
+.hov:hover a{
+color: rgb(149, 243, 215, 1)
+}
+
+.hov:hover .video, .hov:hover img{
+ border: 2px solid rgb(149, 243, 215, 1); 
+}
+
+.grid-item2:hover p,.grid-item:hover p, .hov:hover p{
+animation-iteration-count: infinite;
+animation-name: movement;
+animation-duration: 15s;
+animation-timing-function: linear;
+}
+
+h4{
+background: rgb(20, 20, 20);
+border: 2px solid rgb(149, 243, 215);
+text-align:center;
+color: rgb(149, 243, 215);
+margin-bottom: 0px;
+padding-top: 20px;
+padding-bottom: 20px;
+margin-top:0px;
+font-size:64px;
+width: 100%;
+overflow: hidden;
+}
+
+.errorImg{
+position: absolute;
+left:70px;
+transform: scale(0.6);
+border: none;
+top:-80px;
+}
+
+
+ul, li{
+list-style-type: none;
+}
+
+::-webkit-scrollbar-corner {
+background:transparent
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+border-radius: 10px;
+background: rgb(256,256,256,0.1); 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+  border-radius: 10px;
+}
+
+.add{
+text-decoration: none;
+color:rgb(149, 243, 215);
+cursor: pointer;
+}
+
+
+.filterFavorites{
+text-decoration: none;
+color:rgb(149, 243, 215);
+cursor: pointer;
+left:89%;
+top:108px;
+font-size: 60px;
+position: absolute;
+}
+
+
+.filterList{
+  margin-top:140px;
+  position: absolute;
+  margin-left:70px;
+  width: 565px;
+  height: 30px;
+  border-radius: 5px;
+  background-color: rgb(255, 255, 255);
+  font-size: 25px;
+  border: 1.5px solid rgb(218, 218, 218);
+  outline: none;
+  box-shadow: none;
+  color: black; 
+}
+
+.grid-container{
+  top:0px;
+  left:16px;
+  position: relative;
+  margin-left:34px;
+  padding: 10px;
+  width:98.5%;
+  top:200px;
+  margin-bottom:250px;
+  overflow: auto;
+
+}
+
+.grid-item {
+width:250px;
+display:inline-block;
+margin-left:0px;
+padding-left: 10px;
+padding-bottom: 70px;
+padding-right: 45px;
+height:305px;
+  font-size: 16px;
+  overflow:hidden;
+}
+
+
+
+
+.grid-item2:hover .video, .grid-item:hover img, .grid-item:hover .video, .grid-item:hover img{
+ border: 2px solid rgb(149, 243, 215, 1)
+}
+
+.grid-item:hover a, .grid-item2:hover a{
+color: rgb(149, 243, 215, 1)
+}
+
+.video{
+margin-bottom: -21px;
+}
+
+@keyframes movement {
+100% {
+padding-right:500px;
+margin-left:-455px;
+}}
+
+
+.like:active{
+color:rgb(156, 37, 37);
+}
+
+.like{
+color:rgb(199, 60, 60);
+border: 2px solid transparent;
+position: absolute;
+z-index: 1;
+margin-top:-8px;
+background: rgb(20, 20, 20);
+padding-right:3px;
+font-size:30px;
+padding-left:50px;
+margin-left: -51px;
+cursor: pointer;
+}
+
+.grid-item p {
+height:32px;
+z-index: 0;
+position: relative;
+background: transparent;
+white-space: nowrap;
+overflow: hidden;
+margin-left:37px;
+margin-bottom:6px;
+margin-top:-0px;
+color:white;
+text-align: left;
+width:210px;
+border-right: 50px solid transparent;
+font-size:20px;
+}
+
+h5 {
+  position: absolute;
+  font-size:16px;
+  color:white;
+ width:91%;
+ text-align: right;
+}
+
+
+h3{
+position: relative;
+margin-top:50px;
+margin-bottom:-150px;
+color: rgb(245, 245, 245);
+font-size:120px;
+word-break: break-all;
+left:100px;
+margin-right:1%;
+width:95%;
+text-shadow:
+3px 3px 0px rgb(48, 145, 114);
+}
+
+.dataTitle{
+color: rgb(245, 245, 245);
+font-size:80px;
+margin-top:30px;
+text-shadow:
+3px 3px 0px rgb(48, 145, 114); 
+}
+
+.dataLyrics{
+position: relative;
+font-size: 21px;
+height:1010px;
+overflow:auto;
+margin-top:-15px;
+margin-left:75px;
+}
+
+.songDataPage{
+color: white;
+width:100%;
+margin-top:-80px;
+font-size:20px;
+display: inline-flex;
+}
+
+.dataSongs{
+position: relative;
+border: 1px solid white;
+border-radius: 10px;
+background:rgb(10, 10, 10);
+padding-left:2%;
+overflow-x: auto;
+overflow-y: hidden;
+height:100%;
+padding-bottom:40px;
+width:98.5%;
+margin-top:-115px;
+}
+
+.grid-item2 {
+width:220px;;
+position: relative;
+border-right: 30px solid transparent;
+color:white;
+display: inline-block;
+height:100%;
+margin-top:5px;
+overflow:hidden;
+}
+
+
+.songsTitle{
+text-shadow:2px 0px 0px rgb(0, 0, 0);
+position: relative;;
+text-align: right;
+margin-top:-52px;
+margin-bottom: 103px;
+font-weight:100;
+z-index:1000;
+font-size: 40px;
+width:96%;
+}
+
+.dataSongs p{
+max-height:30px;
+width:90%;
+margin-top:5px;
+margin-left:5%;
+height:30px;
+font-size: 20px;
+text-align: left;
+margin-bottom:10px;
+white-space: nowrap;
+overflow: hidden;
+}
+
+.lists p{
+white-space: nowrap;
+overflow:hidden;
+max-height:30px;
+margin-right:10px;
+margin-bottom:14px;
+position: relative;
+width:204px;
+font-size:20px;
+margin-top: 0px;
+}
+
+.navTo{
+text-decoration: none;
+color:white;
+}
+
+.listTitle{
+margin-left:70px;
+margin-top:20px;
+position: absolute;
+font-size: 80px;
+color:rgb(149, 243, 215)
+}
+
+.navItem{
+font-size:24px;
+margin-left:-40px;
+text-decoration: none;
+}
+
+.songForm{
+display: flex;
+justify-content:space-around;
+width:95%;
+position: relative;
+left: -30px;
+}
+
+form{
+margin-top:60px;
+margin-left:80px;
+}
+
+form textarea {
+resize: none;
+width:546px;
+margin-bottom:-2px;
+  border-radius: 5px;
+  background-color: rgb(255, 255, 255);
+  font-size: 25px;
+  border: 1.5px solid rgb(218, 218, 218);
+  outline: none;
+  box-shadow: none;
+  color: black; 
+}
+
+.homeLists{
+box-shadow: 0 0 15px 15px rgb(10, 10, 10);
+margin-top: 500px;
+margin-left: 61px;
+position: relative;
+background: rgb(10, 10, 10);
+}
+
+form input{
+  border-radius: 5px;
+  width:550px;
+  background-color: rgb(255, 255, 255);
+  font-size: 25px;
+  border: 1.5px solid rgb(218, 218, 218);
+  outline: none;
+  box-shadow: none;
+  color: black; 
+}
+
+form label{
+color: rgb(149, 243, 215);
+font-size:18px;
+}
+
+.post{
+margin-left:10px;
+font-family: "Avenir Light";
+color:rgb(149, 243, 215, 1);
+cursor: pointer;
+font-size: 44px;
+text-align: right;
+font-weight: bold;
+border: none;
+background: transparent;
+margin-top:-15px;
+}
+
+
+.tooltip {
+  float:right;
+  color: rgb(196, 155, 79);
+  position: relative;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  font-family: "Avenir Light";
+  visibility: hidden;
+  width:350px;
+  margin-top:-5px;
+  margin-left:-360px;
+  background-color: #d63f46b6;
+  color: rgb(0, 0, 0);
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+.deleteButton{
+font-family: "Avenir Light";
+width:255px;
+background:#db3d44;
+color:white;
+border: 1.5px solid rgb(218, 218, 218);
+border-radius: 5px;
+font-size:20px;
+margin-top:0px;
+cursor: pointer;
+}
+
+.fa-home{
+margin-left:-26px;
+}
+
+.back{
+text-decoration: none;
+color:rgb(149, 243, 215);
+cursor: pointer;
+font-size: 36px;
+position: absolute;
+}
+
+.arrow{
+background: none;
+border: none;
+text-decoration: none;
+font-size: 36px;
+padding-bottom:30px;
+padding-left:25px;
+margin-right:20px;
+}
+
+#songError{
+position: absolute;
+top:543px;
+left:210px;
+}
+
+.albumForm{
+width:92%;
+margin-top:85px;
+}
+.albumForm input{
+  width:100%;
+}
+
+.playlistForm{
+width:98%;
+position: relative;
+top:-20px;
+}
+
+
+.playlistForm input{
+  width:100%;
+}
+
+
+.artistForm{
+margin-top:180px;
+width:98%;
+}
+.artistForm input{
+  width:100%;
+}
+
+.uploadsList{
+position: relative;
+left:70px;
+width:100%;
+top:220px;
+display: inline-block;
+padding-bottom:200px;
+}
+
+.upload{
+width:92.5%;
+margin-right:20px;
+background:rgb(10, 10, 10);
+height: 350px;
+display:flex;
+justify-content:flex-start;
+overflow:auto;
+margin-bottom:80px;
+padding-top:5px;
+border-radius: 5px;
+padding-left:15px;
+border: 1px solid white;
+}
+
+.upload p{
+white-space: nowrap;
+overflow: hidden;
+z-index: 1;
+font-size: 20px;
+margin-top:-0px;
+padding-top:10px;
+margin-bottom:13px;
+max-height:30px;
+width:254px;
+height:26px;
+text-align: center;
+}
+
+
+.upload li{
+background:rgb(10, 10, 10);
+padding-right:30px;
+}
+
+.searchButton{
+text-decoration: none;
+color:rgb(149, 243, 215);
+background:transparent;
+border: 2px solid rgb(149, 243, 215);
+border-radius: 10px; 
+cursor: pointer;
+font-size: 26px;
+margin-left:645px;
+margin-top:140px;
+position: absolute;
+}
+.searchButton:hover{
+color: rgb(95, 206, 171);
+border:2px solid rgb(95, 206, 171);
+}
+
+button:focus {outline:0;}
+
+.add:hover, .post:hover, .back:hover, .filterFavorites:hover{
+color:rgb(95, 206, 171)
+}
+
+.upload h6{
+position: absolute;
+color:rgb(255, 255, 255);
+text-align: right;
+z-index:1001;
+font-size: 40px;
+height:42px;
+margin-left:950px;
+width:200px;
+font-weight: 100;
+margin-top:-48px;
+}</style><style type="text/css">.container {
+  position: relative;
+}
+
+.page {
+  position: absolute;
+  left: 15px;
+  right: 15px;
+}
+
+.page-enter {
+  opacity: 0;
+  transform: scale(1.1);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.page-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.page-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 300ms, transform 300ms;
+}
+</style><style type="text/css">/*! react-sidenav v0.5.0 | (c) 2020 Trend Micro Inc. | MIT | https://github.com/trendmicro-frontend/react-sidenav */
+.sidenav---sidenav---_2tBP {
+  position: absolute;
+  top: 0px;
+  bottom: 0;
+  left: 0;
+  border-top-left-radius: 25px;
+  border-bottom-left-radius: 25px;
+  z-index: 1006;
+  min-width: 64px;
+  background: #db3d44;
+  transition: min-width 0.2s;
+}
+.sidenav---sidenav---_2tBP.sidenav---collapsed---LQDEv .sidenav---sidenav-nav---3tvij .sidenav---sidenav-navitem---uwIJ- .sidenav---sidenav-subnav---1EN61 {
+  display: none;
+}
+.sidenav---sidenav---_2tBP.sidenav---collapsed---LQDEv .sidenav---sidenav-nav---3tvij .sidenav---sidenav-navitem---uwIJ-:hover > .sidenav---sidenav-subnav---1EN61 {
+  display: block;
+}
+.sidenav---sidenav---_2tBP.sidenav---expanded---1KdUL {
+  min-width: 120px;
+}
+.sidenav---sidenav---_2tBP.sidenav---expanded---1KdUL .sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ- .sidenav---navicon---3gCRo + .sidenav---navtext---1AE_f {
+  visibility: visible;
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+  transition: opacity 0.2s linear;
+}
+.sidenav---sidenav---_2tBP.sidenav---expanded---1KdUL .sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ-.sidenav---expandable---3_dr7 > .sidenav---navitem---9uL5T {
+  cursor: pointer;
+}
+.sidenav---sidenav---_2tBP.sidenav---expanded---1KdUL .sidenav---sidenav-subnav---1EN61 {
+  position: static;
+  border: none;
+  float: left;
+  clear: both;
+  width: 100%;
+  background: transparent;
+  overflow: hidden;
+  box-shadow: none;
+}
+.sidenav---sidenav---_2tBP.sidenav---expanded---1KdUL .sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ-.sidenav---expanded---1KdUL .sidenav---sidenav-subnav---1EN61 {
+  display: block;
+}
+.sidenav---sidenav---_2tBP.sidenav---expanded---1KdUL .sidenav---sidenav-subnav---1EN61 {
+  display: none;
+}
+.sidenav---sidenav---_2tBP.sidenav---expanded---1KdUL .sidenav---sidenav-subnav---1EN61 > .sidenav---sidenav-subnavitem---1cD47 {
+  position: relative;
+}
+.sidenav---sidenav---_2tBP.sidenav---expanded---1KdUL .sidenav---sidenav-subnav---1EN61 > .sidenav---sidenav-subnavitem---1cD47::before {
+  content: " ";
+  width: 100%;
+  height: 28px;
+  position: absolute;
+  top: 0;
+  z-index: -1;
+}
+.sidenav---sidenav---_2tBP.sidenav---expanded---1KdUL .sidenav---sidenav-subnav---1EN61 > .sidenav---sidenav-subnavitem---1cD47:first-child {
+  display: none;
+}
+.sidenav---sidenav---_2tBP.sidenav---expanded---1KdUL .sidenav---sidenav-subnav---1EN61 > .sidenav---sidenav-subnavitem---1cD47:hover::before {
+  background: #fff;
+  opacity: 0.15;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=15)";
+  filter: alpha(opacity=15);
+}
+.sidenav---sidenav---_2tBP.sidenav---expanded---1KdUL .sidenav---sidenav-subnav---1EN61 > .sidenav---sidenav-subnavitem---1cD47::before {
+  content: " ";
+  width: 100%;
+  height: 28px;
+  position: absolute;
+  top: 0;
+  z-index: -1;
+}
+.sidenav---sidenav---_2tBP.sidenav---expanded---1KdUL .sidenav---sidenav-subnav---1EN61 > .sidenav---sidenav-subnavitem---1cD47.sidenav---selected---1EK3y > .sidenav---navitem---9uL5T {
+  color: #fff;
+}
+.sidenav---sidenav---_2tBP.sidenav---expanded---1KdUL .sidenav---sidenav-subnav---1EN61 > .sidenav---sidenav-subnavitem---1cD47.sidenav---selected---1EK3y > .sidenav---navitem---9uL5T::before {
+  content: " ";
+  width: 2px;
+  height: 20px;
+  left: 10px;
+  top: 4px;
+  position: absolute;
+  border-left: 2px #fff solid;
+}
+.sidenav---sidenav---_2tBP.sidenav---expanded---1KdUL .sidenav---sidenav-subnav---1EN61 > .sidenav---sidenav-subnavitem---1cD47:hover > .sidenav---navitem---9uL5T {
+  background: transparent;
+  color: #fff;
+}
+.sidenav---sidenav---_2tBP.sidenav---expanded---1KdUL .sidenav---sidenav-subnav---1EN61 > .sidenav---sidenav-subnavitem---1cD47 > .sidenav---navitem---9uL5T {
+  color: #f9dcdd;
+  padding: 0 14px 0 20px;
+  line-height: 28px;
+}
+.sidenav---sidenav-toggle---1KRjR {
+  position: relative;
+  float: left;
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+  background-image: none;
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+}
+.sidenav---sidenav-toggle---1KRjR:focus {
+  outline: none;
+}
+.sidenav---sidenav-toggle---1KRjR .sidenav---icon-bar---u1f02 {
+  display: block;
+  width: 20px;
+  height: 3px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 1px;
+  opacity: 0.7;
+}
+.sidenav---sidenav-toggle---1KRjR .sidenav---icon-bar---u1f02 + .sidenav---icon-bar---u1f02 {
+  margin-top: 4px;
+}
+.sidenav---sidenav---_2tBP.sidenav---expanded---1KdUL .sidenav---sidenav-toggle---1KRjR .sidenav---icon-bar---u1f02 {
+  width: 80px;
+  margin-left:20px;
+}
+
+.sidenav---sidenav-nav---3tvij {
+  float: left;
+  padding: 0;
+  margin: 0;
+  clear: both;
+  list-style: none;
+  width: 100%;
+}
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ- {
+  clear: both;
+  position: relative;
+}
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ-.sidenav---highlighted---oUx9u > .sidenav---navitem---9uL5T {
+  cursor: default;
+}
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ-:hover > .sidenav---navitem---9uL5T::after {
+  background: #fff;
+  opacity: 0.15;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=15)";
+  filter: alpha(opacity=15);
+}
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ-.sidenav---highlighted---oUx9u > .sidenav---navitem---9uL5T::after,
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ-:hover.sidenav---highlighted---oUx9u > .sidenav---navitem---9uL5T::after {
+  background: #000;
+  opacity: 0.2;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+  filter: alpha(opacity=20);
+}
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ-.sidenav---highlighted---oUx9u.sidenav---expanded---1KdUL > .sidenav---navitem---9uL5T::after,
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ-:hover.sidenav---highlighted---oUx9u.sidenav---expanded---1KdUL > .sidenav---navitem---9uL5T::after {
+  background: #000;
+  opacity: 0.25;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=25)";
+  filter: alpha(opacity=25);
+}
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ-.sidenav---highlighted---oUx9u.sidenav---selected---1EK3y.sidenav---expanded---1KdUL > .sidenav---navitem---9uL5T::after,
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ-:hover.sidenav---highlighted---oUx9u.sidenav---selected---1EK3y.sidenav---expanded---1KdUL > .sidenav---navitem---9uL5T::after {
+  background: #000;
+  opacity: 0.2;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+  filter: alpha(opacity=20);
+}
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ-:hover > .sidenav---navitem---9uL5T .sidenav---navicon---3gCRo,
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ-.sidenav---highlighted---oUx9u > .sidenav---navitem---9uL5T .sidenav---navicon---3gCRo {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+}
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ-:hover > .sidenav---navitem---9uL5T .sidenav---navicon---3gCRo,
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ-:hover > .sidenav---navitem---9uL5T .sidenav---navtext---1AE_f,
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ-.sidenav---highlighted---oUx9u > .sidenav---navitem---9uL5T .sidenav---navicon---3gCRo,
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ-.sidenav---highlighted---oUx9u > .sidenav---navitem---9uL5T .sidenav---navtext---1AE_f {
+  color: #fff;
+}
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ-:hover > .sidenav---navitem---9uL5T .sidenav---navicon---3gCRo > *,
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ-:hover > .sidenav---navitem---9uL5T .sidenav---navtext---1AE_f > *,
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ-.sidenav---highlighted---oUx9u > .sidenav---navitem---9uL5T .sidenav---navicon---3gCRo > *,
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ-.sidenav---highlighted---oUx9u > .sidenav---navitem---9uL5T .sidenav---navtext---1AE_f > * {
+  color: #fff;
+}
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ- > .sidenav---navitem---9uL5T {
+  position: relative;
+  display: block;
+  line-height: 50px;
+  height: 50px;
+  white-space: nowrap;
+  text-decoration: none;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ- > .sidenav---navitem---9uL5T:focus {
+  outline: 0;
+}
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ- > .sidenav---navitem---9uL5T::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  background: #fff;
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+  z-index: -1;
+}
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ- > .sidenav---navitem---9uL5T .sidenav---navicon---3gCRo,
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ- > .sidenav---navitem---9uL5T .sidenav---navtext---1AE_f {
+  color: #f9dcdd;
+}
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ- > .sidenav---navitem---9uL5T .sidenav---navicon---3gCRo > *,
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ- > .sidenav---navitem---9uL5T .sidenav---navtext---1AE_f > * {
+  color: #f9dcdd;
+}
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ- > .sidenav---navitem---9uL5T .sidenav---navicon---3gCRo {
+  display: block;
+  float: left;
+  width: 64px;
+  height: 50px;
+  margin-right: -6px;
+  vertical-align: top;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-color: transparent;
+  opacity: 0.7;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+  filter: alpha(opacity=70);
+  line-height: 50px;
+  text-align: center;
+}
+.sidenav---sidenav-nav---3tvij > .sidenav---sidenav-navitem---uwIJ- > .sidenav---navitem---9uL5T .sidenav---navicon---3gCRo + .sidenav---navtext---1AE_f {
+  width: 0;
+  visibility: hidden;
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+  transition: visibility 0s 0.2s, opacity 0.2s linear;
+}
+.sidenav---sidenav-subnav---1EN61 {
+  min-width: 200px;
+  position: absolute;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  top: 0;
+  left: 64px;
+  background: #fff;
+  border: 1px #bbb solid;
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.15);
+}
+.sidenav---sidenav-subnav---1EN61 > .sidenav---sidenav-subnavitem---1cD47:first-child {
+  margin: 0 24px;
+  line-height: 48px;
+  border-bottom: 1px #ccc solid;
+  font-size: 14px;
+  font-weight: normal;
+}
+.sidenav---sidenav-subnav---1EN61 > .sidenav---sidenav-subnavitem---1cD47:nth-child(2) {
+  margin-top: 8px;
+}
+.sidenav---sidenav-subnav---1EN61 > .sidenav---sidenav-subnavitem---1cD47:last-child {
+  margin-bottom: 8px;
+}
+.sidenav---sidenav-subnav---1EN61 > .sidenav---sidenav-subnavitem---1cD47.sidenav---selected---1EK3y > .sidenav---navitem---9uL5T {
+  color: #db3d44;
+  font-weight: bold;
+  background: none;
+  cursor: default;
+}
+.sidenav---sidenav-subnav---1EN61 > .sidenav---sidenav-subnavitem---1cD47.sidenav---selected---1EK3y > .sidenav---navitem---9uL5T:hover {
+  background: #fff;
+}
+.sidenav---sidenav-subnav---1EN61 > .sidenav---sidenav-subnavitem---1cD47 > .sidenav---navitem---9uL5T {
+  display: block;
+  text-decoration: none;
+  color: #222;
+  font-size: 13px;
+  line-height: 30px;
+  padding: 0 24px;
+  cursor: pointer;
+}
+.sidenav---sidenav-subnav---1EN61 > .sidenav---sidenav-subnavitem---1cD47 > .sidenav---navitem---9uL5T:hover {
+  background: #eee;
+}
+.sidenav---sidenav-subnav---1EN61 > .sidenav---sidenav-subnavitem---1cD47 > .sidenav---navitem---9uL5T:focus {
+  outline: 0;
+}
+.sidenav---sidenav---_2tBP {
+  box-sizing: border-box;
+  line-height: 20px;
+}
+.sidenav---sidenav---_2tBP *,
+.sidenav---sidenav---_2tBP *:before,
+.sidenav---sidenav---_2tBP *:after {
+  box-sizing: inherit;
+}</style><style data-emotion="css">@-webkit-keyframes animation-5bz3sx{from{-webkit-transform:rotate(0deg);-ms-transform:rotate(0deg);transform:rotate(0deg);}to{-webkit-transform:rotate(360deg);-ms-transform:rotate(360deg);transform:rotate(360deg);}}</style><style data-emotion="css">@keyframes animation-5bz3sx{from{-webkit-transform:rotate(0deg);-ms-transform:rotate(0deg);transform:rotate(0deg);}to{-webkit-transform:rotate(360deg);-ms-transform:rotate(360deg);transform:rotate(360deg);}}</style><style data-emotion="css">@-webkit-keyframes animation-1v1uyfb{0%{stroke-dasharray:1,200;stroke-dashoffset:0;}50%{stroke-dasharray:89,200;stroke-dashoffset:-35px;}100%{stroke-dasharray:89,200;stroke-dashoffset:-124px;}}</style><style data-emotion="css">@keyframes animation-1v1uyfb{0%{stroke-dasharray:1,200;stroke-dashoffset:0;}50%{stroke-dasharray:89,200;stroke-dashoffset:-35px;}100%{stroke-dasharray:89,200;stroke-dashoffset:-124px;}}</style><style data-emotion="css">.css-79elbk{position:relative;}</style><style data-emotion="css">.css-df17o1{position:absolute;height:100%;width:100%;top:0px;left:0px;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;text-align:center;font-size:1.2em;color:#FFF;background:rgba(0,0,0,0.7);z-index:800;-webkit-transition:opacity 500ms ease-in;transition:opacity 500ms ease-in;opacity:1;}</style><style data-emotion="css">.css-42igfv{margin:auto;}</style><style type="text/css">.buttonBack___1mlaL,.buttonFirst___2rhFr,.buttonLast___2yuh0,.buttonNext___2mOCa,.buttonNext___3Lm3s,.dot___3c3SI{cursor:pointer}.image___xtQGH{display:block;width:100%;height:100%}.spinner___27VUp{position:absolute;top:calc(50% - 15px);left:calc(50% - 15px);width:30px;height:30px;animation-name:spin___S3UuE;animation-duration:1s;animation-timing-function:linear;animation-iteration-count:infinite;border:4px solid #a9a9a9;border-top-color:#000;border-radius:30px}@keyframes spin___S3UuE{0%{transform:rotate(0deg)}to{transform:rotate(1turn)}}.container___2O72F{position:relative;overflow:hidden;height:100%;width:100%}.overlay___IV4qY{position:absolute;top:0;left:0;bottom:0;right:0;opacity:0;cursor:zoom-in;transition:opacity .3s,transform .3s}.hover___MYy31,.loading___1pvNI,.zoom___3kqYk{opacity:1}.imageLoadingSpinnerContainer___3UIPD{position:absolute;top:0;right:0;bottom:0;left:0;background-color:#f4f4f4}.slide___3-Nqo{position:relative;display:block;box-sizing:border-box;height:0;margin:0;list-style-type:none}.slide___3-Nqo:focus{outline:none!important}.slideHorizontal___1NzNV{float:left}[dir=rtl] .slideHorizontal___1NzNV{direction:rtl;transform:scaleX(-1)}.slideInner___2mfX9{position:absolute;top:0;left:0;width:100%;height:100%}.focusRing___1airF{position:absolute;top:5px;right:5px;bottom:5px;left:5px;pointer-events:none;outline-width:5px;outline-style:solid;outline-color:Highlight}@media (-webkit-min-device-pixel-ratio:0){.focusRing___1airF{outline-style:auto;outline-color:-webkit-focus-ring-color}}.horizontalSlider___281Ls{position:relative;overflow:hidden}[dir=rtl] .horizontalSlider___281Ls{direction:ltr;transform:scaleX(-1)}.horizontalSliderTray___1L-0W{overflow:hidden;width:100%}.verticalSlider___34ZFD{position:relative;overflow:hidden}.verticalSliderTray___267D8{overflow:hidden}.verticalTray___12Key{float:left}.verticalSlideTrayWrap___2nO7o{overflow:hidden}.sliderTray___-vHFQ{display:block;list-style:none;padding:0;margin:0}.sliderAnimation___300FY{transition:transform .5s;transition-timing-function:cubic-bezier(.645,.045,.355,1);will-change:transform}.masterSpinnerContainer___1Z6hB{position:absolute;top:0;right:0;bottom:0;left:0;background-color:#f4f4f4}</style><style type="text/css">.indiana-scroll-container {
+  overflow: auto;
+}
+  .indiana-scroll-container--dragging > * {
+      pointer-events: none;
+      cursor: -webkit-grab;
+      cursor: grab;
+    }
+  .indiana-scroll-container--hide-scrollbars {
+    overflow: hidden;
+    overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .indiana-scroll-container--hide-scrollbars::-webkit-scrollbar {
+      display: none !important;
+      height: 0 !important;
+      width: 0 !important;
+      background: transparent !important;
+      -webkit-appearance: none !important;
+    }
+  .indiana-scroll-container--native-scroll {
+    overflow: auto;
+  }
+
+.indiana-dragging {
+  cursor: -webkit-grab !important;
+  cursor: grab !important;
+}
+</style><style data-jss="" data-meta="MuiDialog">
+@media print {
+  .MuiDialog-root {
+    position: absolute !important;
+  }
+}
+.MuiDialog-scrollPaper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.MuiDialog-scrollBody {
+  overflow-x: hidden;
+  overflow-y: auto;
+  text-align: center;
+}
+.MuiDialog-scrollBody:after {
+  width: 0;
+  height: 100%;
+  content: "";
+  display: inline-block;
+  vertical-align: middle;
+}
+.MuiDialog-container {
+  height: 100%;
+  outline: 0;
+}
+@media print {
+  .MuiDialog-container {
+    height: auto;
+  }
+}
+.MuiDialog-paper {
+  margin: 32px;
+  position: relative;
+  overflow-y: auto;
+}
+@media print {
+  .MuiDialog-paper {
+    box-shadow: none;
+    overflow-y: visible;
+  }
+}
+.MuiDialog-paperScrollPaper {
+  display: flex;
+  max-height: calc(100% - 64px);
+  flex-direction: column;
+}
+.MuiDialog-paperScrollBody {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+}
+.MuiDialog-paperWidthFalse {
+  max-width: calc(100% - 64px);
+}
+.MuiDialog-paperWidthXs {
+  max-width: 444px;
+}
+@media (max-width:507.95px) {
+  .MuiDialog-paperWidthXs.MuiDialog-paperScrollBody {
+    max-width: calc(100% - 64px);
+  }
+}
+.MuiDialog-paperWidthSm {
+  max-width: 600px;
+}
+@media (max-width:663.95px) {
+  .MuiDialog-paperWidthSm.MuiDialog-paperScrollBody {
+    max-width: calc(100% - 64px);
+  }
+}
+.MuiDialog-paperWidthMd {
+  max-width: 960px;
+}
+@media (max-width:1023.95px) {
+  .MuiDialog-paperWidthMd.MuiDialog-paperScrollBody {
+    max-width: calc(100% - 64px);
+  }
+}
+.MuiDialog-paperWidthLg {
+  max-width: 1280px;
+}
+@media (max-width:1343.95px) {
+  .MuiDialog-paperWidthLg.MuiDialog-paperScrollBody {
+    max-width: calc(100% - 64px);
+  }
+}
+.MuiDialog-paperWidthXl {
+  max-width: 1920px;
+}
+@media (max-width:1983.95px) {
+  .MuiDialog-paperWidthXl.MuiDialog-paperScrollBody {
+    max-width: calc(100% - 64px);
+  }
+}
+.MuiDialog-paperFullWidth {
+  width: calc(100% - 64px);
+}
+.MuiDialog-paperFullScreen {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  max-width: 100%;
+  max-height: none;
+  border-radius: 0;
+}
+.MuiDialog-paperFullScreen.MuiDialog-paperScrollBody {
+  margin: 0;
+  max-width: 100%;
+}
+</style><style data-jss="" data-meta="MuiTouchRipple">
+.MuiTouchRipple-root {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  overflow: hidden;
+  position: absolute;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.MuiTouchRipple-ripple {
+  opacity: 0;
+  position: absolute;
+}
+.MuiTouchRipple-rippleVisible {
+  opacity: 0.3;
+  animation: MuiTouchRipple-keyframes-enter 550ms cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(1);
+}
+.MuiTouchRipple-ripplePulsate {
+  animation-duration: 200ms;
+}
+.MuiTouchRipple-child {
+  width: 100%;
+  height: 100%;
+  display: block;
+  opacity: 1;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+.MuiTouchRipple-childLeaving {
+  opacity: 0;
+  animation: MuiTouchRipple-keyframes-exit 550ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.MuiTouchRipple-childPulsate {
+  top: 0;
+  left: 0;
+  position: absolute;
+  animation: MuiTouchRipple-keyframes-pulsate 2500ms cubic-bezier(0.4, 0, 0.2, 1) 200ms infinite;
+}
+@-webkit-keyframes MuiTouchRipple-keyframes-enter {
+  0% {
+    opacity: 0.1;
+    transform: scale(0);
+  }
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+}
+@-webkit-keyframes MuiTouchRipple-keyframes-exit {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@-webkit-keyframes MuiTouchRipple-keyframes-pulsate {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.92);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+</style><style data-jss="" data-meta="MuiButtonBase">
+.MuiButtonBase-root {
+  color: inherit;
+  border: 0;
+  cursor: pointer;
+  margin: 0;
+  display: inline-flex;
+  outline: 0;
+  padding: 0;
+  position: relative;
+  align-items: center;
+  user-select: none;
+  border-radius: 0;
+  vertical-align: middle;
+  -moz-appearance: none;
+  justify-content: center;
+  text-decoration: none;
+  background-color: transparent;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.MuiButtonBase-root::-moz-focus-inner {
+  border-style: none;
+}
+.MuiButtonBase-root.Mui-disabled {
+  cursor: default;
+  pointer-events: none;
+}
+@media print {
+  .MuiButtonBase-root {
+    -webkit-print-color-adjust: exact;
+  }
+}
+</style><style data-jss="" data-meta="MuiButton">
+.MuiButton-root {
+  color: rgba(0, 0, 0, 0.87);
+  padding: 6px 16px;
+  font-size: 0.875rem;
+  min-width: 64px;
+  box-sizing: border-box;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 500;
+  line-height: 1.75;
+  border-radius: 4px;
+  letter-spacing: 0.02857em;
+  text-transform: uppercase;
+}
+.MuiButton-root:hover {
+  text-decoration: none;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+.MuiButton-root.Mui-disabled {
+  color: rgba(0, 0, 0, 0.26);
+}
+@media (hover: none) {
+  .MuiButton-root:hover {
+    background-color: transparent;
+  }
+}
+.MuiButton-root:hover.Mui-disabled {
+  background-color: transparent;
+}
+.MuiButton-label {
+  width: 100%;
+  display: inherit;
+  align-items: inherit;
+  justify-content: inherit;
+}
+.MuiButton-text {
+  padding: 6px 8px;
+}
+.MuiButton-textPrimary {
+  color: #3f51b5;
+}
+.MuiButton-textPrimary:hover {
+  background-color: rgba(63, 81, 181, 0.04);
+}
+@media (hover: none) {
+  .MuiButton-textPrimary:hover {
+    background-color: transparent;
+  }
+}
+.MuiButton-textSecondary {
+  color: #f50057;
+}
+.MuiButton-textSecondary:hover {
+  background-color: rgba(245, 0, 87, 0.04);
+}
+@media (hover: none) {
+  .MuiButton-textSecondary:hover {
+    background-color: transparent;
+  }
+}
+.MuiButton-outlined {
+  border: 1px solid rgba(0, 0, 0, 0.23);
+  padding: 5px 15px;
+}
+.MuiButton-outlined.Mui-disabled {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+.MuiButton-outlinedPrimary {
+  color: #3f51b5;
+  border: 1px solid rgba(63, 81, 181, 0.5);
+}
+.MuiButton-outlinedPrimary:hover {
+  border: 1px solid #3f51b5;
+  background-color: rgba(63, 81, 181, 0.04);
+}
+@media (hover: none) {
+  .MuiButton-outlinedPrimary:hover {
+    background-color: transparent;
+  }
+}
+.MuiButton-outlinedSecondary {
+  color: #f50057;
+  border: 1px solid rgba(245, 0, 87, 0.5);
+}
+.MuiButton-outlinedSecondary:hover {
+  border: 1px solid #f50057;
+  background-color: rgba(245, 0, 87, 0.04);
+}
+.MuiButton-outlinedSecondary.Mui-disabled {
+  border: 1px solid rgba(0, 0, 0, 0.26);
+}
+@media (hover: none) {
+  .MuiButton-outlinedSecondary:hover {
+    background-color: transparent;
+  }
+}
+.MuiButton-contained {
+  color: rgba(0, 0, 0, 0.87);
+  box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 1px 5px 0px rgba(0,0,0,0.12);
+  background-color: #e0e0e0;
+}
+.MuiButton-contained:hover {
+  box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2),0px 4px 5px 0px rgba(0,0,0,0.14),0px 1px 10px 0px rgba(0,0,0,0.12);
+  background-color: #d5d5d5;
+}
+.MuiButton-contained.Mui-focusVisible {
+  box-shadow: 0px 3px 5px -1px rgba(0,0,0,0.2),0px 6px 10px 0px rgba(0,0,0,0.14),0px 1px 18px 0px rgba(0,0,0,0.12);
+}
+.MuiButton-contained:active {
+  box-shadow: 0px 5px 5px -3px rgba(0,0,0,0.2),0px 8px 10px 1px rgba(0,0,0,0.14),0px 3px 14px 2px rgba(0,0,0,0.12);
+}
+.MuiButton-contained.Mui-disabled {
+  color: rgba(0, 0, 0, 0.26);
+  box-shadow: none;
+  background-color: rgba(0, 0, 0, 0.12);
+}
+@media (hover: none) {
+  .MuiButton-contained:hover {
+    box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 1px 5px 0px rgba(0,0,0,0.12);
+    background-color: #e0e0e0;
+  }
+}
+.MuiButton-contained:hover.Mui-disabled {
+  background-color: rgba(0, 0, 0, 0.12);
+}
+.MuiButton-containedPrimary {
+  color: #fff;
+  background-color: #3f51b5;
+}
+.MuiButton-containedPrimary:hover {
+  background-color: #303f9f;
+}
+@media (hover: none) {
+  .MuiButton-containedPrimary:hover {
+    background-color: #3f51b5;
+  }
+}
+.MuiButton-containedSecondary {
+  color: #fff;
+  background-color: #f50057;
+}
+.MuiButton-containedSecondary:hover {
+  background-color: #c51162;
+}
+@media (hover: none) {
+  .MuiButton-containedSecondary:hover {
+    background-color: #f50057;
+  }
+}
+.MuiButton-disableElevation {
+  box-shadow: none;
+}
+.MuiButton-disableElevation:hover {
+  box-shadow: none;
+}
+.MuiButton-disableElevation.Mui-focusVisible {
+  box-shadow: none;
+}
+.MuiButton-disableElevation:active {
+  box-shadow: none;
+}
+.MuiButton-disableElevation.Mui-disabled {
+  box-shadow: none;
+}
+.MuiButton-colorInherit {
+  color: inherit;
+  border-color: currentColor;
+}
+.MuiButton-textSizeSmall {
+  padding: 4px 5px;
+  font-size: 0.8125rem;
+}
+.MuiButton-textSizeLarge {
+  padding: 8px 11px;
+  font-size: 0.9375rem;
+}
+.MuiButton-outlinedSizeSmall {
+  padding: 3px 9px;
+  font-size: 0.8125rem;
+}
+.MuiButton-outlinedSizeLarge {
+  padding: 7px 21px;
+  font-size: 0.9375rem;
+}
+.MuiButton-containedSizeSmall {
+  padding: 4px 10px;
+  font-size: 0.8125rem;
+}
+.MuiButton-containedSizeLarge {
+  padding: 8px 22px;
+  font-size: 0.9375rem;
+}
+.MuiButton-fullWidth {
+  width: 100%;
+}
+.MuiButton-startIcon {
+  display: inherit;
+  margin-left: -4px;
+  margin-right: 8px;
+}
+.MuiButton-startIcon.MuiButton-iconSizeSmall {
+  margin-left: -2px;
+}
+.MuiButton-endIcon {
+  display: inherit;
+  margin-left: 8px;
+  margin-right: -4px;
+}
+.MuiButton-endIcon.MuiButton-iconSizeSmall {
+  margin-right: -2px;
+}
+.MuiButton-iconSizeSmall > *:first-child {
+  font-size: 18px;
+}
+.MuiButton-iconSizeMedium > *:first-child {
+  font-size: 20px;
+}
+.MuiButton-iconSizeLarge > *:first-child {
+  font-size: 22px;
+}
+</style><style data-emotion="css">.css-1ppj3di{background:transparent !important;width:150px;height:150px;border-radius:100%;border:2px solid;border-color:white;border-bottom-color:transparent;display:inline-block;-webkit-animation:animation-s8tf20 0.75s 0s infinite linear;animation:animation-s8tf20 0.75s 0s infinite linear;-webkit-animation-fill-mode:both;animation-fill-mode:both;position:absolute;width:200px;height:200px;margin-top:-190px;left:40%;}</style><style data-emotion="css">@-webkit-keyframes animation-s8tf20{0%{-webkit-transform:rotate(0deg) scale(1);-ms-transform:rotate(0deg) scale(1);transform:rotate(0deg) scale(1);}50%{-webkit-transform:rotate(180deg) scale(0.8);-ms-transform:rotate(180deg) scale(0.8);transform:rotate(180deg) scale(0.8);}100%{-webkit-transform:rotate(360deg) scale(1);-ms-transform:rotate(360deg) scale(1);transform:rotate(360deg) scale(1);}}</style><style data-emotion="css">@keyframes animation-s8tf20{0%{-webkit-transform:rotate(0deg) scale(1);-ms-transform:rotate(0deg) scale(1);transform:rotate(0deg) scale(1);}50%{-webkit-transform:rotate(180deg) scale(0.8);-ms-transform:rotate(180deg) scale(0.8);transform:rotate(180deg) scale(0.8);}100%{-webkit-transform:rotate(360deg) scale(1);-ms-transform:rotate(360deg) scale(1);transform:rotate(360deg) scale(1);}}</style><link rel="stylesheet" href="./Music Service_files/css" media="all"><link rel="stylesheet" href="./Music Service_files/css" media="all"><style data-styled="" data-styled-version="4.4.1"></style></head>
+  <body>
+    <div id="root"><div class="App"><h5> <span><button class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-colorInherit" tabindex="0" type="button" style="font-size: 20px; margin-left: 255px;"><span class="MuiButton-label">Login</span><span class="MuiTouchRipple-root"></span></button></span> | <span><button class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-colorInherit" tabindex="0" type="button" style="font-size: 20px;"><span class="MuiButton-label">Register</span><span class="MuiTouchRipple-root"></span></button></span> </h5><nav class="sideNav sidenav---sidenav---_2tBP sidenav---expanded---1KdUL" style="background: rgb(114, 51, 51); border-right: 2px solid white; width: 5.5%;"><button role="button" class="sidenav---sidenav-toggle---1KRjR" aria-expanded="true"><span class="sidenav---icon-bar---u1f02"></span><span class="sidenav---icon-bar---u1f02"></span><span class="sidenav---icon-bar---u1f02"></span></button><div role="menu" class="sidenav---sidenav-nav---3tvij sidenav---expanded---1KdUL"><div role="presentation" class="sidenav---sidenav-navitem---uwIJ- sidenav---selected---1EK3y sidenav---highlighted---oUx9u"><div class="sidenav---navitem---9uL5T" role="menuitem" tabindex="-1"><div class="sidenav---navicon---3gCRo"><i style="font-size: 1.75em;"></i></div><a href="http://localhost:3000/"><i class="fa fa-fw fa-home" style="color: white; font-size: 44px; padding-top: 3px;" aria-hidden="true"></i></a></div></div><div role="presentation" class="sidenav---sidenav-navitem---uwIJ-"><div class="sidenav---navitem---9uL5T" role="menuitem" tabindex="-1"><div class="sidenav---navicon---3gCRo"><i class="fa fa-fw " style="font-size: 1.75em;" aria-hidden="true"></i></div><div class="sidenav---navtext---1AE_f"><a class="navItem" href="http://localhost:3000/songs">Songs</a></div></div></div><div role="presentation" class="sidenav---sidenav-navitem---uwIJ-"><div class="sidenav---navitem---9uL5T" role="menuitem" tabindex="-1"><div class="sidenav---navicon---3gCRo"><i class="fa fa-fw " style="font-size: 1.75em;" aria-hidden="true"></i></div><div class="sidenav---navtext---1AE_f"><a class="navItem" href="http://localhost:3000/albums">Albums</a></div></div></div><div role="presentation" class="sidenav---sidenav-navitem---uwIJ-"><div class="sidenav---navitem---9uL5T" role="menuitem" tabindex="-1"><div class="sidenav---navicon---3gCRo"><i class="fa fa-fw " style="font-size: 1.75em;" aria-hidden="true"></i></div><div class="sidenav---navtext---1AE_f"><a class="navItem" href="http://localhost:3000/artists">Artists</a></div></div></div><div role="presentation" class="sidenav---sidenav-navitem---uwIJ-"><div class="sidenav---navitem---9uL5T" role="menuitem" tabindex="-1"><div class="sidenav---navicon---3gCRo"><i class="fa fa-fw " style="font-size: 1.75em;" aria-hidden="true"></i></div><div class="sidenav---navtext---1AE_f"><a class="navItem" href="http://localhost:3000/playlists">Playlists</a></div></div></div><div role="presentation" class="sidenav---sidenav-navitem---uwIJ-"><div class="sidenav---navitem---9uL5T" role="menuitem" tabindex="-1"><div class="sidenav---navicon---3gCRo"><i class="fa fa-fw " style="font-size: 1.75em;" aria-hidden="true"></i></div><div class="sidenav---navtext---1AE_f"><a class="navItem" href="http://localhost:3000/Uploads">Uploads</a></div></div></div></div></nav><div><div><div data-testid="wrapper" class="_loading_overlay_wrapper _loading_overlay_wrapper--active css-79elbk"><div data-testid="overlay" class="_loading_overlay_overlay css-df17o1"><div class="_loading_overlay_content css-42igfv"><div class="css-1ppj3di"></div></div></div></div><h3>Hello, Guest</h3><div class="homeLists"><h4> Top Songs </h4><div class="carousel"><div class="horizontalSlider___281Ls carousel__slider carousel__slider--horizontal" aria-live="polite" tabindex="0" role="listbox" style="max-height: 420px;"><div class="carousel__slider-tray-wrapper carousel__slider-tray-wrap--horizontal"><ul class="sliderTray___-vHFQ sliderAnimation___300FY carousel__slider-tray carousel__slider-tray--horizontal" style="width: 0%; flex-direction: row;"></ul></div></div><button type="button" aria-label="previous" class="buttonBack___1mlaL carousel__back-button arrow fa fa-arrow-left" style="color: rgb(10, 10, 10);" aria-hidden="true"></button><button type="button" aria-label="next" class="buttonNext___2mOCa carousel__next-button arrow fa fa-arrow-right" style="color: rgb(10, 10, 10); float: right;" aria-hidden="true"></button></div><h4> Top Albums </h4><div class="carousel"><div class="horizontalSlider___281Ls carousel__slider carousel__slider--horizontal" aria-live="polite" tabindex="0" role="listbox" style="max-height: 420px;"><div class="carousel__slider-tray-wrapper carousel__slider-tray-wrap--horizontal"><ul class="sliderTray___-vHFQ sliderAnimation___300FY carousel__slider-tray carousel__slider-tray--horizontal" style="width: 0%; flex-direction: row;"></ul></div></div><button type="button" aria-label="previous" class="buttonBack___1mlaL carousel__back-button arrow fa fa-arrow-left" style="color: rgb(10, 10, 10);" aria-hidden="true"></button><button type="button" aria-label="next" class="buttonNext___2mOCa carousel__next-button arrow fa fa-arrow-right" style="color: rgb(10, 10, 10); float: right;" aria-hidden="true"></button></div><h4> Top Artists </h4><div class="carousel"><div class="horizontalSlider___281Ls carousel__slider carousel__slider--horizontal" aria-live="polite" tabindex="0" role="listbox" style="max-height: 420px;"><div class="carousel__slider-tray-wrapper carousel__slider-tray-wrap--horizontal"><ul class="sliderTray___-vHFQ sliderAnimation___300FY carousel__slider-tray carousel__slider-tray--horizontal" style="width: 0%; flex-direction: row;"></ul></div></div><button type="button" aria-label="previous" class="buttonBack___1mlaL carousel__back-button arrow fa fa-arrow-left" style="color: rgb(10, 10, 10);" aria-hidden="true"></button><button type="button" aria-label="next" class="buttonNext___2mOCa carousel__next-button arrow fa fa-arrow-right" style="color: rgb(10, 10, 10); float: right;" aria-hidden="true"></button></div><h4> Top Playlists </h4><div class="carousel"><div class="horizontalSlider___281Ls carousel__slider carousel__slider--horizontal" aria-live="polite" tabindex="0" role="listbox" style="max-height: 420px;"><div class="carousel__slider-tray-wrapper carousel__slider-tray-wrap--horizontal"><ul class="sliderTray___-vHFQ sliderAnimation___300FY carousel__slider-tray carousel__slider-tray--horizontal" style="width: 0%; flex-direction: row;"></ul></div></div><button type="button" aria-label="previous" class="buttonBack___1mlaL carousel__back-button arrow fa fa-arrow-left" style="color: rgb(10, 10, 10);" aria-hidden="true"></button><button type="button" aria-label="next" class="buttonNext___2mOCa carousel__next-button arrow fa fa-arrow-right" style="color: rgb(10, 10, 10); float: right;" aria-hidden="true"></button></div></div></div></div></div></div>
+  <script src="./Music Service_files/bundle.js.download"></script><script src="http://localhost:3000/static/js/1.chunk.js"></script><script src="./Music Service_files/main.chunk.js.download"></script><script src="./Music Service_files/main.a5e3229fd27da19e4d23.hot-update.js.download"></script>
+
+</body></html>

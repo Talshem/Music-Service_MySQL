@@ -48,7 +48,7 @@ margin-top:15px;
 .carouselist:hover p{
 margin-top:60px;
 overflow: hidden;
-width:78.5%;
+width:86%;
 }
 
 .carousel{
@@ -598,7 +598,7 @@ border:2px solid rgb(95, 206, 171);
 
 button:focus {outline:0;}
 
-.add:hover, .post:hover, .back:hover, .filterFavorites:hover{
+.arrow:hover, .add:hover, .post:hover, .back:hover, .filterFavorites:hover{
 color:rgb(95, 206, 171)
 }
 
