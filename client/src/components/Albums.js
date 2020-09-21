@@ -50,7 +50,7 @@ useEffect(() => {
       if (!favorites) {
       makeAlbums(list) 
       } else {
-      let favoriteList = list.filter(e => x.includes(`album: ${e.name}`))
+      let favoriteList = list.filter(e => x.includes(`album: ${e.id}`))
       makeAlbums(favoriteList)
       }} catch(response) {
     setLoading(false)
@@ -87,13 +87,13 @@ promise2.then(() => {
 
 const handleLike = async (e) => {
 let x = JSON.parse(preferences)
-if (x.includes(`album: ${e.name}`)){
+if (x.includes(`album: ${e.id}`)){
 await axios.put(`/album/like`, {
 toggle: 'unlike',
 is_liked: e.is_liked,
 preferences: x,
 user: props.user.email,
-name: e.name,
+id: e.id,
 });
 setToggle(!toggle)
 } else {
@@ -101,7 +101,7 @@ await axios.put(`/album/like`, {
 toggle: 'like',
 is_liked: e.is_liked,
 user: props.user.email,
-name: e.name,
+id: e.id,
 });
 setToggle(!toggle)
 }
@@ -113,7 +113,7 @@ const makeAlbums = (albums) => {
 let x = JSON.parse(preferences);
 
 let array = albums.map(e => {
-const heart = x.includes(`album: ${e.name}`) ?
+const heart = x.includes(`album: ${e.id}`) ?
 <button  onClick={() => isLiked(e)} disabled={disabled} className="like fas fa-heart"/> :
 <button  onClick={() => isLiked(e)} disabled={disabled} className="like far fa-heart"/>
 const like = props.user ? heart :  '';

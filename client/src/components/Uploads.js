@@ -40,7 +40,7 @@ useEffect(() => {
     setData(<p style={{top:"440px", fontSize:"120px",textAlign:"right",width:"86%"}} className="listTitle">User doesn't exist</p>)
       }
     }; fetchData();
-   }, [toggle, props.user])
+   }, [toggle, props.user, user])
 
 const handleSearch = () => {
 setToggle(!toggle)
@@ -78,7 +78,6 @@ setToggle(!toggle)
 const makeLists = (songs, albums, artists, playlists) => {
 
 let capitalUserId = userId.charAt(0).toUpperCase() + userId.slice(1)
-
 if (props.user) {
 if(props.user.username.toUpperCase() === userId.toUpperCase()){
 setUser('My Uploads') 
@@ -87,7 +86,7 @@ setUser(`${capitalUserId}'s Uploads`)
 }
 } else {
 setUser(`${capitalUserId}'s Uploads`)
-}
+} 
 
 let z =1000
 let sArray = songs.map(e => {
@@ -174,8 +173,9 @@ return(
 <input className="filterList" onChange={(event) => setSearch(event.target.value)} /> 
 <button onClick={() => handleSearch()} className="searchButton">Search</button>
 
-<h6 className="upTitle">Songs</h6>
+
 <div className='uploadsList'>
+<h6 className="upTitle">Songs</h6>
 <ScrollContainer className="upload" >
 {sArray}
 </ScrollContainer>

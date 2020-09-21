@@ -71,7 +71,6 @@ return(
 {lyrics}
 </div>
 </div>
-<NavLink style={{marginTop:'-35px'}}  className="fa fa-arrow-left back" to="/songs"></NavLink>
 </div>
 )}
 setSong(x)
@@ -94,6 +93,7 @@ const override =`
   >
   </LoadingOverlay>
 {song}
+{song ? <NavLink style={{marginTop:'-35px', marginLeft:'50px'}}  className="fa fa-arrow-left back" to="/songs"></NavLink> : ''}
 </div>
   );
   }
