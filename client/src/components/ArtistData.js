@@ -37,7 +37,7 @@ useEffect(() => {
       }
   } catch(response) {
         setLoading(false)
-    return setArtist(<p style={{top:"440px", fontSize:"120px",textAlign:"right",width:"86%"}} className="listTitle">Unknown artist</p>)
+    return setArtist(<p style={{top:"430px", fontSize:"120px",textAlign:"right",width:"86%"}} className="listTitle">Unknown artist</p>)
   }
     }; fetchData();
    }, [songs, albums])
@@ -60,7 +60,7 @@ function makeID(e){
 
 let songList = songs.map(e => {
 return (
-<div key={e.youtube_id} className="grid-item2">
+<div key={e.youtube_id} className="hov grid-item3">
 <p>
 <NavLink className="navTo" to={`/songs/${e.youtube_id}?name=${artistId}`}>{e.title}</NavLink>
 </p>
@@ -70,7 +70,7 @@ return (
 
 let albumList = albums.map(e => {
 return (
-<div key={e.name} className="grid-item2">
+<div key={e.name} className="hov grid-item3">
 <p>
 <NavLink className="navTo" to={`/albums/${e.id}?name=${artistId}`}>{e.name}</NavLink>
 </p>
@@ -100,11 +100,11 @@ return (
 
 <div style={{width:'62%'}}>
 <h6 className="songsTitle">Songs</h6>
-<div style={{marginBottom:"10%", height:"240px", whiteSpace:"nowrap"}} className="dataSongs">
+<div className="artistData">
 {songList}
-</div>
+</div><br/><br/><br/><br/><br/>
 <h6 className="songsTitle">Albums</h6>
-<div style={{height:"240px", whiteSpace:"nowrap"}} className="dataSongs">
+<div className="artistData">
 {albumList}
 </div>
 </div>

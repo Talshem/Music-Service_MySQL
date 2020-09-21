@@ -35,7 +35,7 @@ useEffect(() => {
       }
   } catch(response) {
         setLoading(false)
-    return setPlaylist(<p style={{top:"440px", fontSize:"120px",textAlign:"right",width:"86%"}} className="listTitle">Unknown playlist</p>)
+    return setPlaylist(<p style={{top:"430px", fontSize:"120px",textAlign:"right",width:"86%"}} className="listTitle">Unknown playlist</p>)
   }
     }; fetchData();
    }, [songs])
@@ -93,7 +93,7 @@ return (
 </div>
 </div>
 </div>
-<NavLink  className="fa fa-arrow-left back" to="/playlists"></NavLink>
+<NavLink className="fa fa-arrow-left back" to="/playlists"></NavLink>
 </div>
 )}
 setPlaylist(x)

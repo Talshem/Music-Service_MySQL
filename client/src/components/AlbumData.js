@@ -43,7 +43,7 @@ useEffect(() => {
       }
       } catch(response) {
         setLoading(false)
-  return setAlbum(<p style={{top:"440px", fontSize:"120px",textAlign:"right",width:"86%"}} className="listTitle">Unknown album</p>)
+  return setAlbum(<p style={{top:"430px", fontSize:"120px",textAlign:"right",width:"86%"}} className="listTitle">Unknown album</p>)
   }
     }; fetchData();
    }, [songs])

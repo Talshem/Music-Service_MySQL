@@ -76,7 +76,7 @@ color: rgb(149, 243, 215, 1)
  border: 2px solid rgb(149, 243, 215, 1); 
 }
 
-.grid-item2:hover p,.grid-item:hover p, .hov:hover p{
+.grid-item3:hover p, .grid-item2:hover p,.grid-item:hover p, .hov:hover p{
 animation-iteration-count: infinite;
 animation-name: movement;
 animation-duration: 15s;
@@ -295,29 +295,64 @@ font-size:20px;
 display: inline-flex;
 }
 
+
+
+.artistData{
+position: relative;
+border: 1px solid white;
+border-radius: 10px;
+background:rgb(10, 10, 10);
+padding-left:2.5%;
+overflow-x: auto;
+overflow-y: hidden;
+height:255px;
+width:98%;
+margin-top:-115px;
+margin-bottom: -35px;
+white-space: nowrap;
+}
+
+.grid-item3 {
+width:210px;;
+position: relative;
+border-right: 30px solid transparent;
+color:white;
+display: inline-block;
+height:260px;
+margin-top:-15px;
+overflow-y: auto;
+overflow-x: hidden;
+font-size: 20px;
+}
+
+.grid-item3 p{
+margin-bottom:10px;
+margin-left:5%;
+width:87%;
+}
+
 .dataSongs{
 position: relative;
 border: 1px solid white;
 border-radius: 10px;
 background:rgb(10, 10, 10);
-padding-left:3%;
-overflow-x: auto;
-overflow-y: hidden;
-height:100%;
-padding-bottom:40px;
-width:97.5%;
-text-align: center;
+padding-left:5%;
+overflow-y: auto;
+overflow-x: hidden;
+height:650px;
+width:95.5%;
 margin-top:-115px;
+margin-bottom: -35px;
 }
 
 .grid-item2 {
-width:220px;;
+width:215px;
 position: relative;
 border-right: 30px solid transparent;
 color:white;
 display: inline-block;
-height:100%;
-margin-top:5px;
+height:240px;
+margin-top:15px;
 overflow:hidden;
 }
 

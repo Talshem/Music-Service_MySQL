@@ -31,7 +31,7 @@ useEffect(() => {
       }
   } catch(response) {
         setLoading(false)
-    return setSong(<p style={{top:"440px", fontSize:"120px",textAlign:"right",width:"86%"}} className="listTitle">Unknown song</p>)
+    return setSong(<p style={{top:"430px", fontSize:"120px",textAlign:"right",width:"86%"}} className="listTitle">Unknown song</p>)
   }
     }; fetchData();
    }, [])
