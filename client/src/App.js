@@ -34,37 +34,6 @@ import NoFound from './NoFound.js';
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import Slide from '@material-ui/core/Slide';
 
-/*
-const routes = [
-{ path: '/Songs', Component: Songs },
-{ path: '/artists', Component: Artists },
-{ path: '/playlists', Component: Playlists },
-{ path: '/albums', Component: Albums },
-{ path: '/Uploads',  Component: Uploads },
-{ path: '/PostSong', Component: PostSong },
-{ path: '/PostPlaylist', Component: PostPlaylist },
-{ path: '/PostAlbum', Component: PostAlbum },
-{ path: '/PostArtist', Component: PostArtist },
-{ path: '*', Component: NoFound},
-]
-
-{routes.map(({path, Component}) => (
-            <Route key={path} path={path}>
-              {({ match }) => (
-                <CSSTransition
-                  in={match != null}
-                  timeout={300}
-                  classNames="page"
-                  unmountOnExit
-                >
-                    <Component user={user}/>
-                </CSSTransition>
-              )}
-            </Route>
-          ))
-}
-*/
-
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
 });
@@ -75,19 +44,19 @@ const [loginOpen,setLoginOpen] = useState(false)
 const [user, setUser] = useState(undefined);
 
 useEffect(() => {
-let user = localStorage.getItem('session');
-if (user == 0) {
-return
-}
-const autoLogin = async () => {
+  const autoLogin = async () => {
+  var name = "session=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var sessionCookie = decodedCookie.replace(name, '');
+
+if (sessionCookie != "" && sessionCookie != "0") {
 try {
-const { data } = await axios.get(`/auto/${user}`);
+const { data } = await axios.get(`/auto/${sessionCookie}`);
 setTimeout(() => {
 setUser(data[0])
 }, 500);
-} catch {
-return
-}
+} catch { return }
+  }
 }; autoLogin();
 }, [])
 
@@ -96,7 +65,7 @@ await axios.put(`/logout`, {
 email: user.email,
 });
 setUser(undefined)
-localStorage.clear();
+document.cookie = "session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     };
 
  
@@ -107,6 +76,7 @@ function validateEmail(mail) {
   }
     return (false)
 }
+
 
   const handleRegister = async (email, name, password, repassword) => {
     let code = generator.generate({
@@ -126,8 +96,6 @@ function validateEmail(mail) {
            }
 
       let occupied = await axios.get(`user/${name}`)  
-console.log(occupied.data)
-console.log(occupied.data.length)
       if(occupied.data.length !== 0){
       return document.getElementById('errorMessage').innerHTML = 'Username is already in use';
       } else {
@@ -137,15 +105,20 @@ console.log(occupied.data.length)
       password: password,
       auto_code: code,
       })
-localStorage.setItem('session', code);
+setTimeout(() => {
 setUser(data[0])
+}, 500);
 setRegisterOpen(false)
+
+ var d = new Date();
+  d.setTime(d.getTime() + (24*60*60*7));
+  var expires = "expires=" + d.toGMTString();
+  document.cookie = "session=" + code + ";" + expires + ";path=/";
     }
   } catch (response){
   document.getElementById('errorMessage').innerHTML='The email you tried to register with is already in use';
   }; 
   }
-
 
     const handleLogin = async (email, password) => {
     if(!validateEmail(email)) {
@@ -161,7 +134,12 @@ setRegisterOpen(false)
       password: password,
       auto_code: code,
       });
-localStorage.setItem('session', code);
+
+ var d = new Date();
+  d.setTime(d.getTime() + (24*60*60*7));
+  var expires = "expires=" + d.toGMTString();
+  document.cookie = "session=" + code + ";" + expires + ";path=/";
+
 setLoginOpen(false)   
 setTimeout(() => {
 setUser(data[0])

@@ -45,7 +45,7 @@ return (
     <input id="artist_img" required type="text" defaultValue={image} onChange={insertImage}/><br/><br/>
   <br/> <br/>
     <input type='submit' className="post" value="Post Artist"/>
-    <NavLink className="fa fa-arrow-left back" to="/Artists"></NavLink>
+    <NavLink style={{marginTop:'-50px'}} className="fa fa-arrow-left back" to="/Artists"></NavLink>
     </div>
     </form>
 

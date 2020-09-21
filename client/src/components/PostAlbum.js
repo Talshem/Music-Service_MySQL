@@ -99,7 +99,7 @@ return (
    <input max={today} style={{height:"32px"}} id="album_date" required type="date" defaultValue={created_at} onChange={insertRelease}/><br/><br/>
     <br/>
     <input type='submit' className="post" value="Post Album"/>
-    <NavLink className="fa fa-arrow-left back" to="/Albums"></NavLink>
+    <NavLink style={{marginTop:'-50px'}} className="fa fa-arrow-left back" to="/Albums"></NavLink>
     </div>
     </form>
 

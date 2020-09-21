@@ -231,15 +231,15 @@ cursor: pointer;
 }
 
 .grid-item p {
-height:32px;
+height:34px;
 z-index: 0;
 position: relative;
 background: transparent;
 white-space: nowrap;
 overflow: hidden;
 margin-left:37px;
-margin-bottom:6px;
-margin-top:-0px;
+margin-bottom:10px;
+margin-top:-5px;
 color:white;
 text-align: left;
 width:210px;
@@ -383,6 +383,7 @@ justify-content:space-around;
 width:95%;
 position: relative;
 left: -30px;
+height:500px;
 }
 
 form{
@@ -548,7 +549,7 @@ padding-bottom:200px;
 width:92.5%;
 margin-right:20px;
 background:rgb(10, 10, 10);
-height: 350px;
+height: 345px;
 display:flex;
 justify-content:flex-start;
 overflow:auto;

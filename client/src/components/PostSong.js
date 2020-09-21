@@ -43,7 +43,6 @@ if (/^([0-5]?[0-9]|2[0-3]):[0-5][0-9]$/.test(length)) {
 }
 
 const addSong = async (event, title, length, youtube_id, artist, album, track_number, lyrics, created_at) => {
-console.log(title, length, youtube_id, artist, album, track_number, lyrics, created_at)
 event.preventDefault();
     let regex = /'/gi
     let enter = /\n/gi

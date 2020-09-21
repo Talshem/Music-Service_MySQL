@@ -134,7 +134,7 @@ const override =`
   position:absolute;
   width:200px;
   height:200px;
-  margin-top:-190px;
+  margin-top:200px;
   left: 40%;
 `;
 

@@ -35,7 +35,8 @@ useEffect(() => {
       let artistList = artist.data.filter(e => e.user_name === userId);
       let playlistList = playlist.data.filter(e => e.user_name === userId);
       makeLists(songList, albumList, artistList, playlistList)
-      } catch(response) {
+      } catch (response) {
+    console.log(response)
     setLoading(false)
     setData(<p style={{top:"440px", fontSize:"120px",textAlign:"right",width:"86%"}} className="listTitle">User doesn't exist</p>)
       }

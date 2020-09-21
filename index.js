@@ -68,11 +68,10 @@ SELECT * FROM users WHERE email = '${body.email}' AND password = '${body.passwor
 
 // get an user
 app.get('/user/:name', (req, res, next) => {
-var date = new Date();
   con.query(`
 SELECT username, created_at, last_login FROM users WHERE username = '${req.params.name}';
     `, function (err, result) {
-    if(err) return next(err);
+    if(result.length === 0) return next(result);
     res.send(result)
     })
   }) 
@@ -98,7 +97,7 @@ const body = req.body;
   SELECT * FROM users WHERE email = '${body.email}' AND password = '${body.password}';
   `, function (err, result) {
     if (err) return next(err);
-    res.send(result[2])
+    res.send(result[1])
   });
 });
 
@@ -155,7 +154,7 @@ WHERE email = '${body.user}';
 UPDATE albums SET is_liked = ${body.is_liked + 1} WHERE id = '${body.id}';
 SELECT preferences FROM users WHERE email = '${body.user}';
     `, function (err, result) {
-    if (err) console.log(err);
+    if (err) return next(err);
     res.send(result[2])
     })
   } else {
