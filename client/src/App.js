@@ -322,8 +322,7 @@ const AnimatedSwitch = withRouter(({ location }) => (
 <div className="App">
 {platform}
    <SideNav
-        style={{background:'rgb(180, 60, 60)', borderRight:"2px solid white", width:'5.5%'}}
-        className="sideNav"
+        style={{background:'rgb(180, 60, 60)', borderRight:"2px solid white"}}
         expanded={true}
         onToggle={() => {return}}
       >

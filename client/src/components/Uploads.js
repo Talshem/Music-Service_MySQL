@@ -25,7 +25,7 @@ let { userId } = useParams()
 useEffect(() => {
     const fetchData = async () => {
       try {
-      await axios.get(`/user/${userId}`)
+      const username = await axios.get(`/user/${userId}`)
       const song = await axios.get(`/top_songs?name=${search}`)
       const album = await axios.get(`/top_albums?name=${search}`);
       const artist = await axios.get(`/top_artists?name=${search}`);
@@ -34,11 +34,9 @@ useEffect(() => {
       let albumList = album.data[0].filter(e => e.user_name === userId);
       let artistList = artist.data.filter(e => e.user_name === userId);
       let playlistList = playlist.data.filter(e => e.user_name === userId);
-      makeLists(songList, albumList, artistList, playlistList)
-      } catch (response) {
-    console.log(response)
-    setLoading(false)
-    setData(<p style={{top:"440px", fontSize:"120px",textAlign:"right",width:"86%"}} className="listTitle">User doesn't exist</p>)
+      makeLists(songList, albumList, artistList, playlistList, username.data)
+      } catch {
+    return setLoading(false)
       }
     }; fetchData();
    }, [toggle, props.user, user])
@@ -76,7 +74,7 @@ setToggle(!toggle)
 };
 
 
-const makeLists = (songs, albums, artists, playlists) => {
+const makeLists = (songs, albums, artists, playlists, username) => {
 
 let capitalUserId = userId.charAt(0).toUpperCase() + userId.slice(1)
 if (props.user) {
@@ -92,7 +90,7 @@ setUser(`${capitalUserId}'s Uploads`)
 let z =1000
 let sArray = songs.map(e => {
 z--;
-const deleteButton = props.user && props.user.email === e.user ? <button onClick={() => deleteSong(e)} className="deleteButton">Delete</button> : ''
+const deleteButton = props.user && props.user.email === e.user ? <button onClick={() => deleteSong(e)} style={{marginBottom:"15px"}} className="deleteButton">Delete</button> : ''
 
 return (
 <li key={e.youtube_id} style={{zIndex: z}} className="hov">
@@ -199,7 +197,11 @@ return(
 </div>
 </div> 
 )}
+if(username === "user doesn't exist"){
+setData(<p style={{top:"440px", fontSize:"120px",textAlign:"right",width:"86%"}} className="listTitle">User doesn't exist</p>)
+} else {
 setData(x)
+}
 setLoading(false)
 }
 

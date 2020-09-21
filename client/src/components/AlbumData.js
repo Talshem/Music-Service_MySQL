@@ -70,7 +70,7 @@ return (
 <div style={{width:'100%', marginTop:'-60px', color:"white", display:"flex"}}>
 
 <div style={{fontSize:'20px', width:'36%', marginRight:"2%"}}>
-<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="100%" height="66%" src={e.cover_img}></img>
+<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="100%" height="75%" src={e.cover_img}></img>
 <br/>
 <i><strong>{e.is_liked}</strong> people liked this album</i><br/>
 <br/><br/>

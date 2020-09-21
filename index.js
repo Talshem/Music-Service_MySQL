@@ -71,7 +71,8 @@ app.get('/user/:name', (req, res, next) => {
   con.query(`
 SELECT username, created_at, last_login FROM users WHERE username = '${req.params.name}';
     `, function (err, result) {
-    if(result.length === 0) return next(result);
+    if(err) return next(err);
+    if(result.length === 0) return res.send("user doesn't exist");
     res.send(result)
     })
   }) 

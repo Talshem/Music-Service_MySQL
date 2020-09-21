@@ -8,6 +8,7 @@ import {
 import YouTube from 'react-youtube';
 import LoadingOverlay from 'react-loading-overlay';
 import ClipLoader from "react-spinners/ClipLoader";
+import ReactPlayer from 'react-player/youtube'
 
 function PlaylistData(props) {
 const [songs, setSongs] = useState([])
@@ -59,7 +60,10 @@ useEffect(() => {
 
 function makeID(e){
 
+let url = []
+
 let list = songs.map(e => {
+url.push(`https://www.youtube.com/watch?v=${e.youtube_id}`)
 return (
 <li key={e.youtube_id} className="grid-item2">
 <p>
@@ -77,11 +81,10 @@ return (
 <br/><br/>
 <div style={{width:'100%',marginTop:'-105px', color:"white", display:"flex"}}>
 <div style={{fontSize:'20px', width:'36%', marginRight:"2%"}}>
-<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="100%" height="66%" src={e.cover_img}></img>
-<br/>
-<i><strong>{e.is_liked}</strong> people liked this playlist</i><br/>
-<br/><br/><br/><br/>
-<i><strong>Created by:</strong>{" "} 000</i>
+<ReactPlayer url={url} controls={true} width="100%" height="450px" />
+<i><strong>{e.is_liked}</strong> people liked this playlist</i>
+<br/><br/>
+<i><strong>Created by:</strong>{" "} {e.user_name}</i><br/><br/><br/>
 </div>
 <div style={{width:'62%'}}>
 <h6 className="songsTitle">Songs</h6>

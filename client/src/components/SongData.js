@@ -51,6 +51,7 @@ lyrics = e.lyrics.split("&&").map(function(item, idx) {
 
 let x = () => {
 return(
+  <div>
 <div  style={{marginLeft:'50px'}}>
 <p className="dataTitle">{e.title}</p>
 <br/>
@@ -71,6 +72,8 @@ return(
 {lyrics}
 </div>
 </div>
+</div>
+<NavLink style={{marginTop:'-35px', marginLeft:'50px'}}  className="fa fa-arrow-left back" to="/songs"></NavLink>
 </div>
 )}
 setSong(x)
@@ -93,7 +96,6 @@ const override =`
   >
   </LoadingOverlay>
 {song}
-{song ? <NavLink style={{marginTop:'-35px', marginLeft:'50px'}}  className="fa fa-arrow-left back" to="/songs"></NavLink> : ''}
 </div>
   );
   }
