@@ -27,8 +27,8 @@ let match = useRouteMatch();
 useEffect(() => {
 const getPreferences = async () => {
 try {
-const { data } = await axios.get(`/preferences/${props.user.email}`)
-setPreferences(data[0].preferences)
+const { data } = await axios.get(`/api/users/preferences/${props.user.email}`)
+setPreferences(data)
 } catch(error) {
 return 
 }
@@ -43,14 +43,13 @@ setAdmin(isAdmin)
 
 useEffect(() => {
     const fetchData = async () => {
-      let x = JSON.parse(preferences)
       try {
       const songs = await (await axios.get(`/api/songs?name=${search}`)).data;
       let list = songs.filter(e => e.title.toUpperCase().includes(search.toUpperCase()))
       if (!favorites) {
       makeSongs(list) 
       } else {
-      let favoriteList = list.filter(e => x.includes(`song: ${e.youtube_id}`))
+      let favoriteList = list.filter(e => JSON.parse(preferences).includes(`song: ${e.youtube_id}`))
       makeSongs(favoriteList)
       }
     } catch(response) {
@@ -73,9 +72,8 @@ setToggle(!toggle)
 };
 
 const playCount = async (e) => {
-await axios.put(`/api/songs/count`, {
-song_id: e.youtube_id,
-count: e.play_count + 1,
+await axios.patch(`/api/songs/count/${e.youtube_id}`, {
+play_count: e.play_count + 1,
 });
 };
 
@@ -97,21 +95,25 @@ promise2.then(() => {
 
 
 const handleLike = async (e) => {
-let x = JSON.parse(preferences)
-if (x.includes(`song: ${e.youtube_id}`)){
-await axios.put(`/api/songs/like`, {
-toggle: 'unlike',
-is_liked: e.is_liked,
-preferences: x,
-user: props.user.email,
-youtube_id: e.youtube_id,
-});
+let newPreferences = JSON.parse(preferences)
+if (newPreferences.includes(`song: ${e.youtube_id}`)){
+let x = newPreferences.filter(element => element !== `song: ${e.youtube_id}`)
+
+await axios.patch(`/api/songs/like/${e.youtube_id}`, {
+is_liked: e.is_liked - 1,
+})
+await axios.patch(`/api/users/${props.user.email}`, {
+preferences: JSON.stringify(x),
+password: props.user.password
+})
 } else {
-await axios.put(`/song/like`, {
-toggle: 'like',
-is_liked: e.is_liked,
-user: props.user.email,
-youtube_id: e.youtube_id,
+newPreferences.push(`song: ${e.youtube_id}`)
+await axios.patch(`/api/songs/like/${e.youtube_id}`, {
+is_liked: e.is_liked + 1,
+});
+await axios.patch(`/api/users/${props.user.email}`, {
+preferences: JSON.stringify(newPreferences),
+password: props.user.password
 });
 }
 setToggle(!toggle)

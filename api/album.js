@@ -24,6 +24,12 @@ router.patch('/:albumId', async (req, res) => {
   res.json(album)
 })
 
+router.patch('/like/:albumId', async (req, res) => {
+  const album = await Album.findByPk(req.params.albumId);
+  await album.update(req.body);
+  res.json(album)
+})
+
 router.delete('/:albumId', async (req, res) => {
   const album = await Album.findByPk(req.params.albumId);
   await album.destroy();

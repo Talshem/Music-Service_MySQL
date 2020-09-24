@@ -17,7 +17,7 @@ let { songId } = useParams();
 
 const playCount = async (e) => {
 await axios.patch(`/api/songs/count/${e.youtube_id}`, {
-count: e.play_count + 1,
+play_count: e.play_count + 1,
 });
 };
 

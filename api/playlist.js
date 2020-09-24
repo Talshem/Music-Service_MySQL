@@ -24,6 +24,12 @@ router.patch('/:playlistId', async (req, res) => {
   res.json(playlist)
 })
 
+router.patch('/like/:playlistId', async (req, res) => {
+  const playlist = await Playlist.findByPk(req.params.playlistId);
+  await playlist.update(req.body);
+  res.json(playlist)
+})
+
 router.delete('/:playlistId', async (req, res) => {
   const playlist = await Playlist.findByPk(req.params.playlistId);
   await playlist.destroy();

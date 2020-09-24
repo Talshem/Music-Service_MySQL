@@ -25,6 +25,12 @@ router.patch('/:artistId', async (req, res) => {
   res.json(artist)
 })
 
+router.patch('/like/:artistId', async (req, res) => {
+  const artist = await Artist.findByPk(req.params.artistId);
+  await artist.update(req.body);
+  res.json(artist)
+})
+
 router.delete('/:artistId', async (req, res) => {
   const artist = await Artist.findByPk(req.params.artistId);
   await artist.destroy();

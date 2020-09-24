@@ -28,7 +28,7 @@ useEffect(() => {
 const getPreferences = async () => {
 try {
 const { data } = await axios.get(`/api/users/preferences/${props.user.email}`)
-setPreferences(data[0].preferences)
+setPreferences(data)
 } catch {
 return
 }
@@ -44,14 +44,13 @@ setAdmin(isAdmin)
 
 useEffect(() => {
   const fetchData = async () => {
-      let x = JSON.parse(preferences)
       try{
       const playlists = await (await axios.get(`/api/playlists?name=${search}`)).data;
       let list = playlists.filter(e => e.name.toUpperCase().includes(search.toUpperCase()))
       if (!favorites) {
       makePlaylists(list) 
       } else {
-      let favoriteList = list.filter(e => x.includes(`playlist: ${e.id}`))
+      let favoriteList = list.filter(e => JSON.parse(preferences).includes(`playlist: ${e.id}`))
       makePlaylists(favoriteList)
       }} catch(response) {
     setLoading(false)
@@ -89,26 +88,29 @@ promise2.then(() => {
 
 
 const handleLike = async (e) => {
-let x = JSON.parse(preferences)
-if (preferences.includes(`playlist: ${e.id}`)){
-await axios.put(`/api/playlists/like`, {
-toggle: 'unlike',
-is_liked: e.is_liked,
-preferences: x,
-user: props.user.email,
-id: e.id,
-});
+let newPreferences = JSON.parse(preferences)
+if (newPreferences.includes(`playlist: ${e.id}`)){
+let x = newPreferences.filter(element => element !== `playlist: ${e.id}`)
+
+await axios.patch(`/api/playlists/like/${e.id}`, {
+is_liked: e.is_liked - 1,
+})
+await axios.patch(`/api/users/${props.user.email}`, {
+preferences: JSON.stringify(x),
+password: props.user.password
+})
 } else {
-await axios.put(`/api/playlists/like`, {
-toggle: 'like',
-is_liked: e.is_liked,
-user: props.user.email,
-id: e.id,
+newPreferences.push(`playlist: ${e.id}`)
+await axios.patch(`/api/playlists/like/${e.id}`, {
+is_liked: e.is_liked + 1,
+});
+await axios.patch(`/api/users/${props.user.email}`, {
+preferences: JSON.stringify(newPreferences),
+password: props.user.password
 });
 }
 setToggle(!toggle)
 }
-
 
 const makePlaylists = (playlists) => {
 

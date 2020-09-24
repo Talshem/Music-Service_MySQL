@@ -19,7 +19,13 @@ router.get('/:songId', async (req, res) => {
 })
 
 router.patch('/count/:songId', async (req, res) => {
-  const song = await Artist.findByPk(req.params.songId);
+  const song = await Song.findByPk(req.params.songId);
+  await song.update(req.body);
+  res.json(song)
+})
+
+router.patch('/like/:songId', async (req, res) => {
+  const song = await Song.findByPk(req.params.songId);
   await song.update(req.body);
   res.json(song)
 })

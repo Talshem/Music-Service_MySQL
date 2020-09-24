@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     type: DataTypes.INTEGER,
     defaultValue: 1,
     },
-    preferences: DataTypes.JSON,
+    preferences: DataTypes.TEXT,
     created_at: {
     type: DataTypes.DATE,
     defaultValue: date.toISOString().substring(0, 10)

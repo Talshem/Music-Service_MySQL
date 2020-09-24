@@ -44,9 +44,8 @@ useEffect(() => {
    }, [])
 
 const playCount = async (e) => {
-await axios.put(`/count`, {
-song_id: e.youtube_id,
-count: e.play_count + 1,
+await axios.patch(`/api/songs/count/${e.youtube_id}`, {
+play_count: e.play_count + 1,
 });
 };
 
