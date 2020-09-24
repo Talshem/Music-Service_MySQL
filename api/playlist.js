@@ -22,7 +22,7 @@ router.post('/', async (req, res) => {
 try {
   const newPlaylist = await Playlist.create(req.body);
   res.json(newPlaylist)
-} catch (err) { res.json(err)}
+} catch (err) {res.json(err)}
 })
 
 router.get('/:playlistId', async (req, res) => {

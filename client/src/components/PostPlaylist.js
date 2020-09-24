@@ -11,21 +11,8 @@ const [songs, setSongs] = useState([])
   useEffect(() => {
     const fetchData = async () => {
     const songs = await axios.get(`/api/songs`);
-    const artists = await axios.get(`/api/artists`)
-    const newArtists = artists.data.map(e => {return { id: e.id, name: e.name }})
-    let selectSong = songs.data.map(e => { return { value: e.youtube_id, label: `${e.title} - ${e.ArtistId}`}} )
-    let list = []
-    for ( let song of selectSong){
-      for (let artist of newArtists){
-        if (Number(song.label.substr(song.label.indexOf(' - ') + 3, song.label.length)) === artist.id){
-      
-          let x = song.label.replace(artist.id, artist.name);
-        list.push({value: song.value, label: x})
-        }
-      }
-    }
-
-setSongs(list)
+    let selectSong = songs.data.map(e => { return { value: e.youtube_id, label: `${e.title} - ${e.artist_name}`}} )
+setSongs(selectSong)
 
     }; fetchData();
    }, []); 
@@ -47,7 +34,7 @@ setSongs(list)
     try{
     await axios.post(`/api/playlists`, {
     name: newName, 
-    songs: newSongs, 
+    songs: JSON.stringify(newSongs), 
     cover_img: image,
     UserEmail: props.user.email,
     })

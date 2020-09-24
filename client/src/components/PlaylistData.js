@@ -28,7 +28,7 @@ useEffect(() => {
   const fetchData = async () => {
       try{
       const { data } = await axios.get(`/api/playlists/${playlistId}`);
-      const name = await axios.get(`/api/users/email/${data.UserEmail}`);
+      const name = await axios.get(`/api/users/${data.UserEmail}`);
       setPlaylistSongs(data.songs)
       makeID(data, name.data.username)
   } catch(response) {
@@ -44,9 +44,9 @@ useEffect(() => {
     const fetchData = async () => {
     try{
     let list = JSON.parse(playlistSongs);
-      const { data } = await axios.get(`/api/songs`, {
+    const { data } = await axios.get(`/api/songs`, {
       });
-      let songList = data[0].filter(e => list.includes(e.youtube_id))
+      let songList = data.filter(e => list.includes(e.youtube_id))
       setSongs(songList)
       } catch {
     return 
