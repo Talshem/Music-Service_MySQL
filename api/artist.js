@@ -1,11 +1,19 @@
 const { Router } = require('express');
 const { Artist } = require('../models');
 
+const { Op } = require("sequelize");
+
 const router = Router();
 
 router.get('/', async (req, res) => {
-  const allArtists = await Artist.findAll();
-  res.json(allArtists)
+const { name } = req.query;
+let allArtists;
+if (name) {
+allArtists = await Artist.findAll({where: {name: {[Op.substring]: name}}, limit: 20});
+} else {
+allArtists = await Artist.findAll({limit: 20});
+}
+res.json(allArtists)
 })
 
 router.post('/', async (req, res) => {

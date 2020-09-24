@@ -3,6 +3,8 @@ const { User } = require('../models');
 
 const router = Router();
 
+const { Op } = require("sequelize");
+
 router.get('/auto/:code', async (req, res) => {
   const user = await User.findOne({where : {auto_code: req.params.code}});
   res.json(user)
@@ -29,14 +31,9 @@ router.post('/', async (req, res) => {
   res.json(newUser)
 })
 
-router.get('/email/:userId', async (req, res) => {
-  const user = await User.findByPk(req.params.userId);
-  res.json(user)
-})
-
-
-router.get('/username/:userId', async (req, res) => {
-  const user = await User.findOne({where : {username: req.params.userId}});
+router.get('/:userId', async (req, res) => {
+  console.log(5)
+  const user = await User.findOne({where : { [Op.or]: [{ username: req.params.userId }, { email: req.params.userId }]}});
   res.json(user)
 })
 

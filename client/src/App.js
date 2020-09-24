@@ -96,7 +96,7 @@ function validateEmail(mail) {
     return document.getElementById('errorMessage').innerHTML='Password fields do not match';
            }
 
-      let occupied = await axios.get(`api/users/username/${name}`)  
+      let occupied = await axios.get(`api/users/${name}`)  
       if(occupied.data){
       return document.getElementById('errorMessage').innerHTML = 'Username is already in use';
       } else {

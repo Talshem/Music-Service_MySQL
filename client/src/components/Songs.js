@@ -90,7 +90,6 @@ promise2.then(() => {
     setDisabled(false)
   }, 1500);
 })
-
 }
 
 

@@ -25,7 +25,7 @@ let { userId } = useParams()
 useEffect(() => {
     const fetchData = async () => {
       try {
-      const username = await axios.get(`/api/users/username/${userId}`)
+      const username = await axios.get(`/api/users/${userId}`)
       const song = await axios.get(`/api/songs?name=${search}`)
       const album = await axios.get(`/api/albums?name=${search}`);
       const artist = await axios.get(`/api/artists?name=${search}`);
