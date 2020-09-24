@@ -26,15 +26,13 @@ const [artists, setArtists] = useState([]);
     return document.getElementById('albumError').innerHTML = "Select an artist";
     }
   const newName = name.replace(regex,`''`);
-  const newArtist = artist.value.replace(regex,`''`);
     try{
     await axios.post(`/api/albums`, {
     name: newName, 
-    artist: newArtist, 
+    ArtistId: artist.value, 
     cover_img: image,
     created_at: newCreated_at,
-    user: props.user.email,
-    user_name: props.user.username
+    UserEmail: props.user.email,
     })
   window.location.reload(false);
 } catch (response){
@@ -78,7 +76,7 @@ var yyyy = today.getFullYear();
 today = yyyy+'-'+mm+'-'+dd;
 
 
-let selectArtist = artists.map(e => ({ value: e.name, label: e.name }))
+let selectArtist = artists.map(e => ({ value: e.id, label: e.name }))
 
 return (
  <form id="albumForm" className="albumForm" onSubmit={(event) => addAlbum(event, name, image, artist, created_at)}>

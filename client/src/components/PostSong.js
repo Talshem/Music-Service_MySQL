@@ -56,8 +56,7 @@ event.preventDefault();
   const newCreated_at = created_at.slice(0,10)
   const newLyrics = lyrics.replace(regex,`''`).replace(enter,`&&`);
   const newTitle = title.replace(regex,`''`);
-  const newArtist = artist.value.replace(regex,`''`);
-  const newAlbum = album.value.replace(regex,`''`);
+
 
     if (!props.user) {
     return document.getElementById('songError').innerHTML = 'Only registered users can post new songs to the website';
@@ -73,13 +72,12 @@ event.preventDefault();
     title: newTitle, 
     length: length, 
     youtube_id: youtube_id, 
-    artist: newArtist, 
-    album: newAlbum, 
+    ArtistId: artist.value, 
+    AlbumId: album.value, 
     track_number: track_number, 
     lyrics: newLyrics, 
     created_at: newCreated_at,
-    user: props.user.email,
-    user_name: props.user.username
+    UserEmail: props.user.email,
     }
     )
   window.location.reload(false);
@@ -110,7 +108,7 @@ function form(){
         setCreated_at(event.target.value);
       }
       function insertArtist(event) {
-       let x = event.value
+       let x = event.label
        setArtist(event);
        setSelectAlbum(albumList.filter(e => e.label.includes(x)));
       }
@@ -118,8 +116,8 @@ function form(){
         setAlbum(event);
       }
       
-let selectArtist = artists.map(e => ({ value: e.name, label: e.name }))
-let albumList = albums.map(e => ({value: e.name, label: `${e.name} - ${e.artist}` }))
+let selectArtist = artists.map(e => ({ value: e.id, label: e.name }))
+let albumList = albums.map(e => ({value: e.id, label: `${e.name} - ${e.ArtistId}` }))
 
 
 var today = new Date();
