@@ -25,13 +25,13 @@ let { userId } = useParams()
 useEffect(() => {
     const fetchData = async () => {
       try {
-      const username = await axios.get(`/user/${userId}`)
-      const song = await axios.get(`/top_songs?name=${search}`)
-      const album = await axios.get(`/top_albums?name=${search}`);
-      const artist = await axios.get(`/top_artists?name=${search}`);
-      const playlist = await axios.get(`/top_playlists?name=${search}`);
-      let songList = song.data[0].filter(e => e.user_name === userId);
-      let albumList = album.data[0].filter(e => e.user_name === userId);
+      const username = await axios.get(`/api/users/username/${userId}`)
+      const song = await axios.get(`/api/songs?name=${search}`)
+      const album = await axios.get(`/api/albums?name=${search}`);
+      const artist = await axios.get(`/api/artists?name=${search}`);
+      const playlist = await axios.get(`/api/playlists?name=${search}`);
+      let songList = song.data.filter(e => e.user_name === userId);
+      let albumList = album.data.filter(e => e.user_name === userId);
       let artistList = artist.data.filter(e => e.user_name === userId);
       let playlistList = playlist.data.filter(e => e.user_name === userId);
       makeLists(songList, albumList, artistList, playlistList, username.data)
@@ -55,27 +55,26 @@ count: e.play_count + 1,
 
 const deleteSong = async (e) => {
 const newId = e.youtube_id.replace(`'`,`''`);
-await axios.delete(`/song/${newId}`);
+await axios.delete(`/api/songs/${newId}`);
 setToggle(!toggle)
 };
 const deleteArtist = async (e) => {
 const newName = e.name.replace(`'`,`''`);
-await axios.delete(`/artist/${newName}`);
+await axios.delete(`/api/artists/${newName}`);
 setToggle(!toggle)
 };
 const deleteAlbum = async (e) => {
 const newName = e.name.replace(`'`,`''`);
-await axios.delete(`/album/${newName}`);
+await axios.delete(`/api/albums/${newName}`);
 setToggle(!toggle)
 };
 const deletePlaylist = async (e) => {
-await axios.delete(`/playlist/${e.id}`);
+await axios.delete(`/api/playlists/${e.id}`);
 setToggle(!toggle)
 };
 
 
 const makeLists = (songs, albums, artists, playlists, username) => {
-
 let capitalUserId = userId.charAt(0).toUpperCase() + userId.slice(1)
 if (props.user) {
 if(props.user.username.toUpperCase() === userId.toUpperCase()){

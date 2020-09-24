@@ -21,8 +21,8 @@ const [created_at, setCreated_at] = useState(undefined)
 
   useEffect(() => {
     const fetchData = async () => {
-      setAlbums(await (await axios.get(`/top_albums`)).data[0]);
-      setArtists(await (await axios.get(`/top_artists`)).data);
+      setAlbums(await (await axios.get(`/api/albums`)).data);
+      setArtists(await (await axios.get(`/api/artists`)).data);
     }; fetchData();
    }, []);
 
@@ -69,7 +69,7 @@ event.preventDefault();
     return document.getElementById('songError').innerHTML = "Track number field must be a 2-digit number";
     }
     try{
-    await axios.post(`/song`, {
+    await axios.post(`/api/songs`, {
     title: newTitle, 
     length: length, 
     youtube_id: youtube_id, 

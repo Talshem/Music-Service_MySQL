@@ -5,6 +5,7 @@ var DataTypes = require('sequelize/lib/data-types');
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
+const date = new Date();
     await queryInterface.createTable('users', {
     email: {
     type: DataTypes.STRING,
@@ -13,11 +14,23 @@ module.exports = {
     },
     username: DataTypes.STRING,
     password: DataTypes.STRING,
-    is_admin: DataTypes.INTEGER,
-    remember_token: DataTypes.INTEGER,
+    is_admin: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
+    },
+    remember_token: {
+    type: DataTypes.INTEGER,
+    defaultValue: 1,
+    },
     preferences: DataTypes.JSON,
-    created_at: DataTypes.DATE,
-    last_login: DataTypes.DATE,
+    created_at: {
+    type: DataTypes.DATE,
+    defaultValue: date.toISOString().substring(0, 10)
+    },
+    last_login: {
+    type: DataTypes.DATE,
+    defaultValue: date.toISOString().substring(0, 10),
+    },
     auto_code: DataTypes.STRING,
     });
   },

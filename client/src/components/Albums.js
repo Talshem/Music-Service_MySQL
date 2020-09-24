@@ -27,7 +27,7 @@ let match = useRouteMatch();
 useEffect(() => {
 const getPreferences = async () => {
 try {
-const { data } = await axios.get(`/preferences/${props.user.email}`)
+const { data } = await axios.get(`/api/users/preferences/${props.user.email}`)
 setPreferences(data[0].preferences)
 } catch {
 return
@@ -45,7 +45,7 @@ useEffect(() => {
     const fetchData = async () => {
       let x = JSON.parse(preferences)
       try{
-      const albums = await (await axios.get(`/top_albums?name=${search}`)).data;
+      const albums = await (await axios.get(`/api/albums?name=${search}`)).data;
       let list = albums[0].filter(e => e.name.toUpperCase().includes(search.toUpperCase()))
       if (!favorites) {
       makeAlbums(list) 
@@ -66,7 +66,7 @@ setLoading(true)
 
 const deleteAlbum = async (e) => {
 const newName = e.name.replace(`'`,`''`);
-await axios.delete(`/album/${newName}`);
+await axios.delete(`/api/albums/${newName}`);
 setToggle(!toggle)
 };
 const isLiked= (e) => {
@@ -88,7 +88,7 @@ promise2.then(() => {
 const handleLike = async (e) => {
 let x = JSON.parse(preferences)
 if (x.includes(`album: ${e.id}`)){
-await axios.put(`/album/like`, {
+await axios.put(`/api/albums/like`, {
 toggle: 'unlike',
 is_liked: e.is_liked,
 preferences: x,
@@ -97,7 +97,7 @@ id: e.id,
 });
 setToggle(!toggle)
 } else {
-await axios.put(`/album/like`, {
+await axios.put(`/api/albums/like`, {
 toggle: 'like',
 is_liked: e.is_liked,
 user: props.user.email,

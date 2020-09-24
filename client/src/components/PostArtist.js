@@ -10,15 +10,20 @@ function PostArtist(props) {
   event.preventDefault();
   let regex = /'/gi
   const newName = name.replace(regex,`''`);
+
+    if (!props.user) {
+    return document.getElementById('artistError').innerHTML = 'Only registered users can post new songs to the website';
+    }
+
     try{
-    await axios.post(`/artist`, {
+    await axios.post(`/api/artists`, {
     name: newName, 
     cover_img: image,
-    user: props.user.email,
-    user_name: props.user.username
+    UserEmail: props.user.email,
     })
   document.getElementById("artistForm").reset();
 } catch (response){
+  console.log(response)
    document.getElementById('artistError').innerHTML = "Undetected Error";
   }; 
 };

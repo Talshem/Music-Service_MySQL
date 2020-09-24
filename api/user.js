@@ -9,17 +9,24 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
+  console.log(req.body)
   const newUser = await User.create(req.body);
   res.json(newUser)
 })
 
-router.get('/:userId', async (req, res) => {
+router.get('/email/:userId', async (req, res) => {
   const user = await User.findByPk(req.params.userId);
   res.json(user)
 })
 
-router.patch('/:userId', async (req, res) => {
-  const user = await AUser.findByPk(req.params.userId);
+
+router.get('/username/:userId', async (req, res) => {
+  const user = await User.findOne({where : {username: req.params.userId}});
+  res.json(user)
+})
+
+router.patch('/login/:userId', async (req, res) => {
+  const user = await User.findByPk(req.params.userId);
   await user.update(req.body);
   res.json(user)
 })

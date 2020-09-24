@@ -10,6 +10,7 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
   const newArtist = await Artist.create(req.body);
+    console.log(req.body)
   res.json(newArtist)
 })
 

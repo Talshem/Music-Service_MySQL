@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.Playlist);
     }
   };
+  const date = new Date();
   User.init({
     email: {
     type: DataTypes.STRING,
@@ -19,13 +20,24 @@ module.exports = (sequelize, DataTypes) => {
     },
     username: DataTypes.STRING,
     password: DataTypes.STRING,
-    is_admin: DataTypes.INTEGER,
-    remember_token: DataTypes.INTEGER,
+    is_admin: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
+    },
+    remember_token: {
+    type: DataTypes.INTEGER,
+    defaultValue: 1,
+    },
     preferences: DataTypes.JSON,
-    created_at: DataTypes.DATE,
-    last_login: DataTypes.DATE,
-    auto_code: DataTypes.STRING,
-
+    created_at: {
+    type: DataTypes.DATE,
+    defaultValue: date.toISOString().substring(0, 10)
+    },
+    last_login: {
+    type: DataTypes.DATE,
+    defaultValue: date.toISOString().substring(0, 10),
+    },
+    auto_code: DataTypes.STRING
   }, {
     timestamps: false,
     sequelize,

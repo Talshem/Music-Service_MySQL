@@ -6,16 +6,18 @@ module.exports = (sequelize, DataTypes) => {
   class Song extends Model {
     static associate(models) {
       this.belongsTo(models.Artist, {
-        foreignKey: 'artist'
+        foreignKey: 'ArtistId'
       });
       this.belongsTo(models.Album, {
-        foreignKey: 'album'
+        foreignKey: 'AlbumId'
       });
       this.belongsTo(models.User, {
-      foreignKey: 'user'
+      foreignKey: 'UserEmail'
       });
     }
   };
+  const date = new Date();
+
   Song.init({
     youtube_id: {
     type: DataTypes.STRING,
@@ -23,16 +25,34 @@ module.exports = (sequelize, DataTypes) => {
     primaryKey: true    
     },
     title: DataTypes.STRING,
-    artist: DataTypes.INTEGER,
-    album: DataTypes.INTEGER,
-    lyrics: DataTypes.BLOB,
+    ArtistId: {
+    field: 'artist', 
+    type: DataTypes.INTEGER 
+    } ,
+    AlbumId: {
+    field: 'album', 
+    type: DataTypes.INTEGER 
+    },
+    lyrics: DataTypes.TEXT,
     length: DataTypes.STRING,
-    upload_at: DataTypes.DATE,
+    upload_at: {
+    type: DataTypes.DATE,
+    defaultValue: date.toISOString().substring(0, 10)
+    },
     created_at: DataTypes.DATE,
     track_number: DataTypes.INTEGER,
-    user: DataTypes.STRING,
-    is_liked: DataTypes.INTEGER,
-    play_count: DataTypes.INTEGER
+    UserEmail: {
+    field: 'user', 
+    type: DataTypes.STRING
+    },
+    is_liked: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
+    },
+    play_count: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
+    },
   }, {
     sequelize,
     timestamps: false,

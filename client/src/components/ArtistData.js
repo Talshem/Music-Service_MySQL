@@ -30,7 +30,7 @@ count: e.play_count + 1,
 useEffect(() => {
   const fetchData = async () => {
       try{
-      const { data } = await axios.get(`/artist/${artistId}`)
+      const { data } = await axios.get(`/api/artists/${artistId}`)
       setName(data[0].name)
       if (data[0].length !== 0){
       makeID(data[0])
@@ -46,9 +46,9 @@ useEffect(() => {
    useEffect(() => {
     const fetchData = async () => {
       try {
-      const album = await axios.get(`/top_albums?artist=${name}`);
+      const album = await axios.get(`/api/albums?artist=${name}`);
       setAlbums(album.data[1])
-      const song = await axios.get(`/top_songs?artist=${name}`);
+      const song = await axios.get(`/api/songs?artist=${name}`);
       setSongs(song.data[2])
     } catch { return }
     }; fetchData();

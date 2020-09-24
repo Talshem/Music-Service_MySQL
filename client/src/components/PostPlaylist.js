@@ -10,7 +10,7 @@ const [songs, setSongs] = useState([])
 
   useEffect(() => {
     const fetchData = async () => {
-      setSongs(await (await axios.get(`/top_songs`)).data[0]);
+      setSongs(await (await axios.get(`/api/songs`)).data[0]);
     }; fetchData();
    }, []); 
 
@@ -29,7 +29,7 @@ const [songs, setSongs] = useState([])
     }
   const newName = name.replace(regex,`''`);
     try{
-    await axios.post(`/playlist`, {
+    await axios.post(`/api/playlists`, {
     name: newName, 
     songs: newSongs, 
     cover_img: image,

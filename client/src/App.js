@@ -51,7 +51,7 @@ useEffect(() => {
 
 if (sessionCookie != "" && sessionCookie != "0") {
 try {
-const { data } = await axios.get(`/auto/${sessionCookie}`);
+const { data } = await axios.get(`/api/users/auto/${sessionCookie}`);
 setTimeout(() => {
 setUser(data[0])
 }, 500);
@@ -61,7 +61,7 @@ setUser(data[0])
 }, [])
 
 const handleLogout = async () => {
-await axios.put(`/logout`, {
+await axios.put(`/api/users/logout`, {
 email: user.email,
 });
 setUser(undefined)
@@ -95,18 +95,19 @@ function validateEmail(mail) {
     return document.getElementById('errorMessage').innerHTML='Password fields do not match';
            }
 
-      let occupied = await axios.get(`user/${name}`)  
-      if(occupied.data.length !== 0){
+      let occupied = await axios.get(`api/users/username/${name}`)  
+      if(occupied.data){
       return document.getElementById('errorMessage').innerHTML = 'Username is already in use';
       } else {
-      const { data } = await axios.post(`/users`, {
+      const { data } = await axios.post(`/api/users`, {
       username: name,
       email: email,
       password: password,
       auto_code: code,
+      preferences: '[]'
       })
 setTimeout(() => {
-setUser(data[0])
+setUser(data)
 }, 500);
 setRegisterOpen(false)
 
@@ -129,12 +130,11 @@ setRegisterOpen(false)
     numbers: true
 });
     try{
-      const { data } = await axios.put(`/users`, {
+      const { data } = await axios.patch(`/api/users/login/${email}`, {
       email: email,
       password: password,
       auto_code: code,
       });
-
  var d = new Date();
   d.setTime(d.getTime() + (24*60*60*7));
   var expires = "expires=" + d.toGMTString();
@@ -142,7 +142,7 @@ setRegisterOpen(false)
 
 setLoginOpen(false)   
 setTimeout(() => {
-setUser(data[0])
+setUser(data)
 }, 500);
   } catch (response){
   document.getElementById('errorMessage').innerHTML='Either the email or password you entered is incorrect';

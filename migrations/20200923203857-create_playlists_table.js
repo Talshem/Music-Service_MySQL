@@ -5,6 +5,7 @@ var DataTypes = require('sequelize/lib/data-types');
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
+    const date = new Date();
     await queryInterface.createTable('playlists', {
     id: {
     type: DataTypes.INTEGER,
@@ -14,10 +15,19 @@ module.exports = {
     },
     name: DataTypes.STRING,
     songs: DataTypes.JSON,
-    is_liked: DataTypes.INTEGER,
+    is_liked: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
+    },
     cover_img: DataTypes.STRING,
-    user: DataTypes.STRING,
-    created_at: DataTypes.DATE
+    UserEmail: {
+    field: 'user', 
+    type: DataTypes.STRING
+    },
+    created_at: {
+    type: DataTypes.DATE,
+    defaultValue: date.toISOString().substring(0, 10)
+    },
     });
   },
   down: async (queryInterface, Sequelize) => {

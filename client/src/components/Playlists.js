@@ -27,7 +27,7 @@ let match = useRouteMatch();
 useEffect(() => {
 const getPreferences = async () => {
 try {
-const { data } = await axios.get(`/preferences/${props.user.email}`)
+const { data } = await axios.get(`/api/users/preferences/${props.user.email}`)
 setPreferences(data[0].preferences)
 } catch {
 return
@@ -46,7 +46,7 @@ useEffect(() => {
   const fetchData = async () => {
       let x = JSON.parse(preferences)
       try{
-      const playlists = await (await axios.get(`/top_playlists?name=${search}`)).data;
+      const playlists = await (await axios.get(`/api/playlists?name=${search}`)).data;
       let list = playlists.filter(e => e.name.toUpperCase().includes(search.toUpperCase()))
       if (!favorites) {
       makePlaylists(list) 
@@ -67,7 +67,7 @@ setLoading(true)
 }
 
 const deletePlaylist = async (e) => {
-await axios.delete(`/playlist/${e.id}`);
+await axios.delete(`/api/playlists/${e.id}`);
 setToggle(!toggle)
 };
 
@@ -91,7 +91,7 @@ promise2.then(() => {
 const handleLike = async (e) => {
 let x = JSON.parse(preferences)
 if (preferences.includes(`playlist: ${e.id}`)){
-await axios.put(`/playlist/like`, {
+await axios.put(`/api/playlists/like`, {
 toggle: 'unlike',
 is_liked: e.is_liked,
 preferences: x,
@@ -99,7 +99,7 @@ user: props.user.email,
 id: e.id,
 });
 } else {
-await axios.put(`/playlist/like`, {
+await axios.put(`/api/playlists/like`, {
 toggle: 'like',
 is_liked: e.is_liked,
 user: props.user.email,

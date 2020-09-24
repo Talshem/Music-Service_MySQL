@@ -27,11 +27,13 @@ const [playlistsLength, setPlaylistsLength] = useState(0);
 useEffect(() => {
     const fetchData = async () => {
       try {
-      const songs = await axios.get(`/top_songs`)
-      const albums = await axios.get(`/top_albums`);
-      const artists = await axios.get(`/top_artists`);
-      const playlists = await axios.get(`/top_playlists`);
-      makeLists(songs.data[0], albums.data[0], artists.data, playlists.data)
+      const songs = await axios.get(`/api/songs`)
+      const albums = await axios.get(`/api/albums`);
+      const artists = await axios.get(`/api/artists`);
+      const playlists = await axios.get(`/api/playlists`);
+      console.log(songs.data)
+      console.log(albums)
+      makeLists(songs.data, albums.data, artists.data, playlists.data)
       setLoading(false)
       }
        catch(response) {

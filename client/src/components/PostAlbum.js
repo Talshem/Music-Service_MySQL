@@ -10,7 +10,7 @@ const [artists, setArtists] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      setArtists(await (await axios.get(`/top_artists`)).data);
+      setArtists(await (await axios.get(`/api/artists`)).data);
     }; fetchData();
    }, []);
   
@@ -28,7 +28,7 @@ const [artists, setArtists] = useState([]);
   const newName = name.replace(regex,`''`);
   const newArtist = artist.value.replace(regex,`''`);
     try{
-    await axios.post(`/album`, {
+    await axios.post(`/api/albums`, {
     name: newName, 
     artist: newArtist, 
     cover_img: image,

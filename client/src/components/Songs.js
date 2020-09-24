@@ -45,8 +45,7 @@ useEffect(() => {
     const fetchData = async () => {
       let x = JSON.parse(preferences)
       try {
-      const songs = await (await axios.get(`/top_songs?name=${search}`)).data[0];
-
+      const songs = await (await axios.get(`/api/songs?name=${search}`)).data;
       let list = songs.filter(e => e.title.toUpperCase().includes(search.toUpperCase()))
       if (!favorites) {
       makeSongs(list) 
@@ -69,12 +68,12 @@ setLoading(true)
 
 const deleteSong = async (e) => {
 const newId = e.youtube_id.replace(`'`,`''`);
-await axios.delete(`/song/${newId}`);
+await axios.delete(`/api/songs/${newId}`);
 setToggle(!toggle)
 };
 
 const playCount = async (e) => {
-await axios.put(`/count`, {
+await axios.put(`/api/songs/count`, {
 song_id: e.youtube_id,
 count: e.play_count + 1,
 });
@@ -100,7 +99,7 @@ promise2.then(() => {
 const handleLike = async (e) => {
 let x = JSON.parse(preferences)
 if (x.includes(`song: ${e.youtube_id}`)){
-await axios.put(`/song/like`, {
+await axios.put(`/api/songs/like`, {
 toggle: 'unlike',
 is_liked: e.is_liked,
 preferences: x,
@@ -108,7 +107,7 @@ user: props.user.email,
 youtube_id: e.youtube_id,
 });
 } else {
-await axios.put(`/song/like`, {
+await axios.put(`/api/songs/like`, {
 toggle: 'like',
 is_liked: e.is_liked,
 user: props.user.email,

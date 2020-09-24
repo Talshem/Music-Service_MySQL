@@ -5,12 +5,13 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Playlist extends Model {
     static associate(models) {
-      this.hasMany(models.Song);
       this.belongsTo(models.User, {
-        foreignKey: 'user'
+        foreignKey: 'UserEmail'
       });
     }
   };
+  const date = new Date();
+
   Playlist.init({
     id: {
     type: DataTypes.INTEGER,
@@ -20,10 +21,19 @@ module.exports = (sequelize, DataTypes) => {
     },
     name: DataTypes.STRING,
     songs: DataTypes.JSON,
-    is_liked: DataTypes.INTEGER,
+    is_liked: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
+    },
     cover_img: DataTypes.STRING,
-    user: DataTypes.STRING,
-    created_at: DataTypes.DATE
+    UserEmail: {
+    field: 'user', 
+    type: DataTypes.STRING
+    },
+    created_at: {
+    type: DataTypes.DATE,
+    defaultValue: date.toISOString().substring(0, 10)
+    },
   }, {
     sequelize,
     timestamps: false,

@@ -28,11 +28,10 @@ count: e.play_count + 1,
 useEffect(() => {
   const fetchData = async () => {
       try{
-      const { data } = await axios.get(`/playlist/${playlistId}`)
-      setPlaylistSongs(data[0].songs)
-      if (data[0].length !== 0){
-      makeID(data[0])
-      }
+      const { data } = await axios.get(`/api/playlists/${playlistId}`);
+      const name = await axios.get(`/api/users/email/${data.UserEmail}`);
+      setPlaylistSongs(data.songs)
+      makeID(data, name.data.username)
   } catch(response) {
         setLoading(false)
     return setPlaylist(<p style={{top:"430px", fontSize:"120px",textAlign:"right",width:"86%"}} className="listTitle">Unknown playlist</p>)
@@ -46,7 +45,7 @@ useEffect(() => {
     const fetchData = async () => {
     try{
     let list = JSON.parse(playlistSongs);
-      const { data } = await axios.get(`/top_songs`, {
+      const { data } = await axios.get(`/api/songs`, {
       });
       let songList = data[0].filter(e => list.includes(e.youtube_id))
       setSongs(songList)
@@ -58,7 +57,7 @@ useEffect(() => {
 
   
 
-function makeID(e){
+function makeID(e, name){
 
 let url = []
 
@@ -84,7 +83,7 @@ return (
 <ReactPlayer url={url} controls={true} width="100%" height="450px" />
 <i><strong>{e.is_liked}</strong> people liked this playlist</i>
 <br/><br/>
-<i><strong>Created by:</strong>{" "} {e.user_name}</i><br/><br/><br/>
+<i><strong>Created by:</strong>{" "} {name}</i><br/><br/><br/>
 </div>
 <div style={{width:'62%'}}>
 <h6 className="songsTitle">Songs</h6>

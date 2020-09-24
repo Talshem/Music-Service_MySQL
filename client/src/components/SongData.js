@@ -16,7 +16,7 @@ const [loading, setLoading] = useState(true);
 let { songId } = useParams();
 
 const playCount = async (e) => {
-await axios.put(`/count`, {
+await axios.put(`/api/songs/count`, {
 song_id: e.youtube_id,
 count: e.play_count + 1,
 });
@@ -25,7 +25,7 @@ count: e.play_count + 1,
 useEffect(() => {
   const fetchData = async () => {
       try{
-      const { data } = await axios.get(`/song/${songId}`)
+      const { data } = await axios.get(`/api/songs/${songId}`)
       if (data[0].length !== 0){
       makeID(data[0])
       }

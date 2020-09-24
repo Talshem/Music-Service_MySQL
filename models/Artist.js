@@ -8,10 +8,13 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.Song);
       this.hasMany(models.Album);
       this.belongsTo(models.User, {
-        foreignKey: 'user'
+        foreignKey: 'UserEmail'
       });
     }
   };
+
+  const date = new Date();
+
   Artist.init({
     id: {
     type: DataTypes.INTEGER,
@@ -20,10 +23,19 @@ module.exports = (sequelize, DataTypes) => {
     autoIncrement: true
     },
     name: DataTypes.STRING,
-    is_liked: DataTypes.INTEGER,
+    is_liked: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
+    },
     cover_img: DataTypes.STRING,
-    user: DataTypes.STRING,
-    upload_at: DataTypes.DATE,
+    UserEmail:{
+    field: 'user', 
+    type: DataTypes.STRING 
+    },
+    upload_at: {
+    type: DataTypes.DATE,
+    defaultValue: date.toISOString().substring(0, 10)
+    },
   }, {
     sequelize,
     timestamps: false,
