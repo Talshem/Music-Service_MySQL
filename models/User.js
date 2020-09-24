@@ -27,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
     auto_code: DataTypes.STRING,
 
   }, {
+    timestamps: false,
     sequelize,
     modelName: 'User',
   });

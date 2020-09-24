@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     upload_at: DataTypes.DATE,
   }, {
     sequelize,
+    timestamps: false,
     modelName: 'Artist',
   });
   return Artist;

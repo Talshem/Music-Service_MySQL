@@ -14,18 +14,18 @@ router.post('/', async (req, res) => {
 })
 
 router.get('/:playlistId', async (req, res) => {
-  const playlist = await Playlist.findByPk(req.params.artistId);
+  const playlist = await Playlist.findByPk(req.params.playlistId);
   res.json(playlist)
 })
 
 router.patch('/:playlistId', async (req, res) => {
-  const playlist = await Playlist.findByPk(req.params.artistId);
+  const playlist = await Playlist.findByPk(req.params.playlistId);
   await playlist.update(req.body);
   res.json(playlist)
 })
 
 router.delete('/:playlistId', async (req, res) => {
-  const playlist = await Playlist.findByPk(req.params.artistId);
+  const playlist = await Playlist.findByPk(req.params.playlistId);
   await playlist.destroy();
   res.json({ deleted: true })
 })

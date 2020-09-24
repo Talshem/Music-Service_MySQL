@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     created_at: DataTypes.DATE
   }, {
     sequelize,
+    timestamps: false,
     modelName: 'Playlist',
   });
   return Playlist;

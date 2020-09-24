@@ -5,7 +5,7 @@ const router = Router();
 router.use('/songs', require('./song'));
 router.use('/albums', require('./album'));
 router.use('/artists', require('./artist'));
-router.use('/playlists', require('./playlists'));
-router.use('/users', require('.users'));
+router.use('/playlists', require('./playlist'));
+router.use('/users', require('./user'));
 
 module.exports = router;

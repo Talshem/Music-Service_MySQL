@@ -35,6 +35,7 @@ module.exports = (sequelize, DataTypes) => {
     play_count: DataTypes.INTEGER
   }, {
     sequelize,
+    timestamps: false,
     modelName: 'Song',
   });
   return Song;

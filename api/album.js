@@ -14,18 +14,18 @@ router.post('/', async (req, res) => {
 })
 
 router.get('/:albumId', async (req, res) => {
-  conalbum = await Album.findByPk(req.params.artistId);
+  conalbum = await Album.findByPk(req.params.albumId);
   res.json(album)
 })
 
 router.patch('/:albumId', async (req, res) => {
-  const album = await Artist.findByPk(req.params.artistId);
+  const album = await Artist.findByPk(req.params.albumId);
   await album.update(req.body);
   res.json(album)
 })
 
 router.delete('/:albumId', async (req, res) => {
-  const album = await Album.findByPk(req.params.artistId);
+  const album = await Album.findByPk(req.params.albumId);
   await album.destroy();
   res.json({ deleted: true })
 })
