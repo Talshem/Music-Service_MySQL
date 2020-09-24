@@ -53,7 +53,7 @@ if (sessionCookie != "" && sessionCookie != "0") {
 try {
 const { data } = await axios.get(`/api/users/auto/${sessionCookie}`);
 setTimeout(() => {
-setUser(data[0])
+setUser(data)
 }, 500);
 } catch { return }
   }
@@ -61,8 +61,9 @@ setUser(data[0])
 }, [])
 
 const handleLogout = async () => {
-await axios.put(`/api/users/logout`, {
-email: user.email,
+await axios.patch(`/api/users/${user.email}`, {
+password: user.password,
+auto_code: 0,
 });
 setUser(undefined)
 document.cookie = "session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
@@ -130,8 +131,7 @@ setRegisterOpen(false)
     numbers: true
 });
     try{
-      const { data } = await axios.patch(`/api/users/login/${email}`, {
-      email: email,
+      const { data } = await axios.patch(`/api/users/${email}`, {
       password: password,
       auto_code: code,
       });
