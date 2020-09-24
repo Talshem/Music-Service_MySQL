@@ -56,6 +56,9 @@ event.preventDefault();
   const newCreated_at = created_at.slice(0,10)
   const newLyrics = lyrics.replace(regex,`''`).replace(enter,`&&`);
   const newTitle = title.replace(regex,`''`);
+  const newArtist = artist.label.substr(0, artist.label.indexOf(' - ') -1).replace(regex,`''`);
+  console.log(newArtist)
+  const newAlbum = album.label.replace(regex,`''`);
 
 
     if (!props.user) {
@@ -74,6 +77,8 @@ event.preventDefault();
     youtube_id: youtube_id, 
     ArtistId: artist.value, 
     AlbumId: album.value, 
+    artist_name: newArtist, 
+    album_name: newAlbum, 
     track_number: track_number, 
     lyrics: newLyrics, 
     created_at: newCreated_at,
@@ -117,8 +122,7 @@ function form(){
       }
       
 let selectArtist = artists.map(e => ({ value: e.id, label: e.name }))
-let albumList = albums.map(e => ({value: e.id, label: `${e.name} - ${e.ArtistId}` }))
-
+let albumList = albums.map(e => ({value: e.id, label: `${e.name} - ${e.artist_name}` }))
 
 var today = new Date();
 var dd = today.getDate();

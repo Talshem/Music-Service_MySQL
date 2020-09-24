@@ -30,10 +30,10 @@ useEffect(() => {
       const album = await axios.get(`/api/albums?name=${search}`);
       const artist = await axios.get(`/api/artists?name=${search}`);
       const playlist = await axios.get(`/api/playlists?name=${search}`);
-      let songList = song.data.filter(e => e.user_name === userId);
-      let albumList = album.data.filter(e => e.user_name === userId);
-      let artistList = artist.data.filter(e => e.user_name === userId);
-      let playlistList = playlist.data.filter(e => e.user_name === userId);
+      let songList = song.data.filter(e => e.UserEmail === username.data.email);
+      let albumList = album.data.filter(e => e.UserEmail === username.data.email);
+      let artistList = artist.data.filter(e => e.UserEmail === username.data.email);
+      let playlistList = playlist.data.filter(e => e.UserEmail === username.data.email);
       makeLists(songList, albumList, artistList, playlistList, username.data)
       } catch {
     return setLoading(false)

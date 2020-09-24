@@ -16,8 +16,7 @@ const [loading, setLoading] = useState(true);
 let { songId } = useParams();
 
 const playCount = async (e) => {
-await axios.put(`/api/songs/count`, {
-song_id: e.youtube_id,
+await axios.patch(`/api/songs/count/${e.youtube_id}`, {
 count: e.play_count + 1,
 });
 };
@@ -26,9 +25,7 @@ useEffect(() => {
   const fetchData = async () => {
       try{
       const { data } = await axios.get(`/api/songs/${songId}`)
-      if (data[0].length !== 0){
-      makeID(data[0])
-      }
+      makeID(data)
   } catch(response) {
         setLoading(false)
     return setSong(<p style={{top:"430px", fontSize:"120px",textAlign:"right",width:"86%"}} className="listTitle">Unknown song</p>)
@@ -62,8 +59,8 @@ return(
 <i><strong>{e.is_liked}</strong>  people liked this song</i><br/>
 <br/><br/><br/><br/><br/><br/><br/>
 <i><strong>Views:</strong>{" "} {e.play_count}</i><br/>
-<i><strong>Album:</strong>{" "}{e.album}</i><br/>
-<i><strong>Artist:</strong>{" "} {e.artist}</i><br/>
+<i><strong>Album:</strong>{" "}{e.album_name}</i><br/>
+<i><strong>Artist:</strong>{" "} {e.artist_name}</i><br/>
 <i><strong>Release date:</strong>{" "} {e.created_at.substr(0, 10)}</i><br/><br/>
 </div>
 <div className="dataLyrics">

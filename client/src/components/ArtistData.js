@@ -11,11 +11,8 @@ import ClipLoader from "react-spinners/ClipLoader";
 
 
 function ArtistData(props) {
-const [songs, setSongs] = useState([])
-const [albums, setAlbums] = useState([])
 const [loading, setLoading] = useState(true);
 const [artist, setArtist] = useState(undefined)
-const [name, setName] = useState(undefined)
 
 let { artistId } = useParams();
 
@@ -31,31 +28,18 @@ useEffect(() => {
   const fetchData = async () => {
       try{
       const { data } = await axios.get(`/api/artists/${artistId}`)
-      setName(data[0].name)
-      if (data[0].length !== 0){
-      makeID(data[0])
-      }
+      const albums = await axios.get(`/api/albums?artist=${artistId}`);
+      const songs = await axios.get(`/api/songs?artist=${artistId}`);
+      makeID(data, albums.data, songs.data)
   } catch(response) {
         setLoading(false)
     return setArtist(<p style={{top:"430px", fontSize:"120px",textAlign:"right",width:"86%"}} className="listTitle">Unknown artist</p>)
   }
     }; fetchData();
-   }, [songs, albums])
+   }, [])
 
 
-   useEffect(() => {
-    const fetchData = async () => {
-      try {
-      const album = await axios.get(`/api/albums?artist=${name}`);
-      setAlbums(album.data[1])
-      const song = await axios.get(`/api/songs?artist=${name}`);
-      setSongs(song.data[2])
-    } catch { return }
-    }; fetchData();
-   }, [name])
-
-
-function makeID(e){
+function makeID(e, albums, songs){
 
 
 let songList = songs.map(e => {

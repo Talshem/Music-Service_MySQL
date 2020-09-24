@@ -46,7 +46,7 @@ useEffect(() => {
       let x = JSON.parse(preferences)
       try{
       const albums = await (await axios.get(`/api/albums?name=${search}`)).data;
-      let list = albums[0].filter(e => e.name.toUpperCase().includes(search.toUpperCase()))
+      let list = albums.filter(e => e.name.toUpperCase().includes(search.toUpperCase()))
       if (!favorites) {
       makeAlbums(list) 
       } else {
@@ -126,7 +126,7 @@ return (
 <span style={{cursor:'pointer'}}>{like} {" "} </span>
 <p>
 <NavLink className="navTo" to={`${match.url}/${e.id}`}>
-{e.name} - {e.artist}
+{e.name} - {e.artist_name}
 </NavLink>
 </p>
 <NavLink className="navTo" to={`${match.url}/${e.id}`}>

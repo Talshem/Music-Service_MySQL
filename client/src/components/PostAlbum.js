@@ -26,10 +26,13 @@ const [artists, setArtists] = useState([]);
     return document.getElementById('albumError').innerHTML = "Select an artist";
     }
   const newName = name.replace(regex,`''`);
+  const newArtist = artist.label.replace(regex,`''`);
+
     try{
     await axios.post(`/api/albums`, {
     name: newName, 
-    ArtistId: artist.value, 
+    ArtistId: artist.value,
+    artist_name: newArtist, 
     cover_img: image,
     created_at: newCreated_at,
     UserEmail: props.user.email,

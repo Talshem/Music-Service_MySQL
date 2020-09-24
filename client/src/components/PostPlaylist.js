@@ -10,7 +10,23 @@ const [songs, setSongs] = useState([])
 
   useEffect(() => {
     const fetchData = async () => {
-      setSongs(await (await axios.get(`/api/songs`)).data[0]);
+    const songs = await axios.get(`/api/songs`);
+    const artists = await axios.get(`/api/artists`)
+    const newArtists = artists.data.map(e => {return { id: e.id, name: e.name }})
+    let selectSong = songs.data.map(e => { return { value: e.youtube_id, label: `${e.title} - ${e.ArtistId}`}} )
+    let list = []
+    for ( let song of selectSong){
+      for (let artist of newArtists){
+        if (Number(song.label.substr(song.label.indexOf(' - ') + 3, song.label.length)) === artist.id){
+      
+          let x = song.label.replace(artist.id, artist.name);
+        list.push({value: song.value, label: x})
+        }
+      }
+    }
+
+setSongs(list)
+
     }; fetchData();
    }, []); 
 
@@ -56,9 +72,11 @@ let song;
 
       function insertSongs(event) {
         song = event;
+        console.log(song)
       }
 
-let selectSong = songs.map(e => ({ value: e.youtube_id, label: `${e.title} - ${e.artist}` }))
+let selectSong = songs
+
 
 return (
  <form style={{marginTop:"150px"}} id="playlistForm" onSubmit={(event) => addPlaylist(event, name, song, image)}>

@@ -62,7 +62,7 @@ return (
 <Slide index={index} style={{zIndex: z}} key={e.youtube_id} className="hov carouselist">
 <div>
 <p>
-<NavLink className="navTo" to={`/songs/${e.youtube_id}`} >{e.title} - {e.artist}</NavLink>
+<NavLink className="navTo" to={`/songs/${e.youtube_id}`} >{e.title} - {e.artist_name}</NavLink>
 </p>
 <YouTube className="video" onPlay={() => playCount(e)}videoId={e.youtube_id} id="video" opts={{width:"250",height:"250"}}/>
 <br/><br/>
@@ -80,7 +80,7 @@ return (
 <Slide style={{zIndex: z}} key={e.name} className="hov carouselist">
 <p>
 <NavLink className="navTo" to={`/albums/${e.id}`} >
-{e.name} - {e.artist}
+{e.name} - {e.artist_name}
 </NavLink>
 </p>
 <NavLink className="navTo" to={`/albums/${e.id}`} >

@@ -107,7 +107,7 @@ user: props.user.email,
 youtube_id: e.youtube_id,
 });
 } else {
-await axios.put(`/api/songs/like`, {
+await axios.put(`/song/like`, {
 toggle: 'like',
 is_liked: e.is_liked,
 user: props.user.email,
@@ -133,7 +133,7 @@ return (
 <li key={e.youtube_id} className="grid-item">
 <span style={{cursor:'pointer'}} >{like}</span>
 <p>
-<NavLink className="navTo" to={`${match.url}/${e.youtube_id}`}>{e.title} - {e.artist}</NavLink>
+<NavLink className="navTo" to={`${match.url}/${e.youtube_id}`}>{e.title} - {e.artist_name}</NavLink>
 </p>
 <YouTube className="video" onPlay={() => playCount(e)} videoId={e.youtube_id} id="video" opts={{width:"250",height:"250"}}/>
 {adminDelete}

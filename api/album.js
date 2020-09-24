@@ -14,7 +14,7 @@ router.post('/', async (req, res) => {
 })
 
 router.get('/:albumId', async (req, res) => {
-  conalbum = await Album.findByPk(req.params.albumId);
+  const album = await Album.findByPk(req.params.albumId);
   res.json(album)
 })
 

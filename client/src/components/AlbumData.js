@@ -13,34 +13,24 @@ function AlbumData(props) {
 const [songs, setSongs] = useState([])
 const [album, setAlbum] = useState(undefined)
 const [loading, setLoading] = useState(true);
-const [name, setName] = useState(undefined)
 
 let { albumId } = useParams();
 
 const playCount = async (e) => {
-await axios.put(`/count`, {
+await axios.put(`/api/songs/count`, {
 song_id: e.youtube_id,
 count: e.play_count + 1,
 });
 };
 
 
-useEffect(() => {
-    const fetchData = async () => {
-      const { data } = await axios.get(`/top_songs?album=${name}`);
-      setSongs(data[1])
-    }; fetchData();
-   }, [name])
-
-
    useEffect(() => {
   const fetchData = async () => {
       try{
-      const { data } = await axios.get(`/album/${albumId}`)
-      setName(data[0].name)
-      if (data[0].length !== 0){
-      makeID(data[0])
-      }
+      const { data } = await axios.get(`/api/albums/${albumId}`)
+      const songs = await axios.get(`/api/songs/?album=${albumId}`);
+      setSongs(songs.data)
+      makeID(data)
       } catch(response) {
         setLoading(false)
   return setAlbum(<p style={{top:"430px", fontSize:"120px",textAlign:"right",width:"86%"}} className="listTitle">Unknown album</p>)
@@ -74,7 +64,7 @@ return (
 <br/>
 <i><strong>{e.is_liked}</strong> people liked this album</i><br/>
 <br/><br/>
-<i><strong>Artist:</strong>{" "} {e.artist}</i><br/>
+<i><strong>Artist:</strong>{" "} {e.artist_name}</i><br/>
 <i><strong>Release date:</strong>{" "} {e.created_at.substr(0, 10)}</i>
 </div>
 
