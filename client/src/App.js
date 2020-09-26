@@ -100,12 +100,15 @@ function validateEmail(mail) {
       if(occupied.data){
       return document.getElementById('errorMessage').innerHTML = 'Username is already in use';
       } else {
+      const date = new Date();
       const { data } = await axios.post(`/api/users`, {
       username: name,
       email: email,
       password: password,
       auto_code: code,
-      preferences: '[]'
+      preferences: '[]',
+      created_at: date.toISOString().substring(0, 10),
+      last_login: date.toISOString().substring(0, 10)
       })
 setTimeout(() => {
 setUser(data)
@@ -131,13 +134,14 @@ setRegisterOpen(false)
     numbers: true
 });
     try{
+       var date = new Date();
       const { data } = await axios.patch(`/api/users/${email}`, {
       password: password,
-      auto_code: code,
+      last_login: date.toISOString().substring(0, 10),
+      auto_code: code
       });
- var d = new Date();
-  d.setTime(d.getTime() + (24*60*60*7));
-  var expires = "expires=" + d.toGMTString();
+  date.setTime(date.getTime() + (24*60*60*7));
+  var expires = "expires=" + date.toGMTString();
   document.cookie = "session=" + code + ";" + expires + ";path=/";
 
 setLoginOpen(false)   

@@ -23,14 +23,8 @@ const date = new Date();
     defaultValue: 1,
     },
     preferences: DataTypes.TEXT,
-    created_at: {
-    type: DataTypes.DATE,
-    defaultValue: date.toISOString().substring(0, 10)
-    },
-    last_login: {
-    type: DataTypes.DATE,
-    defaultValue: date.toISOString().substring(0, 10),
-    },
+    created_at: DataTypes.DATE,
+    last_login: DataTypes.DATE,
     auto_code: DataTypes.STRING,
     });
   },

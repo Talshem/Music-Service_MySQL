@@ -59,13 +59,13 @@ router.patch('/:userId', async (req, res) => {
   } catch (err) { res.json(err)}
 })
 
-/*
+
 router.delete('/:userId', async (req, res) => {
   const user = await User.findByPk(req.params.userId);
   await user.destroy();
   res.json({ deleted: true })
 })
-*/
+
 
 
 module.exports = router;

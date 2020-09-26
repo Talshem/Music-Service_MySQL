@@ -15,6 +15,9 @@ app.use('/api/', require('./api'));
 
 const PORT = process.env.PORT || 3005;
 
+/*
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`)
 });
+*/
+module.exports = app
