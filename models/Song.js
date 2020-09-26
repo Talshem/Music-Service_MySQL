@@ -37,10 +37,7 @@ module.exports = (sequelize, DataTypes) => {
     album_name: DataTypes.STRING,
     lyrics: DataTypes.TEXT,
     length: DataTypes.STRING,
-    upload_at: {
-    type: DataTypes.DATE,
-    defaultValue: date.toISOString().substring(0, 10)
-    },
+    upload_at: DataTypes.DATE,
     created_at: DataTypes.DATE,
     track_number: DataTypes.INTEGER,
     UserEmail: {
@@ -56,6 +53,10 @@ module.exports = (sequelize, DataTypes) => {
     defaultValue: 0,
     },
   }, {
+  scopes: {
+  filter: {
+    attributes: { exclude: ['ArtistId', 'AlbumId', 'UserEmail'] },
+  }},
     sequelize,
     timestamps: false,
     modelName: 'Song',

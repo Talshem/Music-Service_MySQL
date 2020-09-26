@@ -8,12 +8,7 @@ const router = Router();
 router.get('/', async (req, res) => {
 try {
 const { name } = req.query;
-let allPlaylists;
-if (name) {
-allPlaylists = await Playlist.findAll({where: {name: {[Op.substring]: name}}, limit: 20});
-} else {
-allPlaylists = await Playlist.findAll({limit: 20});
-}
+let allPlaylists = await Playlist.scope('filter').findAll({where: {name: {[Op.substring]: name ? name : ''}}, limit: 20, order: [['is_liked','DESC']]});
 res.json(allPlaylists)
 } catch (err) { res.json(err)}
 })
@@ -27,7 +22,7 @@ try {
 
 router.get('/:playlistId', async (req, res) => {
 try {
-  const playlist = await Playlist.findByPk(req.params.playlistId);
+  const playlist = await Playlist.scope('filter').findByPk(req.params.playlistId);
   res.json(playlist)
 } catch (err) { res.json(err)}
 })

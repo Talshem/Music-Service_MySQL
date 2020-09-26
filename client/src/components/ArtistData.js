@@ -27,9 +27,7 @@ useEffect(() => {
   const fetchData = async () => {
       try{
       const { data } = await axios.get(`/api/artists/${artistId}`)
-      const albums = await axios.get(`/api/albums?artist=${artistId}`);
-      const songs = await axios.get(`/api/songs?artist=${artistId}`);
-      makeID(data, albums.data, songs.data)
+      makeID(data.artist, data.albums, data.songs)
   } catch(response) {
         setLoading(false)
     return setArtist(<p style={{top:"430px", fontSize:"120px",textAlign:"right",width:"86%"}} className="listTitle">Unknown artist</p>)

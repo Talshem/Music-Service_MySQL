@@ -21,7 +21,7 @@ router.get('/preferences/:userId', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-  const allUsers = await User.findAll();
+  const allUsers = await User.scope('filter').findAll();
   res.json(allUsers)
   } catch (err) { res.json(err)}
 })
@@ -35,8 +35,19 @@ router.post('/', async (req, res) => {
 
 router.get('/:userId', async (req, res) => {
   try {
-  const user = await User.findOne({where : { [Op.or]: [{ username: req.params.userId }, { email: req.params.userId }]}});
+  const user = await User.scope('filter').findOne({where : { [Op.or]: [{ username: req.params.userId }, { email: req.params.userId }]}});
   res.json(user)
+  } catch (err) { res.json(err)}
+})
+router.get('/uploads/:userId', async (req, res) => {
+  try {
+  const user = await User.scope('filter').findOne({ where :{ username: req.params.userId }});
+  const songs = await user.getSongs({scope: ['filter']});
+  const albums = await user.getAlbums({scope: ['filter']});
+  const artists = await user.getArtists({scope: ['filter']});
+  const playlists = await user.getPlaylists({scope: ['filter']});
+  let data = {user: user, songs: songs, albums: albums, artists: artists, playlists: playlists}
+  res.json(data)
   } catch (err) { res.json(err)}
 })
 

@@ -44,6 +44,8 @@ if (/^([0-5]?[0-9]|2[0-3]):[0-5][0-9]$/.test(length)) {
 
 const addSong = async (event, title, length, youtube_id, artist, album, track_number, lyrics, created_at) => {
 event.preventDefault();
+
+    const date = new Date();
     let regex = /'/gi
     let enter = /\n/gi
 
@@ -83,6 +85,7 @@ event.preventDefault();
     lyrics: newLyrics, 
     created_at: newCreated_at,
     UserEmail: props.user.email,
+    upload_at: date.toISOString().substring(0, 10)
     }
     )
   window.location.reload(false);

@@ -11,10 +11,8 @@ import ClipLoader from "react-spinners/ClipLoader";
 import ReactPlayer from 'react-player/youtube'
 
 function PlaylistData(props) {
-const [songs, setSongs] = useState([])
 const [loading, setLoading] = useState(true);
 const [playlist, setPlaylist] = useState(undefined)
-const [playlistSongs, setPlaylistSongs] = useState(undefined)
 
 let { playlistId } = useParams();
 
@@ -28,35 +26,20 @@ useEffect(() => {
   const fetchData = async () => {
       try{
       const { data } = await axios.get(`/api/playlists/${playlistId}`);
-      const name = await axios.get(`/api/users/${data.UserEmail}`);
-      setPlaylistSongs(data.songs)
-      makeID(data, name.data.username)
+      const songs = await axios.get(`/api/songs`)
+      let list = JSON.parse(data.songs);
+      let songList = songs.data.filter(e => list.includes(e.youtube_id))
+      makeID(data, songList)
   } catch(response) {
         setLoading(false)
     return setPlaylist(<p style={{top:"430px", fontSize:"120px",textAlign:"right",width:"86%"}} className="listTitle">Unknown playlist</p>)
   }
     }; fetchData();
-   }, [songs])
-
-
-
-useEffect(() => {
-    const fetchData = async () => {
-    try{
-    let list = JSON.parse(playlistSongs);
-    const { data } = await axios.get(`/api/songs`, {
-      });
-      let songList = data.filter(e => list.includes(e.youtube_id))
-      setSongs(songList)
-      } catch {
-    return 
-    }
-    }; fetchData();
-   }, [playlistSongs])
+   }, [])
 
   
 
-function makeID(e, name){
+function makeID(e, songs){
 
 let url = []
 
@@ -82,7 +65,7 @@ return (
 <ReactPlayer url={url} controls={true} width="100%" height="450px" />
 <i><strong>{e.is_liked}</strong> people liked this playlist</i>
 <br/><br/>
-<i><strong>Created by:</strong>{" "} {name}</i><br/><br/><br/>
+<i><strong>Created by:</strong>{" "} {e.user_name}</i><br/><br/><br/>
 </div>
 <div style={{width:'62%'}}>
 <h6 className="songsTitle">Songs</h6>

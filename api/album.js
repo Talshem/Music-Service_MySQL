@@ -7,16 +7,8 @@ const router = Router();
 
 router.get('/', async (req, res) => {
 try {
-const { artist } = req.query;
 const { name } = req.query;
-let allAlbums;
-if (artist){
-allAlbums = await Album.findAll({where: {artist: artist}, limit: 20});
-} else if (name) {
-allAlbums = await Album.findAll({where: {name: {[Op.substring]: name}}, limit: 20});
-} else {
-allAlbums = await Album.findAll({limit: 20});
-}
+let allAlbums = await Album.scope('filter').findAll({where: {name: {[Op.substring]: name ? name : ''}}, limit: 20, order: [['is_liked','DESC']]});
 res.json(allAlbums)
 } catch (err) { res.json(err)}
 })
@@ -30,8 +22,10 @@ router.post('/', async (req, res) => {
 
 router.get('/:albumId', async (req, res) => {
   try {
-  const album = await Album.findByPk(req.params.albumId);
-  res.json(album)
+  const album = await Album.scope('filter').findByPk(req.params.albumId);
+  const songs = await album.getSongs();
+  let data = {album: album, songs: songs}
+  res.json(data)
   } catch (err) { res.json(err)}
 })
 

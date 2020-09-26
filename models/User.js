@@ -39,6 +39,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     auto_code: DataTypes.STRING
   }, {
+  scopes: {
+  filter: {
+    attributes: { exclude: ['password', 'auto_code'] },
+  }},
     timestamps: false,
     sequelize,
     modelName: 'User',

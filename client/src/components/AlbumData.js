@@ -10,7 +10,6 @@ import LoadingOverlay from 'react-loading-overlay';
 import ClipLoader from "react-spinners/ClipLoader";
 
 function AlbumData(props) {
-const [songs, setSongs] = useState([])
 const [album, setAlbum] = useState(undefined)
 const [loading, setLoading] = useState(true);
 
@@ -27,19 +26,17 @@ play_count: e.play_count + 1,
   const fetchData = async () => {
       try{
       const { data } = await axios.get(`/api/albums/${albumId}`)
-      const songs = await axios.get(`/api/songs/?album=${albumId}`);
-      setSongs(songs.data)
-      makeID(data)
+      makeID(data.album, data.songs)
       } catch(response) {
         setLoading(false)
   return setAlbum(<p style={{top:"430px", fontSize:"120px",textAlign:"right",width:"86%"}} className="listTitle">Unknown album</p>)
   }
     }; fetchData();
-   }, [songs])
+   }, [])
 
 
 
-function makeID(e){
+function makeID(e, songs){
 let list = songs.map(e => {
 return (
 <li key={e.youtube_id} className="grid-item2">

@@ -17,6 +17,7 @@ const [artists, setArtists] = useState([]);
 
   const addAlbum = async (event, name, image, artist, created_at) => {
    event.preventDefault();
+    const date = new Date();
     let regex = /'/gi
   const newCreated_at = created_at.slice(0,10)
     if (!props.user) {
@@ -36,6 +37,7 @@ const [artists, setArtists] = useState([]);
     cover_img: image,
     created_at: newCreated_at,
     UserEmail: props.user.email,
+    upload_at: date.toISOString().substring(0, 10)
     })
   window.location.reload(false);
 } catch (response){

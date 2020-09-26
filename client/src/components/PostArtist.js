@@ -8,6 +8,7 @@ function PostArtist(props) {
 
   const addArtist = async (event, name, image) => {
   event.preventDefault();
+  const date = new Date();
   let regex = /'/gi
   const newName = name.replace(regex,`''`);
 
@@ -20,6 +21,7 @@ function PostArtist(props) {
     name: newName, 
     cover_img: image,
     UserEmail: props.user.email,
+    upload_at: date.toISOString().substring(0, 10)
     })
   document.getElementById("artistForm").reset();
 } catch (response){

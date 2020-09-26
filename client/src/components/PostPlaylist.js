@@ -19,6 +19,7 @@ setSongs(selectSong)
 
   const addPlaylist = async (event, name, songs, image) => {
   event.preventDefault();
+  const date = new Date();
   let regex = /'/gi
   let newSongs = []
   for (let song of songs){
@@ -34,9 +35,11 @@ setSongs(selectSong)
     try{
     await axios.post(`/api/playlists`, {
     name: newName, 
+    user_name: props.user.username,
     songs: JSON.stringify(newSongs), 
     cover_img: image,
     UserEmail: props.user.email,
+    created_at: date.toISOString().substring(0, 10)
     })
   document.getElementById("playlistForm").reset();
 } catch (response){

@@ -36,12 +36,13 @@ module.exports = (sequelize, DataTypes) => {
     field: 'user', 
     type: DataTypes.STRING
     },
-    upload_at: {
-    type: DataTypes.DATE,
-    defaultValue: date.toISOString().substring(0, 10)
-    },
+    upload_at: DataTypes.DATE,
     created_at: DataTypes.DATE
   }, {
+  scopes: {
+  filter: {
+    attributes: { exclude: ['UserEmail, ArtistId'] },
+  }},
     sequelize,
     timestamps: false,
     modelName: 'Album',

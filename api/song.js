@@ -8,20 +8,9 @@ const router = Router();
 router.get('/', async (req, res) => {
 try {
 const { name } = req.query;
-const { album } = req.query;
-const { artist } = req.query;
-let allSongs;
-if (album){
-allSongs = await Song.findAll({where: {album: album}, limit: 20});
-}
-else if (artist){
-allSongs = await Song.findAll({where: {artist: artist}, limit: 20});
-}
-else if (name) {
-allSongs = await Song.findAll({where: {title: {[Op.substring]: name}}, limit: 20});
-} else {
-allSongs = await Song.findAll({limit: 20});
-}
+let allSongs = await Song.scope('filter').findAll(
+{where: {title: {[Op.substring]: name ? name : ''}}, limit: 20, order: [['play_count','DESC']]}
+)
 res.json(allSongs)
 } catch (err) { res.json(err)}
 })

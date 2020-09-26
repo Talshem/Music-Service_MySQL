@@ -15,7 +15,6 @@ import ScrollContainer from 'react-indiana-drag-scroll'
 
 function UploadsData(props) {
 const [loading, setLoading] = useState(true);
-const [search, setSearch] = useState('');
 const [toggle, setToggle] = useState(false);
 const [user, setUser] = useState('Uploads')
 const [data, setData] = useState('')
@@ -25,26 +24,13 @@ let { userId } = useParams()
 useEffect(() => {
     const fetchData = async () => {
       try {
-      const username = await axios.get(`/api/users/${userId}`)
-      const song = await axios.get(`/api/songs?name=${search}`)
-      const album = await axios.get(`/api/albums?name=${search}`);
-      const artist = await axios.get(`/api/artists?name=${search}`);
-      const playlist = await axios.get(`/api/playlists?name=${search}`);
-      let songList = song.data.filter(e => e.UserEmail === username.data.email);
-      let albumList = album.data.filter(e => e.UserEmail === username.data.email);
-      let artistList = artist.data.filter(e => e.UserEmail === username.data.email);
-      let playlistList = playlist.data.filter(e => e.UserEmail === username.data.email);
-      makeLists(songList, albumList, artistList, playlistList, username.data)
+      const { data } = await axios.get(`/api/users/uploads/${userId}`)
+      makeLists(data[0], data.songs, data.albums, data.artists, data.playlists)
       } catch {
     return setLoading(false)
       }
     }; fetchData();
    }, [toggle, props.user, user])
-
-const handleSearch = () => {
-setToggle(!toggle)
-setLoading(true)
-}
 
 const playCount = async (e) => {
 await axios.patch(`/api/songs/count/${e.youtube_id}`, {
@@ -73,7 +59,8 @@ setToggle(!toggle)
 };
 
 
-const makeLists = (songs, albums, artists, playlists, username) => {
+const makeLists = (username, songs, albums, artists, playlists) => {
+
 let capitalUserId = userId.charAt(0).toUpperCase() + userId.slice(1)
 if (props.user) {
 if(props.user.username.toUpperCase() === userId.toUpperCase()){
@@ -167,9 +154,6 @@ let x = () => {
 return(
 <div>
 <p id="listTitle" className='listTitle'>{user}</p>
-<input className="filterList" onChange={(event) => setSearch(event.target.value)} /> 
-<button onClick={() => handleSearch()} className="searchButton">Search</button>
-
 
 <div className='uploadsList'>
 <h6 className="upTitle">Songs</h6>
