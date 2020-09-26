@@ -48,7 +48,7 @@ url.push(`https://www.youtube.com/watch?v=${e.youtube_id}`)
 return (
 <li key={e.youtube_id} className="grid-item2">
 <p>
-<NavLink className="navTo" to={`/songs/${e.youtube_id}?name=${playlistId}`}>{e.title}</NavLink>
+<NavLink className="navTo" to={`/songs/${e.youtube_id}?name=${playlistId}`}>{e.title} - {e.Artist.name}</NavLink>
 </p>
 <YouTube className="video" onPlay={() => playCount(e)} videoId={e.youtube_id} id="video" opts={{width:"200",height:"200"}}/>
 </li>   
