@@ -65,7 +65,7 @@ return (
 <ReactPlayer url={url} controls={true} width="100%" height="450px" />
 <i><strong>{e.is_liked}</strong> people liked this playlist</i>
 <br/><br/>
-<i><strong>Created by:</strong>{" "} {e.user_name}</i><br/><br/><br/>
+<i><strong>Created by:</strong>{" "} {e.User.username}</i><br/><br/><br/>
 </div>
 <div style={{width:'62%'}}>
 <h6 className="songsTitle">Songs</h6>
