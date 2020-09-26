@@ -19,10 +19,7 @@ module.exports = {
     defaultValue: 0,
     },
     cover_img: DataTypes.STRING,
-    UserEmail:{
-    field: 'user', 
-    type: DataTypes.STRING 
-    },
+    user_email: DataTypes.INTEGER,
     upload_at: DataTypes.DATE,
     });
   },

@@ -25,23 +25,11 @@ module.exports = (sequelize, DataTypes) => {
     primaryKey: true    
     },
     title: DataTypes.STRING,
-    ArtistId: {
-    field: 'artist', 
-    type: DataTypes.INTEGER 
-    } ,
-    AlbumId: {
-    field: 'album', 
-    type: DataTypes.INTEGER 
-    },
     lyrics: DataTypes.TEXT,
     length: DataTypes.STRING,
     upload_at: DataTypes.DATE,
     created_at: DataTypes.DATE,
     track_number: DataTypes.INTEGER,
-    UserEmail: {
-    field: 'user', 
-    type: DataTypes.STRING
-    },
     is_liked: {
     type: DataTypes.INTEGER,
     defaultValue: 0,
@@ -57,6 +45,8 @@ module.exports = (sequelize, DataTypes) => {
   }},
     sequelize,
     timestamps: false,
+    underscored: true,
+    paranoid: true,
     modelName: 'Song',
   });
   return Song;

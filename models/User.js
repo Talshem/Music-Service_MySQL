@@ -21,11 +21,11 @@ module.exports = (sequelize, DataTypes) => {
     username: DataTypes.STRING,
     password: DataTypes.STRING,
     is_admin: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BOOLEAN,
     defaultValue: 0,
     },
     remember_token: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BOOLEAN,
     defaultValue: 1,
     },
     preferences: DataTypes.TEXT,
@@ -45,6 +45,8 @@ module.exports = (sequelize, DataTypes) => {
   }},
     timestamps: false,
     sequelize,
+    paranoid: true,
+    underscored: true,
     modelName: 'User',
   });
   return User;

@@ -13,23 +13,14 @@ module.exports = {
     primaryKey: true    
     },
     title: DataTypes.STRING,
-    ArtistId: {
-    field: 'artist', 
-    type: DataTypes.INTEGER 
-    } ,
-    AlbumId: {
-    field: 'album', 
-    type: DataTypes.INTEGER 
-    },
+    artist_id: DataTypes.INTEGER,
+    album_id: DataTypes.INTEGER,
     lyrics: DataTypes.TEXT,
     length: DataTypes.STRING,
     upload_at: DataTypes.DATE,
     created_at: DataTypes.DATE,
     track_number: DataTypes.INTEGER,
-    UserEmail: {
-    field: 'user', 
-    type: DataTypes.STRING
-    },
+    user_email:  DataTypes.STRING,
     is_liked: {
     type: DataTypes.INTEGER,
     defaultValue: 0,

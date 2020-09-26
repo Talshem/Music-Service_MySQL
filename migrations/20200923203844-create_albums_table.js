@@ -14,19 +14,13 @@ module.exports = {
     autoIncrement: true
     },
     name: DataTypes.STRING,
-    ArtistId: {
-    field: 'artist', 
-    type: DataTypes.INTEGER
-    },
+    artist_id: DataTypes.INTEGER,
     is_liked: {
     type: DataTypes.INTEGER,
     defaultValue: 0,
     },
     cover_img: DataTypes.STRING,
-    UserEmail: {
-    field: 'user', 
-    type: DataTypes.STRING
-    },
+    user_email: DataTypes.STRING,
     upload_at: DataTypes.DATE,
     created_at: DataTypes.DATE
     });

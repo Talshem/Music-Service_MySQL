@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'UserEmail'
       });
       this.belongsTo(models.Artist, {
-        foreignKey: ''
+        foreignKey: 'ArtistId'
       });
     }
   };
@@ -25,19 +25,11 @@ module.exports = (sequelize, DataTypes) => {
     autoIncrement: true
     },
     name: DataTypes.STRING,
-    ArtistId: {
-    field: 'artist', 
-    type: DataTypes.INTEGER
-    }, 
     is_liked: {
     type: DataTypes.INTEGER,
     defaultValue: 0,
     },
     cover_img: DataTypes.STRING,
-    UserEmail: {
-    field: 'user', 
-    type: DataTypes.STRING
-    },
     upload_at: DataTypes.DATE,
     created_at: DataTypes.DATE
   }, {
@@ -47,6 +39,8 @@ module.exports = (sequelize, DataTypes) => {
   }},
     sequelize,
     timestamps: false,
+    paranoid: true,
+    underscored: true,
     modelName: 'Album',
   });
   return Album;

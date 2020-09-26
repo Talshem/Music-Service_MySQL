@@ -28,10 +28,6 @@ module.exports = (sequelize, DataTypes) => {
     defaultValue: 0,
     },
     cover_img: DataTypes.STRING,
-    UserEmail:{
-    field: 'user', 
-    type: DataTypes.STRING 
-    },
     upload_at: DataTypes.DATE,
   }, {
   scopes: {
@@ -40,6 +36,8 @@ module.exports = (sequelize, DataTypes) => {
   }},
     sequelize,
     timestamps: false,
+    paranoid: true,
+    underscored: true,
     modelName: 'Artist',
   });
   return Artist;

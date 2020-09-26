@@ -26,10 +26,6 @@ module.exports = (sequelize, DataTypes) => {
     defaultValue: 0,
     },
     cover_img: DataTypes.STRING,
-    UserEmail: {
-    field: 'user', 
-    type: DataTypes.STRING
-    },
     created_at: {
     type: DataTypes.DATE,
     defaultValue: date.toISOString().substring(0, 10)
@@ -41,6 +37,8 @@ module.exports = (sequelize, DataTypes) => {
   }},
     sequelize,
     timestamps: false,
+    paranoid: true,
+    underscored: true,
     modelName: 'Playlist',
   });
   return Playlist;
