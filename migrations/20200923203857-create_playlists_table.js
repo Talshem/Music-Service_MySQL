@@ -19,7 +19,6 @@ module.exports = {
     defaultValue: 0,
     },
     cover_img: DataTypes.STRING,
-    user_name: DataTypes.STRING,
     UserEmail: {
     field: 'user', 
     type: DataTypes.STRING

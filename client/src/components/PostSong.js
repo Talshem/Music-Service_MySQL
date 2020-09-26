@@ -59,7 +59,6 @@ event.preventDefault();
   const newLyrics = lyrics.replace(regex,`''`).replace(enter,`&&`);
   const newTitle = title.replace(regex,`''`);
   const newArtist = artist.label.substr(0, artist.label.indexOf(' - ') -1).replace(regex,`''`);
-  console.log(newArtist)
   const newAlbum = album.label.replace(regex,`''`);
 
 
@@ -123,9 +122,9 @@ function form(){
        function insertAlbum(event) {
         setAlbum(event);
       }
-      
+console.log(albums)
 let selectArtist = artists.map(e => ({ value: e.id, label: e.name }))
-let albumList = albums.map(e => ({value: e.id, label: `${e.name} - ${e.artist_name}` }))
+let albumList = albums.map(e => ({value: e.id, label: `${e.name} - ${e.Artist.name}` }))
 
 var today = new Date();
 var dd = today.getDate();

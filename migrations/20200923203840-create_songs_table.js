@@ -17,12 +17,10 @@ module.exports = {
     field: 'artist', 
     type: DataTypes.INTEGER 
     } ,
-    artist_name: DataTypes.STRING, 
     AlbumId: {
     field: 'album', 
     type: DataTypes.INTEGER 
     },
-    album_name: DataTypes.STRING,
     lyrics: DataTypes.TEXT,
     length: DataTypes.STRING,
     upload_at: DataTypes.DATE,

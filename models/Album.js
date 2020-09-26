@@ -9,6 +9,9 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models.User, {
         foreignKey: 'UserEmail'
       });
+      this.belongsTo(models.Artist, {
+        foreignKey: ''
+      });
     }
   };
 
@@ -25,8 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     ArtistId: {
     field: 'artist', 
     type: DataTypes.INTEGER
-    },
-    artist_name: DataTypes.STRING, 
+    }, 
     is_liked: {
     type: DataTypes.INTEGER,
     defaultValue: 0,
@@ -41,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
   scopes: {
   filter: {
-    attributes: { exclude: ['UserEmail, ArtistId'] },
+    attributes: { exclude: ['UserEmail', 'ArtistId'] },
   }},
     sequelize,
     timestamps: false,

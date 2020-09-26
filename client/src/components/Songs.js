@@ -134,7 +134,7 @@ return (
 <li key={e.youtube_id} className="grid-item">
 <span style={{cursor:'pointer'}} >{like}</span>
 <p>
-<NavLink className="navTo" to={`${match.url}/${e.youtube_id}`}>{e.title} - {e.artist_name}</NavLink>
+<NavLink className="navTo" to={`${match.url}/${e.youtube_id}`}>{e.title} - {e.Artist.name}</NavLink>
 </p>
 <YouTube className="video" onPlay={() => playCount(e)} videoId={e.youtube_id} id="video" opts={{width:"250",height:"250"}}/>
 {adminDelete}

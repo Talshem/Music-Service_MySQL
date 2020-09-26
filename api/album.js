@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const { Album } = require('../models');
+const { Artist } = require('../models');
 
 const { Op } = require("sequelize");
 
@@ -8,7 +9,8 @@ const router = Router();
 router.get('/', async (req, res) => {
 try {
 const { name } = req.query;
-let allAlbums = await Album.scope('filter').findAll({where: {name: {[Op.substring]: name ? name : ''}}, limit: 20, order: [['is_liked','DESC']]});
+let allAlbums = await Album.scope('filter').findAll({where: {name: {[Op.substring]: name ? name : ''}}, limit: 20, order: [['is_liked','DESC']],
+include: [{model: Artist, attributes: ['name']}]})
 res.json(allAlbums)
 } catch (err) { res.json(err)}
 })
@@ -22,7 +24,7 @@ router.post('/', async (req, res) => {
 
 router.get('/:albumId', async (req, res) => {
   try {
-  const album = await Album.scope('filter').findByPk(req.params.albumId);
+  const album = await Album.scope('filter').findByPk(req.params.albumId, {include: [{model: Artist, attributes: ['name']}]});
   const songs = await album.getSongs();
   let data = {album: album, songs: songs}
   res.json(data)

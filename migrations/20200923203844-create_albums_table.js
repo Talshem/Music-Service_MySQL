@@ -18,7 +18,6 @@ module.exports = {
     field: 'artist', 
     type: DataTypes.INTEGER
     },
-    artist_name: DataTypes.STRING,
     is_liked: {
     type: DataTypes.INTEGER,
     defaultValue: 0,

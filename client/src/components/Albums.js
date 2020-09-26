@@ -127,7 +127,7 @@ return (
 <span style={{cursor:'pointer'}}>{like} {" "} </span>
 <p>
 <NavLink className="navTo" to={`${match.url}/${e.id}`}>
-{e.name} - {e.artist_name}
+{e.name} - {e.Artist.name}
 </NavLink>
 </p>
 <NavLink className="navTo" to={`${match.url}/${e.id}`}>

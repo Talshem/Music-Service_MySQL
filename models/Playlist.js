@@ -30,7 +30,6 @@ module.exports = (sequelize, DataTypes) => {
     field: 'user', 
     type: DataTypes.STRING
     },
-    user_name: DataTypes.STRING,
     created_at: {
     type: DataTypes.DATE,
     defaultValue: date.toISOString().substring(0, 10)
