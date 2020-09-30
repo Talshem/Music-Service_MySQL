@@ -4,10 +4,11 @@ import {
   NavLink,
 } from "react-router-dom";
 import UserContext from '../UserContext'
-
-const user = useContext(UserContext)
+import network from '../Network.js';
 
 function PostArtist(props) {
+
+  const user = useContext(UserContext)
 
   const addArtist = async (event, name, image) => {
   event.preventDefault();
@@ -15,12 +16,8 @@ function PostArtist(props) {
   let regex = /'/gi
   const newName = name.replace(regex,`''`);
 
-    if (!user) {
-    return document.getElementById('artistError').innerHTML = 'Only registered users can post new songs to the website';
-    }
-
     try{
-    await axios.post(`/api/artists`, {
+    await network.post(`/api/artists`, {
     name: newName, 
     cover_img: image,
     username: user.username,
@@ -28,8 +25,7 @@ function PostArtist(props) {
     })
   document.getElementById("artistForm").reset();
 } catch (response){
-  console.log(response)
-   document.getElementById('artistError').innerHTML = "Undetected Error";
+   document.getElementById('artistError').innerHTML = "Only registered users can post new songs to the website";
   }; 
 };
 

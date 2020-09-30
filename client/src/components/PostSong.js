@@ -6,8 +6,6 @@ import {
 import Select from 'react-select';
 import UserContext from '../UserContext'
 
-const user = useContext(UserContext)
-
 function PostSong(props) {
 const [albums, setAlbums] = useState([]);
 const [artists, setArtists] = useState([]);
@@ -21,6 +19,8 @@ const [album, setAlbum] = useState(undefined)
 const [lyrics, setLyrics] = useState(undefined)
 const [track_number, setTrack_number] = useState(undefined)
 const [created_at, setCreated_at] = useState(undefined)
+
+const user = useContext(UserContext)
 
   useEffect(() => {
     const fetchData = async () => {

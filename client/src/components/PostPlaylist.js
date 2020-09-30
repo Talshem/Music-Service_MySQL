@@ -6,15 +6,15 @@ import {
 import Select from 'react-select';
 import UserContext from '../UserContext'
 
-const user = useContext(UserContext)
-
 function PostPlaylist(props) {
 const [songs, setSongs] = useState([])
+
+const user = useContext(UserContext)
 
   useEffect(() => {
     const fetchData = async () => {
     const songs = await axios.get(`/api/songs`);
-    let selectSong = songs.data.map(e => { return { value: e.youtube_id, label: `${e.title} - ${e.artist_name}`}} )
+    let selectSong = songs.data.map(e => { return { value: e.youtube_id, label: `${e.title} - ${e.Artist.name}`}} )
 setSongs(selectSong)
 
     }; fetchData();

@@ -6,10 +6,11 @@ import {
 import Select from 'react-select';
 import UserContext from '../UserContext'
 
-const user = useContext(UserContext)
 
 function PostAlbum(props) {
 const [artists, setArtists] = useState([]);
+
+const user = useContext(UserContext)
 
   useEffect(() => {
     const fetchData = async () => {

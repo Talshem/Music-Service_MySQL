@@ -13,14 +13,13 @@ import LoadingOverlay from 'react-loading-overlay';
 import ClipLoader from "react-spinners/ClipLoader";
 import ScrollContainer from 'react-indiana-drag-scroll'
 import UserContext from '../UserContext'
-
-const user = useContext(UserContext)
-
 function UploadsData(props) {
 const [loading, setLoading] = useState(true);
 const [toggle, setToggle] = useState(false);
 const [name, setName] = useState('Uploads')
 const [data, setData] = useState('')
+
+const user = useContext(UserContext)
 
 let { userId } = useParams()
 
@@ -219,6 +218,8 @@ const [search, setSearch] = useState(undefined)
 
 let match = useRouteMatch();
 
+const user = useContext(UserContext)
+
 return(
 <div style={{position:'relative', width:"92%", top:'0px'}}>
 <p className='listTitle'>Search user</p>
@@ -243,10 +244,10 @@ return(
 <div>
       <Switch>
         <Route path={`${match.path}/:userId`}>
-          <UploadsData user={user}/>
+          <UploadsData/>
         </Route>
         <Route path={match.path}>
-          <UploadsSearch user={user}/>
+          <UploadsSearch/>
         </Route>
       </Switch>
 </div>

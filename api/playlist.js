@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const { Playlist } = require('../models');
 const { User } = require('../models');
+const checkToken = require('../middlewares/checkToken');
 
 const { Op } = require("sequelize");
 
@@ -14,7 +15,7 @@ res.json(allPlaylists)
 } catch (err) {res.json(err)}
 })
 
-router.post('/', async (req, res) => {
+router.post('/', checkToken, async (req, res) => {
 try {
   const newPlaylist = await Playlist.create(req.body);
   res.json(newPlaylist)
@@ -28,7 +29,7 @@ try {
 } catch (err) { res.json(err)}
 })
 
-router.patch('/:playlistId', async (req, res) => {
+router.patch('/:playlistId', checkToken, async (req, res) => {
 try {
   const playlist = await Playlist.findByPk(req.params.playlistId);
   await playlist.update(req.body);
@@ -36,7 +37,7 @@ try {
 } catch (err) { res.json(err)}
 })
 
-router.patch('/like/:playlistId', async (req, res) => {
+router.patch('/like/:playlistId', checkToken, async (req, res) => {
 try {
   const playlist = await Playlist.findByPk(req.params.playlistId);
   await playlist.update(req.body);
@@ -44,7 +45,7 @@ try {
 } catch (err) { res.json(err)}
 })
 
-router.delete('/:playlistId', async (req, res) => {
+router.delete('/:playlistId', checkToken, async (req, res) => {
 try {
   const playlist = await Playlist.findByPk(req.params.playlistId);
   await playlist.destroy();

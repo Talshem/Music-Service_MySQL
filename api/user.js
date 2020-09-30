@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const { User } = require('../models');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const checkToken = require('../middlewares/checkToken');
 require('dotenv').config();
 
 const router = Router();
@@ -14,7 +15,8 @@ router.post('/login', async (req, res) => {
       message: 'Either the username or password you entered is incorrect'
     });
   }
-    let token = jwt.sign({username: username},
+    let token = jwt.sign(
+    {username: username},
     process.env.TOKEN_SECRET,
     { expiresIn: '7d' }
   );
@@ -74,7 +76,7 @@ router.get('/uploads/:userId', async (req, res) => {
   } catch (err) { res.json(err)}
 })
 
-router.delete('/:userId', async (req, res) => {
+router.delete('/:userId', checkToken, async (req, res) => {
   const user = await User.findByPk(req.params.userId);
   await user.destroy();
   res.json({ deleted: true })

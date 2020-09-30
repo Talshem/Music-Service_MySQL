@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const { Album } = require('../models');
 const { Artist } = require('../models');
+const checkToken = require('../middlewares/checkToken');
 
 const { Op } = require("sequelize");
 
@@ -15,7 +16,7 @@ res.json(allAlbums)
 } catch (err) { res.json(err)}
 })
 
-router.post('/', async (req, res) => {
+router.post('/', checkToken, async (req, res) => {
   try {
   const newAlbum = await Album.create(req.body);
   res.json(newAlbum)
@@ -31,7 +32,7 @@ router.get('/:albumId', async (req, res) => {
   } catch (err) { res.json(err)}
 })
 
-router.patch('/:albumId', async (req, res) => {
+router.patch('/:albumId', checkToken, async (req, res) => {
   try {
   const album = await Artist.findByPk(req.params.albumId);
   await album.update(req.body);
@@ -39,7 +40,7 @@ router.patch('/:albumId', async (req, res) => {
   } catch (err) { res.json(err)}
 })
 
-router.patch('/like/:albumId', async (req, res) => {
+router.patch('/like/:albumId', checkToken, async (req, res) => {
   try {
   const album = await Album.findByPk(req.params.albumId);
   await album.update(req.body);
@@ -47,7 +48,7 @@ router.patch('/like/:albumId', async (req, res) => {
 } catch (err) { res.json(err)}
 })
 
-router.delete('/:albumId/:userId', async (req, res) => {
+router.delete('/:albumId/:userId', checkToken, async (req, res) => {
   try {
   const album = await Album.findByPk(req.params.albumId);
   await album.destroy();

@@ -62,6 +62,12 @@ setUser(data)
 }; autoLogin();
 }, [])
 */
+
+const handleLogout = () => {
+setUser(undefined)
+localStorage.clear();
+}
+
   const handleRegister = async (username, password, repassword) => {
     try{
     if (password !== repassword){
@@ -244,7 +250,7 @@ return (
 )}
 
 const logout =
-<Button style={{fontSize:"20px"}} variant="text" color="inherit" onClick={() => setUser(undefined)}>
+<Button style={{fontSize:"20px"}} variant="text" color="inherit" onClick={() => handleLogout()}>
 Logout
 </Button>
 
@@ -266,8 +272,8 @@ const AnimatedSwitch = withRouter(({ location }) => (
 <Route path="/PostAlbum" component={() => <PostAlbum/>}/>
 <Route path="/PostArtist" component={() => <PostArtist/>}/>
 <Route path="/PostPlaylist" component={() => <PostPlaylist/>}/>
-<Route path="*" component={() => <NoFound/>}/>
   </UserProvider>
+<Route path="*" component={() => <NoFound/>}/>
       </Switch>
     </CSSTransition>
   </TransitionGroup>
