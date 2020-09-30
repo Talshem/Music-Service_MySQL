@@ -36,7 +36,7 @@ const [artists, setArtists] = useState([]);
     artist_name: newArtist, 
     cover_img: image,
     created_at: newCreated_at,
-    UserEmail: props.user.email,
+    username: props.user.username,
     upload_at: date.toISOString().substring(0, 10)
     })
   window.location.reload(false);

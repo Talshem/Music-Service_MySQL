@@ -31,10 +31,6 @@ module.exports = (sequelize, DataTypes) => {
     defaultValue: date.toISOString().substring(0, 10)
     },
   }, {
-  scopes: {
-  filter: {
-    attributes: { exclude: ['UserEmail'] },
-  }},
     sequelize,
     timestamps: false,
     paranoid: true,

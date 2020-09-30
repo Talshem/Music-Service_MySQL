@@ -35,13 +35,13 @@ router.post('/', async (req, res) => {
 
 router.get('/:userId', async (req, res) => {
   try {
-  const user = await User.scope('filter').findOne({where : { [Op.or]: [{ username: req.params.userId }, { email: req.params.userId }]}});
+  const user = await User.scope('filter').findByPk(req.params.userId);
   res.json(user)
   } catch (err) { res.json(err)}
 })
 router.get('/uploads/:userId', async (req, res) => {
   try {
-  const user = await User.scope('filter').findOne({ where :{ username: req.params.userId }});
+  const user = await User.scope('filter').findByPk(req.params.userId);
   const songs = await user.getSongs({scope: ['filter']});
   const albums = await user.getAlbums({scope: ['filter']});
   const artists = await user.getArtists({scope: ['filter']});
@@ -51,9 +51,10 @@ router.get('/uploads/:userId', async (req, res) => {
   } catch (err) { res.json(err)}
 })
 
-router.patch('/:userId', async (req, res) => {
+router.post('/login', async (req, res) => {
+  const { username, password } = req.body;
   try {
-  const user = await User.findOne({where : {email: req.params.userId, password: req.body.password}});
+  const user = await User.findOne({where : {username: username, password: password}});
   await user.update(req.body);
   res.json(user)
   } catch (err) { res.json(err)}

@@ -7,12 +7,11 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
 const date = new Date();
     await queryInterface.createTable('users', {
-    email: {
+    username: {
     type: DataTypes.STRING,
     allowNull: false,
     primaryKey: true
     },
-    username: DataTypes.STRING,
     password: DataTypes.STRING,
     is_admin: {
     type: DataTypes.BOOLEAN,

@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const errorHandler = require('./middlewares/errorHandler')
 
 const cors = require('cors');
 app.use(cors());
@@ -14,6 +15,8 @@ require("./models/index")
 app.use('/api/', require('./api'));
 
 const PORT = process.env.PORT || 3005;
+
+app.use(errorHandler)
 
 
 app.listen(PORT, () => {

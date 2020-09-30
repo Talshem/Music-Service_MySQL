@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
   scopes: {
   filter: {
-    attributes: { exclude: ['ArtistId', 'AlbumId', 'UserEmail'] },
+    attributes: { exclude: ['ArtistId', 'AlbumId'] },
   }},
     sequelize,
     timestamps: false,

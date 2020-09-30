@@ -30,10 +30,6 @@ module.exports = (sequelize, DataTypes) => {
     cover_img: DataTypes.STRING,
     upload_at: DataTypes.DATE,
   }, {
-  scopes: {
-  filter: {
-    attributes: { exclude: ['UserEmail'] },
-  }},
     sequelize,
     timestamps: false,
     paranoid: true,

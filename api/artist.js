@@ -8,7 +8,7 @@ const router = Router();
 router.get('/', async (req, res) => {
 try {
 const { name } = req.query;
-let allArtists = await Artist.scope('filter').findAll({where: {name: {[Op.substring]: name ? name : ''}}, limit: 20, order: [['is_liked','DESC']]});
+let allArtists = await Artist.findAll({where: {name: {[Op.substring]: name ? name : ''}}, limit: 20, order: [['is_liked','DESC']]});
 res.json(allArtists)
 } catch (err) { res.json(err)}
 })
@@ -22,7 +22,7 @@ try {
 
 router.get('/:artistId', async (req, res) => {
 try {
-  const artist = await Artist.scope('filter').findByPk(req.params.artistId);
+  const artist = await Artist.findByPk(req.params.artistId);
   const albums = await artist.getAlbums();
   const songs = await artist.getSongs();
 let data = {artist: artist, songs: songs, albums: albums}

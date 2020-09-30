@@ -20,7 +20,7 @@ function PostArtist(props) {
     await axios.post(`/api/artists`, {
     name: newName, 
     cover_img: image,
-    UserEmail: props.user.email,
+    username: props.user.username,
     upload_at: date.toISOString().substring(0, 10)
     })
   document.getElementById("artistForm").reset();

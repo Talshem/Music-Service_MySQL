@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       this.hasMany(models.Song);
       this.belongsTo(models.User, {
-        foreignKey: 'UserEmail'
+        foreignKey: 'username', as:'userUsername'
       });
       this.belongsTo(models.Artist, {
         foreignKey: 'ArtistId'
@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
   scopes: {
   filter: {
-    attributes: { exclude: ['UserEmail', 'ArtistId'] },
+    attributes: { exclude: ['ArtistId'] },
   }},
     sequelize,
     timestamps: false,

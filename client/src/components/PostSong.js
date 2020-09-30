@@ -83,7 +83,7 @@ event.preventDefault();
     track_number: track_number, 
     lyrics: newLyrics, 
     created_at: newCreated_at,
-    UserEmail: props.user.email,
+    Username: props.user.username,
     upload_at: date.toISOString().substring(0, 10)
     }
     )

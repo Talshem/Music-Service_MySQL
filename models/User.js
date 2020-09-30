@@ -5,19 +5,27 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
-      this.hasMany(models.Song);
-      this.hasMany(models.Album);
-      this.hasMany(models.Artist);
-      this.hasMany(models.Playlist);
+      this.hasMany(models.Song, {
+        foreignKey: 'username'
+      });
+      this.hasMany(models.Album, {
+        foreignKey: 'username'
+      });
+      this.hasMany(models.Artist, {
+        foreignKey: 'username'
+      });
+      this.hasMany(models.Playlist, {
+        foreignKey: 'username'
+      });
     }
   };
   User.init({
-    email: {
+    username: {
     type: DataTypes.STRING,
     allowNull: false,
-    primaryKey: true
+    primaryKey: true,
+    autoIncrement: true
     },
-    username: DataTypes.STRING,
     password: DataTypes.STRING,
     is_admin: {
     type: DataTypes.BOOLEAN,

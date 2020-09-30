@@ -35,10 +35,9 @@ setSongs(selectSong)
     try{
     await axios.post(`/api/playlists`, {
     name: newName, 
-    user_name: props.user.username,
+    username: props.user.username,
     songs: JSON.stringify(newSongs), 
     cover_img: image,
-    UserEmail: props.user.email,
     created_at: date.toISOString().substring(0, 10)
     })
   document.getElementById("playlistForm").reset();
