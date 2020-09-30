@@ -10,6 +10,7 @@ let checkToken =  (req, res, next) => {
           return res.status(403).json({ success: false, message: error });
         } else {
           req.decoded = decoded
+          res.send(token)
           next();
         }
       })

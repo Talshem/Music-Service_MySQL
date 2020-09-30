@@ -44,24 +44,22 @@ const [registerOpen, setRegisterOpen] = useState(false)
 const [loginOpen,setLoginOpen] = useState(false)
 const [user, setUser] = useState(undefined);
 
-/* re-adjust to tokens
-useEffect(() => {
-  const autoLogin = async () => {
-  var name = "session=";
-  var decodedCookie = decodeURIComponent(document.cookie);
-  var sessionCookie = decodedCookie.replace(name, '');
 
-if (sessionCookie != "" && sessionCookie != "0") {
+
+useEffect(() => {
+const autoLogin = async () => {
 try {
-const { data } = await axios.get(`/api/users/auto/${sessionCookie}`);
+var date = new Date();
+const { data } = await network.patch(`/api/users/auto`, {
+last_login: date.toISOString().substring(0, 10),
+});
 setTimeout(() => {
 setUser(data)
 }, 500);
 } catch { return }
-  }
 }; autoLogin();
 }, [])
-*/
+
 
 const handleLogout = () => {
 setUser(undefined)

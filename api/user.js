@@ -21,6 +21,7 @@ router.post('/login', async (req, res) => {
     { expiresIn: '7d' }
   );
   await user.update(req.body);
+  await user.update({remember_token: token});
   res.json({
     user: user,
     success: true,
@@ -29,10 +30,15 @@ router.post('/login', async (req, res) => {
   } catch (err) { res.json({message: err})}
 })
 
-
-router.get('/auto/:code', async (req, res) => {
+router.patch('/auto', checkToken, async (req, res) => {
   try {
-  const user = await User.findOne({where : {auto_code: req.params.code}});
+     let token = jwt.sign(
+    {username: req.decoded.username},
+    process.env.TOKEN_SECRET,
+    { expiresIn: '7d' }
+  );
+
+  const user = await User.findOne({where : {remember_token: token}});
   res.json(user)
   } catch (err) { res.json(err)}
 })
