@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'AlbumId'
       });
       this.belongsTo(models.User, {
-      foreignKey: 'UserEmail'
+        foreignKey: 'username', as:'userUsername'
       });
     }
   };

@@ -9,10 +9,9 @@ const router = Router();
 router.get('/', async (req, res) => {
 try {
 const { name } = req.query;
-let allPlaylists = await Playlist.findAll({where: {name: {[Op.substring]: name ? name : ''}}, limit: 20, order: [['is_liked','DESC']],
-include: [{model: User, attributes: ['username']}]});
+let allPlaylists = await Playlist.findAll({where: {name: {[Op.substring]: name ? name : ''}}, limit: 20, order: [['is_liked','DESC']]});
 res.json(allPlaylists)
-} catch (err) { res.json(err)}
+} catch (err) {res.json(err)}
 })
 
 router.post('/', async (req, res) => {

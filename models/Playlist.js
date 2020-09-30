@@ -6,11 +6,10 @@ module.exports = (sequelize, DataTypes) => {
   class Playlist extends Model {
     static associate(models) {
       this.belongsTo(models.User, {
-        foreignKey: 'UserEmail'
+        foreignKey: 'username', as:'userUsername'
       });
     }
   };
-  const date = new Date();
 
   Playlist.init({
     id: {
@@ -26,10 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     defaultValue: 0,
     },
     cover_img: DataTypes.STRING,
-    created_at: {
-    type: DataTypes.DATE,
-    defaultValue: date.toISOString().substring(0, 10)
-    },
+    created_at: DataTypes.DATE,
   }, {
     sequelize,
     timestamps: false,

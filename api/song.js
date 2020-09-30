@@ -12,7 +12,7 @@ const { name } = req.query;
 let allSongs = await Song.scope('filter').findAll({where: {title: {[Op.substring]: name ? name : ''}}, limit: 20, order: [['play_count','DESC']],
 include: [{model: Album, attributes: ['name']}, {model: Artist, attributes: ['name']}]})
 res.json(allSongs)
-} catch (err) {console.log(err); res.json(err)}
+} catch (err) {res.json(err)}
 })
 
 router.post('/', async (req, res) => {

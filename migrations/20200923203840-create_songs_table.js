@@ -20,7 +20,7 @@ module.exports = {
     upload_at: DataTypes.DATE,
     created_at: DataTypes.DATE,
     track_number: DataTypes.INTEGER,
-    user_email:  DataTypes.STRING,
+    username: DataTypes.STRING,
     is_liked: {
     type: DataTypes.INTEGER,
     defaultValue: 0,

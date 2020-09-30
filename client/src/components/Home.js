@@ -31,8 +31,6 @@ useEffect(() => {
       const albums = await axios.get(`/api/albums`);
       const artists = await axios.get(`/api/artists`);
       const playlists = await axios.get(`/api/playlists`);
-      console.log(songs.data)
-      console.log(albums)
       makeLists(songs.data, albums.data, artists.data, playlists.data)
       setLoading(false)
       }

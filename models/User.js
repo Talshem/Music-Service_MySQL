@@ -38,11 +38,10 @@ module.exports = (sequelize, DataTypes) => {
     preferences: DataTypes.TEXT,
     created_at: DataTypes.DATE,
     last_login: DataTypes.DATE,
-    auto_code: DataTypes.STRING
   }, {
   scopes: {
   filter: {
-    attributes: { exclude: ['password', 'auto_code'] },
+    attributes: { exclude: ['password'] },
   }},
     timestamps: false,
     sequelize,

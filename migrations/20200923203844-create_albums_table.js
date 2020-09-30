@@ -20,7 +20,7 @@ module.exports = {
     defaultValue: 0,
     },
     cover_img: DataTypes.STRING,
-    user_email: DataTypes.STRING,
+    username: DataTypes.STRING,
     upload_at: DataTypes.DATE,
     created_at: DataTypes.DATE
     });

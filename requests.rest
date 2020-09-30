@@ -1,0 +1,7 @@
+
+
+GET http://localhost:3005/api/playlists
+
+###
+
+GET http://localhost:3005/api/albums
