@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useState, useEffect} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import axios from 'axios';
 import YouTube from 'react-youtube';
 import {
@@ -12,11 +12,14 @@ import {
 import LoadingOverlay from 'react-loading-overlay';
 import ClipLoader from "react-spinners/ClipLoader";
 import ScrollContainer from 'react-indiana-drag-scroll'
+import UserContext from '../UserContext'
+
+const user = useContext(UserContext)
 
 function UploadsData(props) {
 const [loading, setLoading] = useState(true);
 const [toggle, setToggle] = useState(false);
-const [user, setUser] = useState('Uploads')
+const [name, setName] = useState('Uploads')
 const [data, setData] = useState('')
 
 let { userId } = useParams()
@@ -30,7 +33,7 @@ useEffect(() => {
     return setLoading(false)
       }
     }; fetchData();
-   }, [toggle, props.user, user])
+   }, [toggle, user, name])
 
 const playCount = async (e) => {
 await axios.patch(`/api/songs/count/${e.youtube_id}`, {
@@ -64,12 +67,12 @@ const makeLists = (username, songs, albums, artists, playlists) => {
 let capitalUserId = userId.charAt(0).toUpperCase() + userId.slice(1)
 if (props.user) {
 if(props.user.username.toUpperCase() === userId.toUpperCase()){
-setUser('My Uploads') 
+setName('My Uploads') 
 } else {
-setUser(`${capitalUserId}'s Uploads`)
+setName(`${capitalUserId}'s Uploads`)
 }
 } else {
-setUser(`${capitalUserId}'s Uploads`)
+setName(`${capitalUserId}'s Uploads`)
 } 
 
 let z =1000
@@ -153,7 +156,7 @@ return (
 let x = () => {
 return(
 <div>
-<p id="listTitle" className='listTitle'>{user}</p>
+<p id="listTitle" className='listTitle'>{name}</p>
 
 <div className='uploadsList'>
 <h6 className="upTitle">Songs</h6>
@@ -216,8 +219,6 @@ const [search, setSearch] = useState(undefined)
 
 let match = useRouteMatch();
 
-
-
 return(
 <div style={{position:'relative', width:"92%", top:'0px'}}>
 <p className='listTitle'>Search user</p>
@@ -225,8 +226,8 @@ return(
 <NavLink to={search ? `${match.url}/${search}` : `${match.url}`}>
 <button className="searchButton">Search</button>
 </NavLink>
-{ props.user ? 
-<NavLink to={`${match.url}/${props.user.username}`}>
+{ user ? 
+<NavLink to={`${match.url}/${user.username}`}>
 <button style={{position:'relative', textAlign:"right", width:"108%", top:"550px", marginBottom:"0px"}} className="post">To my page</button>
 </NavLink> : '' }
 </div>
@@ -242,11 +243,10 @@ return(
 <div>
       <Switch>
         <Route path={`${match.path}/:userId`}>
-          <UploadsData user={props.user}/>
+          <UploadsData user={user}/>
         </Route>
         <Route path={match.path}>
-          <
-            UploadsSearch user={props.user}/>
+          <UploadsSearch user={user}/>
         </Route>
       </Switch>
 </div>

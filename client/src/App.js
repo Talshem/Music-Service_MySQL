@@ -28,11 +28,12 @@ import PostSong from './components/PostSong.js';
 import PostAlbum from './components/PostAlbum.js';
 import PostArtist from './components/PostArtist.js';
 import PostPlaylist from './components/PostPlaylist.js';
-import generator from 'generate-password'
 import Uploads from './components/Uploads.js';
 import NoFound from './NoFound.js';
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import Slide from '@material-ui/core/Slide';
+import network from './Network.js';
+import { UserProvider } from './UserContext'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
@@ -43,6 +44,7 @@ const [registerOpen, setRegisterOpen] = useState(false)
 const [loginOpen,setLoginOpen] = useState(false)
 const [user, setUser] = useState(undefined);
 
+/* re-adjust to tokens
 useEffect(() => {
   const autoLogin = async () => {
   var name = "session=";
@@ -59,53 +61,20 @@ setUser(data)
   }
 }; autoLogin();
 }, [])
-
-const handleLogout = async () => {
-await axios.patch(`/api/users/${user.email}`, {
-password: user.password,
-auto_code: 0,
-});
-setUser(undefined)
-document.cookie = "session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    };
-
- 
-function validateEmail(mail) {
- if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail))
-  {
-    return (true)
-  }
-    return (false)
-}
-
-
-  const handleRegister = async (email, name, password, repassword) => {
-    let code = generator.generate({
-    length: 50,
-    numbers: true
-});
-
+*/
+  const handleRegister = async (username, password, repassword) => {
     try{
-    if(!validateEmail(email)) {
-     return document.getElementById('errorMessage').innerHTML='Please enter a valid email address';
-    }
-     if(name.length > 10) {
-     return document.getElementById('errorMessage').innerHTML='Username can not exceed 10 characters';
-    }
     if (password !== repassword){
     return document.getElementById('errorMessage').innerHTML='Password fields do not match';
            }
-
-      let occupied = await axios.get(`api/users/${name}`)  
+      let occupied = await axios.get(`api/users/${username}`)  
       if(occupied.data){
       return document.getElementById('errorMessage').innerHTML = 'Username is already in use';
       } else {
       const date = new Date();
       const { data } = await axios.post(`/api/users`, {
-      username: name,
-      email: email,
+      username: username,
       password: password,
-      auto_code: code,
       preferences: '[]',
       created_at: date.toISOString().substring(0, 10),
       last_login: date.toISOString().substring(0, 10)
@@ -114,51 +83,41 @@ setTimeout(() => {
 setUser(data)
 }, 500);
 setRegisterOpen(false)
-
- var d = new Date();
-  d.setTime(d.getTime() + (24*60*60*7));
-  var expires = "expires=" + d.toGMTString();
-  document.cookie = "session=" + code + ";" + expires + ";path=/";
     }
   } catch (response){
-  document.getElementById('errorMessage').innerHTML='The email you tried to register with is already in use';
+  document.getElementById('errorMessage').innerHTML='The username you tried to register with is already in use';
   }; 
   }
 
-    const handleLogin = async (email, password) => {
-    if(!validateEmail(email)) {
-    return document.getElementById('errorMessage').innerHTML='Please enter a valid email address';
-    }
-    let code = generator.generate({
-    length: 50,
-    numbers: true
-});
+    const handleLogin = async (username, password) => {
     try{
        var date = new Date();
-      const { data } = await axios.patch(`/api/users/${email}`, {
+      const { data } = await network.post(`/api/users/login`, {
+      username: username,
       password: password,
       last_login: date.toISOString().substring(0, 10),
-      auto_code: code
-      });
-  date.setTime(date.getTime() + (24*60*60*7));
-  var expires = "expires=" + date.toGMTString();
-  document.cookie = "session=" + code + ";" + expires + ";path=/";
+    });
 
+if (data && data.success && data.token) {
+localStorage.setItem('token', data.token);
 setLoginOpen(false)   
 setTimeout(() => {
-setUser(data)
+setUser(data.user)
 }, 500);
-  } catch (response){
-  document.getElementById('errorMessage').innerHTML='Either the email or password you entered is incorrect';
+} else {
+  document.getElementById('errorMessage').innerHTML = "Either the username or password you entered is incorrect"
+}
+  } catch (response) {
+  document.getElementById('errorMessage').innerHTML = response.message
   }; 
 };
 
 function login(){
-let email;
+let username;
 let password;
 
-      function insertEmail(event) {
-        email = event.target.value;
+      function insertUsername(event) {
+        username = event.target.value;
       }
 
       function insertPassword(event) {
@@ -174,14 +133,15 @@ return (
         <DialogTitle id="form-dialog-title">Login</DialogTitle>
         <DialogContent>
           <TextField
-            onChange={insertEmail}
-            defaultValue={email}
+            onChange={insertUsername}
+            defaultValue={username}
             autoFocus
             margin="dense"
-            id="email"
-            label="Email Address"
-            type="email"
+            id="username"
+            label="Username"
+            type="username"
             required
+            inputProps={{maxLength: 12}}
             fullWidth
           />
             <TextField
@@ -193,6 +153,7 @@ return (
             label="Password"
             type="password"
             required
+            minLength={{maxLength: 36}}
             fullWidth
           />
         </DialogContent>
@@ -201,7 +162,7 @@ return (
           <Button type="submit" onClick={() => setLoginOpen(false)} color="primary">
             Cancel
           </Button>
-          <Button onClick={() => handleLogin(email, password)} color="primary">
+          <Button onClick={() => handleLogin(username, password)} color="primary">
             login
           </Button>
         </DialogActions>
@@ -210,14 +171,9 @@ return (
 )}
 
 function register(){
-let email;
 let username;
 let password;
 let repassword
-
-      function insertEmail(event) {
-        email = event.target.value;
-      }
 
       function insertUsername(event) {
         username = event.target.value;
@@ -240,16 +196,6 @@ return (
         <DialogTitle id="form-dialog-title">Register</DialogTitle>
         <DialogContent>
           <TextField
-            onChange={insertEmail}
-            autoFocus
-            required
-            margin="dense"
-            id="email"
-            label="Email Address"
-            type="email"
-            fullWidth
-          />
-          <TextField
             onChange={insertUsername}
             autoFocus
             required
@@ -257,6 +203,7 @@ return (
             id="username"
             label="Username"
             type="name"
+            inputProps={{maxLength: 12}}
             fullWidth
           />
            <TextField
@@ -267,6 +214,7 @@ return (
             id="password"
             label="Password"
             type="password"
+            inputProps={{maxLength: 36}}
             fullWidth
           />
            <TextField
@@ -278,6 +226,7 @@ return (
             label="Confirm password"
             autoComplete=""
             type="password"
+            minLength={{maxLength: 36}}
             fullWidth
           />
         </DialogContent>
@@ -286,7 +235,7 @@ return (
           <Button onClick={() => setRegisterOpen(false)} color="primary">
             Cancel
           </Button>
-          <Button onClick={() => handleRegister(email, username, password, repassword)} color="primary">
+          <Button onClick={() => handleRegister(username, password, repassword)} color="primary">
             Register
           </Button>
         </DialogActions>
@@ -295,7 +244,7 @@ return (
 )}
 
 const logout =
-<Button style={{fontSize:"20px"}} variant="text" color="inherit" onClick={handleLogout}>
+<Button style={{fontSize:"20px"}} variant="text" color="inherit" onClick={() => setUser(undefined)}>
 Logout
 </Button>
 
@@ -306,17 +255,19 @@ const AnimatedSwitch = withRouter(({ location }) => (
   <TransitionGroup >
     <CSSTransition key={location.key} classNames="page" timeout={1000}>
       <Switch location={location}>
-<Route exact path="/" component={() => <Home user={user}/>}/>
-<Route path="/songs" component={() => <Songs user={user}/>}/>
-<Route path="/artists" component={() => <Artists user={user}/>}/>
-<Route path="/playlists" component={() => <Playlists user={user}/>}/>
-<Route path="/albums" component={() => <Albums user={user}/>}/>
-<Route path="/Uploads" component={() => <Uploads user={user}/>}/>
-<Route path="/PostSong" component={() => <PostSong user={user}/>}/>
-<Route path="/PostAlbum" component={() => <PostAlbum user={user}/>}/>
-<Route path="/PostArtist" component={() => <PostArtist user={user}/>}/>
-<Route path="/PostPlaylist" component={() => <PostPlaylist user={user}/>}/>
-<Route path="*" component={() => <NoFound user={user}/>}/>
+    <UserProvider value={user}>
+<Route exact path="/" component={() => <Home/>}/>
+<Route path="/songs" component={() => <Songs/>}/>
+<Route path="/artists" component={() => <Artists/>}/>
+<Route path="/playlists" component={() => <Playlists/>}/>
+<Route path="/albums" component={() => <Albums/>}/>
+<Route path="/Uploads" component={() => <Uploads/>}/>
+<Route path="/PostSong" component={() => <PostSong/>}/>
+<Route path="/PostAlbum" component={() => <PostAlbum/>}/>
+<Route path="/PostArtist" component={() => <PostArtist/>}/>
+<Route path="/PostPlaylist" component={() => <PostPlaylist/>}/>
+<Route path="*" component={() => <NoFound/>}/>
+  </UserProvider>
       </Switch>
     </CSSTransition>
   </TransitionGroup>

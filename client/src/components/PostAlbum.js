@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import {
   NavLink,
 } from "react-router-dom";
 import Select from 'react-select';
+import UserContext from '../UserContext'
+
+const user = useContext(UserContext)
 
 function PostAlbum(props) {
 const [artists, setArtists] = useState([]);
@@ -20,7 +23,7 @@ const [artists, setArtists] = useState([]);
     const date = new Date();
     let regex = /'/gi
   const newCreated_at = created_at.slice(0,10)
-    if (!props.user) {
+    if (!user) {
     return document.getElementById('albumError').innerHTML = 'Only registered users can post new albums to the website!';
     }
     if(!artist) {
@@ -36,7 +39,7 @@ const [artists, setArtists] = useState([]);
     artist_name: newArtist, 
     cover_img: image,
     created_at: newCreated_at,
-    username: props.user.username,
+    username: user.username,
     upload_at: date.toISOString().substring(0, 10)
     })
   window.location.reload(false);

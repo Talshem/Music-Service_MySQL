@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import YouTube from 'react-youtube';
 import {
@@ -11,6 +11,7 @@ import {
   ButtonBack, ButtonNext, CarouselProvider, Slide, Slider,
 } from 'pure-react-carousel';
 import 'pure-react-carousel/dist/react-carousel.es.css';
+import UserContext from '../UserContext'
 
 function Home(props) {
 const [songs, setSongs] = useState([]);
@@ -23,6 +24,8 @@ const [songsLength, setSongsLength] = useState(0);
 const [albumsLength, setAlbumsLength] = useState(0);
 const [artistsLength, setArtistsLength] = useState(0);
 const [playlistsLength, setPlaylistsLength] = useState(0);
+
+const user = useContext(UserContext)
 
 useEffect(() => {
     const fetchData = async () => {
@@ -148,7 +151,7 @@ const arrowColor = loading ? 'rgb(10, 10, 10)' : 'rgb(149, 243, 215)';
   </LoadingOverlay>
 
 
-<h3>Hello, {props.user ? props.user.username : 'Guest'}</h3>
+<h3>Hello, {user ? user.username : 'Guest'}</h3>
 
 
 <div className="homeLists">

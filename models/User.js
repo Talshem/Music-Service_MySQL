@@ -31,10 +31,7 @@ module.exports = (sequelize, DataTypes) => {
     type: DataTypes.BOOLEAN,
     defaultValue: 0,
     },
-    remember_token: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: 1,
-    },
+    remember_token: DataTypes.TEXT,
     preferences: DataTypes.TEXT,
     created_at: DataTypes.DATE,
     last_login: DataTypes.DATE,

@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import axios from 'axios';
 import {
   NavLink,
 } from "react-router-dom";
+import UserContext from '../UserContext'
+
+const user = useContext(UserContext)
 
 function PostArtist(props) {
 
@@ -12,7 +15,7 @@ function PostArtist(props) {
   let regex = /'/gi
   const newName = name.replace(regex,`''`);
 
-    if (!props.user) {
+    if (!user) {
     return document.getElementById('artistError').innerHTML = 'Only registered users can post new songs to the website';
     }
 
@@ -20,7 +23,7 @@ function PostArtist(props) {
     await axios.post(`/api/artists`, {
     name: newName, 
     cover_img: image,
-    username: props.user.username,
+    username: user.username,
     upload_at: date.toISOString().substring(0, 10)
     })
   document.getElementById("artistForm").reset();

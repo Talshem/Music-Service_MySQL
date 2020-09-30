@@ -1,9 +1,32 @@
 const { Router } = require('express');
 const { User } = require('../models');
+const jwt = require('jsonwebtoken')
+require('dotenv').config();
 
 const router = Router();
 
-const { Op } = require("sequelize");
+router.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+  try {
+  const user = await User.findOne({where : {username: username, password: password}});
+    if(!user) {
+      return res.status(403).json({
+      message: 'Either the username or password you entered is incorrect'
+    });
+  }
+    let token = jwt.sign({username: username},
+    process.env.TOKEN_SECRET,
+    { expiresIn: '7d' }
+  );
+  await user.update(req.body);
+  res.json({
+    user: user,
+    success: true,
+    token,
+  });
+  } catch (err) { res.json({message: err})}
+})
+
 
 router.get('/auto/:code', async (req, res) => {
   try {
@@ -50,16 +73,6 @@ router.get('/uploads/:userId', async (req, res) => {
   res.json(data)
   } catch (err) { res.json(err)}
 })
-
-router.post('/login', async (req, res) => {
-  const { username, password } = req.body;
-  try {
-  const user = await User.findOne({where : {username: username, password: password}});
-  await user.update(req.body);
-  res.json(user)
-  } catch (err) { res.json(err)}
-})
-
 
 router.delete('/:userId', async (req, res) => {
   const user = await User.findByPk(req.params.userId);

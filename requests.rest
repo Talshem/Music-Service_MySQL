@@ -1,7 +1,13 @@
 
 
-GET http://localhost:3005/api/playlists
+POST http://localhost:3001/api/users/login
+Content-Type: application/json
+
+ {
+"username":"sss",
+"password":"password"
+}
 
 ###
 
-GET http://localhost:3005/api/albums
+GET http://localhost:3001/api/albums

@@ -1,9 +1,12 @@
-import React, {useState, useEffect} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import axios from 'axios';
 import {
   NavLink,
 } from "react-router-dom";
 import Select from 'react-select';
+import UserContext from '../UserContext'
+
+const user = useContext(UserContext)
 
 function PostPlaylist(props) {
 const [songs, setSongs] = useState([])
@@ -25,7 +28,7 @@ setSongs(selectSong)
   for (let song of songs){
   newSongs.push(song.value)
   }
-    if (!props.user) {
+    if (!user) {
     return document.getElementById('playlistError').innerHTML = 'Only registered users can post new playlists to the website!';
     }
     if(!songs) {
@@ -35,7 +38,7 @@ setSongs(selectSong)
     try{
     await axios.post(`/api/playlists`, {
     name: newName, 
-    username: props.user.username,
+    username: user.username,
     songs: JSON.stringify(newSongs), 
     cover_img: image,
     created_at: date.toISOString().substring(0, 10)

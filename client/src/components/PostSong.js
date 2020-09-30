@@ -1,9 +1,12 @@
-import React, { useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState} from 'react';
 import axios from 'axios';
 import {
   NavLink,
 } from "react-router-dom";
 import Select from 'react-select';
+import UserContext from '../UserContext'
+
+const user = useContext(UserContext)
 
 function PostSong(props) {
 const [albums, setAlbums] = useState([]);
@@ -62,7 +65,7 @@ event.preventDefault();
   const newAlbum = album.label.replace(regex,`''`);
 
 
-    if (!props.user) {
+    if (!user) {
     return document.getElementById('songError').innerHTML = 'Only registered users can post new songs to the website';
     }
     if (!validateLength(length)) {
@@ -83,7 +86,7 @@ event.preventDefault();
     track_number: track_number, 
     lyrics: newLyrics, 
     created_at: newCreated_at,
-    Username: props.user.username,
+    Username: user.username,
     upload_at: date.toISOString().substring(0, 10)
     }
     )
