@@ -13,7 +13,6 @@ let checkToken =  (req, res, next) => {
           req.decoded = decoded
           req.token = token
           req.username = req.headers['username']
-          req.admin = req.headers['isuseradmin']
           next();
         }
       })

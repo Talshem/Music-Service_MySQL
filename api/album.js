@@ -51,7 +51,8 @@ router.patch('/like/:albumId', checkToken, async (req, res) => {
 router.delete('/:albumId', checkToken, async (req, res) => {
   try {
   const album = await Album.findByPk(req.params.albumId);
-  if(req.admin || album.username === req.username) {
+  const user = await User.findByPk(req.username);
+  if(user.admin || album.username === user.username) {
   res.json({ deleted: true })
 } else {
 res.send('You are not authorized to do this action.')

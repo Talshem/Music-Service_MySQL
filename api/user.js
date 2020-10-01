@@ -86,9 +86,10 @@ router.get('/uploads/:userId', async (req, res) => {
 })
 
 router.delete('/:userId', checkToken, async (req, res) => {
-  const user = await User.findByPk(req.params.userId);
-if(req.admin) {
-  await user.destroy();
+  const userToDelete = await User.findByPk(req.params.userId);
+  const userIsAdmin = await User.findByPk(req.username);
+if(userIsAdmin.admin) {
+  await userToDelete.destroy();
   res.json({ deleted: true })
 } else {
 res.send('You are not authorized to do this action.')

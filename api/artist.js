@@ -50,7 +50,8 @@ try {
 router.delete('/:artistId',checkToken, async (req, res) => {
 try {
   const artist = await Artist.findByPk(req.params.artistId);
-  if(req.admin || artist.username === req.username) {
+  const user = await User.findByPk(req.username);
+  if(user.admin || artist.username === user.username) {
   res.json({ deleted: true })
 } else {
 res.send('You are not authorized to do this action.')

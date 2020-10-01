@@ -83,7 +83,6 @@ localStorage.clear();
       })
 setUser(data)
 localStorage.setItem('token', data.remember_token);
-localStorage.setItem('admin', data.is_admin);
 localStorage.setItem('username', data.username);
 setRegisterOpen(false)
     }
@@ -100,10 +99,8 @@ setRegisterOpen(false)
       password: password,
       last_login: date.toISOString().substring(0, 10),
     });
-console.log(data)
 if (data && data.success && data.token) {
 localStorage.setItem('token', data.token);
-localStorage.setItem('admin', data.user.is_admin);
 localStorage.setItem('username', data.user.username);
 setLoginOpen(false)   
 setTimeout(() => {
