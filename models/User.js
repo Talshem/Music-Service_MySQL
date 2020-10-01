@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
   scopes: {
   filter: {
-    attributes: { exclude: ['password'] },
+    attributes: { exclude: ['password', 'remember_token'] },
   }},
     timestamps: false,
     sequelize,

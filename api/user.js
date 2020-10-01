@@ -5,12 +5,11 @@ require('dotenv').config();
 
 const checkToken = require('../middlewares/checkToken');
 const validateChars = require('../middlewares/validateChars');
-const checkIp = require('../middlewares/checkIp');
 
 const router = Router();
 var date = new Date();
 
-router.post('/register', checkIp, validateChars, async (req, res) => {
+router.post('/register', validateChars, async (req, res) => {
 const { username } = req.body;
   try {
     let token = jwt.sign(
