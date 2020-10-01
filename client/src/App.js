@@ -53,9 +53,7 @@ var date = new Date();
 const { data } = await network.patch(`/api/users/auto`, {
 last_login: date.toISOString().substring(0, 10),
 });
-setTimeout(() => {
 setUser(data)
-}, 500);
 } catch { return }
 }; autoLogin();
 }, [])
@@ -69,27 +67,28 @@ localStorage.clear();
   const handleRegister = async (username, password, repassword) => {
     try{
     if (password !== repassword){
-    return document.getElementById('errorMessage').innerHTML='Password fields do not match';
+    return document.getElementById('errorMessage2').innerHTML='Password fields do not match';
            }
       let occupied = await axios.get(`api/users/${username}`)  
       if(occupied.data){
-      return document.getElementById('errorMessage').innerHTML = 'Username is already in use';
+      return document.getElementById('errorMessage2').innerHTML = 'Username is already in use';
       } else {
       const date = new Date();
-      const { data } = await axios.post(`/api/users`, {
+      const { data } = await network.post(`/api/users/register`, {
       username: username,
       password: password,
       preferences: '[]',
       created_at: date.toISOString().substring(0, 10),
       last_login: date.toISOString().substring(0, 10)
       })
-setTimeout(() => {
 setUser(data)
-}, 500);
+localStorage.setItem('token', data.remember_token);
+localStorage.setItem('admin', data.is_admin);
+localStorage.setItem('username', data.username);
 setRegisterOpen(false)
     }
   } catch (response){
-  document.getElementById('errorMessage').innerHTML='The username you tried to register with is already in use';
+  document.getElementById('errorMessage2').innerHTML='The username you tried to register with is already in use';
   }; 
   }
 
@@ -101,9 +100,11 @@ setRegisterOpen(false)
       password: password,
       last_login: date.toISOString().substring(0, 10),
     });
-
+console.log(data)
 if (data && data.success && data.token) {
 localStorage.setItem('token', data.token);
+localStorage.setItem('admin', data.user.is_admin);
+localStorage.setItem('username', data.user.username);
 setLoginOpen(false)   
 setTimeout(() => {
 setUser(data.user)
@@ -234,7 +235,7 @@ return (
             fullWidth
           />
         </DialogContent>
-        <DialogTitle style={{color:'red'}} id="errorMessage"></DialogTitle>
+        <DialogTitle style={{color:'red'}} id="errorMessage2"></DialogTitle>
         <DialogActions>
           <Button onClick={() => setRegisterOpen(false)} color="primary">
             Cancel

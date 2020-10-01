@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 import Select from 'react-select';
 import UserContext from '../UserContext'
+import network from '../Network.js';
 
 function PostSong(props) {
 const [albums, setAlbums] = useState([]);
@@ -63,19 +64,21 @@ event.preventDefault();
   const newTitle = title.replace(regex,`''`);
   const newArtist = artist.label.substr(0, artist.label.indexOf(' - ') -1).replace(regex,`''`);
   const newAlbum = album.label.replace(regex,`''`);
-
-
-    if (!user) {
-    return document.getElementById('songError').innerHTML = 'Only registered users can post new songs to the website';
-    }
+  
     if (!validateLength(length)) {
     return document.getElementById('songError').innerHTML = 'Length form is invalid';
     }
     if(!validateTrack(track_number)) {
     return document.getElementById('songError').innerHTML = "Track number field must be a 2-digit number";
     }
+
+    let occupied = await axios.get(`api/songs/${youtube_id}`)  
+    if(occupied.data){
+    return document.getElementById('songError').innerHTML = 'This song was already posted';
+    }
+
     try{
-    await axios.post(`/api/songs`, {
+    await network.post(`/api/songs`, {
     title: newTitle, 
     length: length, 
     youtube_id: youtube_id, 
@@ -92,7 +95,7 @@ event.preventDefault();
     )
   window.location.reload(false);
 } catch (response){
-  return document.getElementById('songError').innerHTML = "Song already exists";
+ document.getElementById('songError').innerHTML = 'Only registered users can post new songs to the website';
   }; 
 };
 

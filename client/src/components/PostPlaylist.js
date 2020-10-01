@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 import Select from 'react-select';
 import UserContext from '../UserContext'
+import network from '../Network.js';
 
 function PostPlaylist(props) {
 const [songs, setSongs] = useState([])
@@ -28,15 +29,13 @@ setSongs(selectSong)
   for (let song of songs){
   newSongs.push(song.value)
   }
-    if (!user) {
-    return document.getElementById('playlistError').innerHTML = 'Only registered users can post new playlists to the website!';
-    }
+
     if(!songs) {
     return document.getElementById('playlistError').innerHTML = "Select songs";
     }
   const newName = name.replace(regex,`''`);
     try{
-    await axios.post(`/api/playlists`, {
+    await network.post(`/api/playlists`, {
     name: newName, 
     username: user.username,
     songs: JSON.stringify(newSongs), 
@@ -45,7 +44,7 @@ setSongs(selectSong)
     })
   document.getElementById("playlistForm").reset();
 } catch (response){
-   document.getElementById('playlistError').innerHTML = "Undetected error";
+document.getElementById('playlistError').innerHTML = 'Only registered users can post new playlists to the website!';
   }; 
 };
 

@@ -5,7 +5,7 @@ import {
 } from "react-router-dom";
 import Select from 'react-select';
 import UserContext from '../UserContext'
-
+import network from '../Network.js';
 
 function PostAlbum(props) {
 const [artists, setArtists] = useState([]);
@@ -24,9 +24,7 @@ const user = useContext(UserContext)
     const date = new Date();
     let regex = /'/gi
   const newCreated_at = created_at.slice(0,10)
-    if (!user) {
-    return document.getElementById('albumError').innerHTML = 'Only registered users can post new albums to the website!';
-    }
+
     if(!artist) {
     return document.getElementById('albumError').innerHTML = "Select an artist";
     }
@@ -34,7 +32,7 @@ const user = useContext(UserContext)
   const newArtist = artist.label.replace(regex,`''`);
 
     try{
-    await axios.post(`/api/albums`, {
+    await network.post(`/api/albums`, {
     name: newName, 
     ArtistId: artist.value,
     artist_name: newArtist, 
@@ -45,7 +43,7 @@ const user = useContext(UserContext)
     })
   window.location.reload(false);
 } catch (response){
-   document.getElementById('albumError').innerHTML = "Undetected Error";
+  document.getElementById('albumError').innerHTML = 'Only registered users can post new albums to the website!';
   }; 
 };
 

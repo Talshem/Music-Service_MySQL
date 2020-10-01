@@ -11,6 +11,7 @@ import {
 import LoadingOverlay from 'react-loading-overlay';
 import ClipLoader from "react-spinners/ClipLoader";
 import SongData from './SongData.js';
+import network from '../Network.js';
 
 function SongsList(props) {
 const [list, setList] = useState([])
@@ -67,7 +68,7 @@ setLoading(true)
 
 const deleteSong = async (e) => {
 const newId = e.youtube_id.replace(`'`,`''`);
-await axios.delete(`/api/songs/${newId}`);
+await network.delete(`/api/songs/${newId}`);
 setToggle(!toggle)
 };
 

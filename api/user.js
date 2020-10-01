@@ -6,6 +6,21 @@ require('dotenv').config();
 
 const router = Router();
 
+router.post('/register', async (req, res) => {
+const { username } = req.body;
+  try {
+    let token = jwt.sign(
+    {username: username},
+    process.env.TOKEN_SECRET,
+    { expiresIn: '3d' }
+  );
+  const newUser = await User.create(req.body);
+  await newUser.update({remember_token: token});
+  res.json(newUser)
+  } catch (err) { res.json(err) }
+})
+
+
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
   try {
@@ -18,7 +33,7 @@ router.post('/login', async (req, res) => {
     let token = jwt.sign(
     {username: username},
     process.env.TOKEN_SECRET,
-    { expiresIn: '7d' }
+    { expiresIn: '3d' }
   );
   await user.update(req.body);
   await user.update({remember_token: token});
@@ -31,13 +46,8 @@ router.post('/login', async (req, res) => {
 })
 
 router.patch('/auto', checkToken, async (req, res) => {
+  let token = req.token
   try {
-     let token = jwt.sign(
-    {username: req.decoded.username},
-    process.env.TOKEN_SECRET,
-    { expiresIn: '7d' }
-  );
-
   const user = await User.findOne({where : {remember_token: token}});
   res.json(user)
   } catch (err) { res.json(err)}
@@ -55,13 +65,6 @@ router.get('/', async (req, res) => {
   const allUsers = await User.scope('filter').findAll();
   res.json(allUsers)
   } catch (err) { res.json(err)}
-})
-
-router.post('/', async (req, res) => {
-  try {
-  const newUser = await User.create(req.body);
-  res.json(newUser)
-  } catch (err) { res.json(err) }
 })
 
 router.get('/:userId', async (req, res) => {
@@ -84,7 +87,9 @@ router.get('/uploads/:userId', async (req, res) => {
 
 router.delete('/:userId', checkToken, async (req, res) => {
   const user = await User.findByPk(req.params.userId);
+if(req.admin) {
   await user.destroy();
+}
   res.json({ deleted: true })
 })
 

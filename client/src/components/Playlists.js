@@ -11,6 +11,7 @@ import {
 import LoadingOverlay from 'react-loading-overlay';
 import ClipLoader from "react-spinners/ClipLoader";
 import PlaylistData from './PlaylistData.js';
+import network from '../Network.js';
 
 function PlaylistsList(props) {
 const [list, setList] = useState([])
@@ -66,7 +67,7 @@ setLoading(true)
 }
 
 const deletePlaylist = async (e) => {
-await axios.delete(`/api/playlists/${e.id}`);
+await network.delete(`/api/playlists/${e.id}`);
 setToggle(!toggle)
 };
 

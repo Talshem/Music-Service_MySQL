@@ -10,7 +10,7 @@ import {
 import LoadingOverlay from 'react-loading-overlay';
 import ClipLoader from "react-spinners/ClipLoader";
 import AlbumData from './AlbumData.js';
-
+import network from '../Network.js';
 
 function AlbumsList(props) {
 const [list, setList] = useState([])
@@ -65,7 +65,7 @@ setLoading(true)
 
 const deleteAlbum = async (e) => {
 const newName = e.name.replace(`'`,`''`);
-await axios.delete(`/api/albums/${newName}`);
+await network.delete(`/api/albums/${newName}`);
 setToggle(!toggle)
 };
 const isLiked= (e) => {

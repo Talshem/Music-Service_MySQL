@@ -50,7 +50,9 @@ try {
 router.delete('/:artistId',checkToken, async (req, res) => {
 try {
   const artist = await Artist.findByPk(req.params.artistId);
+  if(req.admin || artist.username === req.username) {
   await artist.destroy();
+  }
   res.json({ deleted: true })
   } catch (err) { res.json(err)}
 })

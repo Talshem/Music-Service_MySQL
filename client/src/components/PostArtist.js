@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import axios from 'axios';
 import {
   NavLink,
 } from "react-router-dom";
@@ -25,7 +24,7 @@ function PostArtist(props) {
     })
   document.getElementById("artistForm").reset();
 } catch (response){
-   document.getElementById('artistError').innerHTML = "Only registered users can post new songs to the website";
+   document.getElementById('artistError').innerHTML = "Only registered users can post new artists to the website";
   }; 
 };
 

@@ -48,12 +48,14 @@ router.patch('/like/:albumId', checkToken, async (req, res) => {
 } catch (err) { res.json(err)}
 })
 
-router.delete('/:albumId/:userId', checkToken, async (req, res) => {
+router.delete('/:albumId', checkToken, async (req, res) => {
   try {
   const album = await Album.findByPk(req.params.albumId);
+  if(req.admin || album.username === req.username) {
   await album.destroy();
+  }
   res.json({ deleted: true })
-  } catch (err) { res.json(err)}
+  } catch (err) {res.json(err)}
 })
 
 

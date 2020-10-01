@@ -13,6 +13,9 @@ import LoadingOverlay from 'react-loading-overlay';
 import ClipLoader from "react-spinners/ClipLoader";
 import ScrollContainer from 'react-indiana-drag-scroll'
 import UserContext from '../UserContext'
+import network from '../Network.js';
+
+
 function UploadsData(props) {
 const [loading, setLoading] = useState(true);
 const [toggle, setToggle] = useState(false);
@@ -42,21 +45,21 @@ play_count: e.play_count + 1,
 
 const deleteSong = async (e) => {
 const newId = e.youtube_id.replace(`'`,`''`);
-await axios.delete(`/api/songs/${newId}`);
+await network.delete(`/api/songs/${newId}`);
 setToggle(!toggle)
 };
 const deleteArtist = async (e) => {
 const newName = e.name.replace(`'`,`''`);
-await axios.delete(`/api/artists/${newName}`);
+await network.delete(`/api/artists/${newName}`);
 setToggle(!toggle)
 };
 const deleteAlbum = async (e) => {
 const newName = e.name.replace(`'`,`''`);
-await axios.delete(`/api/albums/${newName}`);
+await network.delete(`/api/albums/${newName}`);
 setToggle(!toggle)
 };
 const deletePlaylist = async (e) => {
-await axios.delete(`/api/playlists/${e.id}`);
+await network.delete(`/api/playlists/${e.id}`);
 setToggle(!toggle)
 };
 

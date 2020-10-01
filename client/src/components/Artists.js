@@ -10,7 +10,7 @@ import {
 import LoadingOverlay from 'react-loading-overlay';
 import ClipLoader from "react-spinners/ClipLoader";
 import ArtistData from './ArtistData.js';
-
+import network from '../Network.js';
 
 
 function ArtistsList(props) {
@@ -67,7 +67,7 @@ setLoading(true)
 
 const deleteArtist = async (e) => {
 const newName = e.name.replace(`'`,`''`);
-await axios.delete(`/api/artists/${newName}`);
+await network.delete(`/api/artists/${newName}`);
 setToggle(!toggle)
 };
 

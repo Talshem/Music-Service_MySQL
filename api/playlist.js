@@ -48,7 +48,9 @@ try {
 router.delete('/:playlistId', checkToken, async (req, res) => {
 try {
   const playlist = await Playlist.findByPk(req.params.playlistId);
+  if(req.admin || playlist.username === req.username) {
   await playlist.destroy();
+  }
   res.json({ deleted: true })
 } catch (err) { res.json(err)}
 })
