@@ -1,14 +1,16 @@
 const { Router } = require('express');
 const { User } = require('../models');
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
+
 const checkToken = require('../middlewares/checkToken');
 const validateChars = require('../middlewares/validateChars');
-require('dotenv').config();
+const checkIp = require('../middlewares/checkIp');
 
 const router = Router();
 var date = new Date();
 
-router.post('/register', async (req, res) => {
+router.post('/register', checkIp, validateChars, async (req, res) => {
 const { username } = req.body;
   try {
     let token = jwt.sign(
