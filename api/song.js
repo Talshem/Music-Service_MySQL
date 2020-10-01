@@ -52,8 +52,8 @@ try {
 router.delete('/:songId', checkToken, async (req, res) => {
 try {
   const song = await Song.findByPk(req.params.songId);
-  const user = await User.findByPk(req.username);
-  if(user.admin || song.username === user.username) {
+  const user = await User.findByPk(req.decoded.username);
+  if(user.is_admin || song.username === user.username) {
   await song.destroy()
   res.json({ deleted: true })
 } else {

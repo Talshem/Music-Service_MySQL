@@ -83,7 +83,6 @@ localStorage.clear();
       })
 setUser(data)
 localStorage.setItem('token', data.remember_token);
-localStorage.setItem('username', data.username);
 setRegisterOpen(false)
     }
   } catch (response){
@@ -101,7 +100,6 @@ setRegisterOpen(false)
     });
 if (data && data.success && data.token) {
 localStorage.setItem('token', data.token);
-localStorage.setItem('username', data.user.username);
 setLoginOpen(false)   
 setTimeout(() => {
 setUser(data.user)

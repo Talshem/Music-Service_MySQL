@@ -87,8 +87,8 @@ router.get('/uploads/:userId', async (req, res) => {
 
 router.delete('/:userId', checkToken, async (req, res) => {
   const userToDelete = await User.findByPk(req.params.userId);
-  const userIsAdmin = await User.findByPk(req.username);
-if(userIsAdmin.admin) {
+  const userIsAdmin = await User.findByPk(req.decoded.username);
+if(userIsAdmin.is_admin) {
   await userToDelete.destroy();
   res.json({ deleted: true })
 } else {

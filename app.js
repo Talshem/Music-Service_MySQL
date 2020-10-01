@@ -11,12 +11,10 @@ app.use(express.static(__dirname + '/client/build'));
 // connection
 require("./models/index")
 
-
+app.use(errorHandler)
 app.use('/api/', require('./api'));
 
 const PORT = process.env.PORT || 3005;
-
-app.use(errorHandler)
 
 
 app.listen(PORT, () => {
