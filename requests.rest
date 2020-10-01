@@ -1,13 +1,11 @@
 
 
-POST http://localhost:3001/api/artists
+POST http://localhost:3001/api/users
 Content-Type: application/json
 
  {
-    "name": "newName", 
-    "cover_img": "image",
-    "username": "user.username",
-    "upload_at": "2020-10-01"
+    "username": "sss", 
+    "password": "password"
 }
 
 ###

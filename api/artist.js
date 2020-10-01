@@ -1,5 +1,7 @@
 const { Router } = require('express');
 const { Artist } = require('../models');
+
+const validateChars = require('../middlewares/validateChars');
 const checkToken = require('../middlewares/checkToken');
 
 const { Op } = require("sequelize");
@@ -21,7 +23,7 @@ try {
   } catch (err) { res.json(err)}
 })
 
-router.get('/:artistId', async (req, res) => {
+router.get('/:artistId', validateChars, async (req, res) => {
 try {
   const artist = await Artist.findByPk(req.params.artistId);
   const albums = await artist.getAlbums();

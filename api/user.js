@@ -2,9 +2,11 @@ const { Router } = require('express');
 const { User } = require('../models');
 const jwt = require('jsonwebtoken');
 const checkToken = require('../middlewares/checkToken');
+const validateChars = require('../middlewares/validateChars');
 require('dotenv').config();
 
 const router = Router();
+var date = new Date();
 
 router.post('/register', async (req, res) => {
 const { username } = req.body;
@@ -21,12 +23,12 @@ const { username } = req.body;
 })
 
 
-router.post('/login', async (req, res) => {
+router.post('/login', validateChars, async (req, res) => {
   const { username, password } = req.body;
   try {
   const user = await User.findOne({where : {username: username, password: password}});
     if(!user) {
-      return res.status(403).json({
+      return res.json({
       message: 'Either the username or password you entered is incorrect'
     });
   }
@@ -36,13 +38,13 @@ router.post('/login', async (req, res) => {
     { expiresIn: '3d' }
   );
   await user.update(req.body);
-  await user.update({remember_token: token});
+  await user.update({last_login: date.toISOString().substring(0, 10), remember_token: token});
   res.json({
     user: user,
     success: true,
     token,
   });
-  } catch (err) { res.json({message: err})}
+  } catch (err) {res.json({message: err})}
 })
 
 router.patch('/auto', checkToken, async (req, res) => {
@@ -53,7 +55,7 @@ router.patch('/auto', checkToken, async (req, res) => {
   } catch (err) { res.json(err)}
 })
 
-router.get('/preferences/:userId', async (req, res) => {
+router.get('/preferences/:userId', validateChars, async (req, res) => {
   try {
   const user = await User.findByPk(req.params.userId);
   res.json(user.preferences)
@@ -67,13 +69,13 @@ router.get('/', async (req, res) => {
   } catch (err) { res.json(err)}
 })
 
-router.get('/:userId', async (req, res) => {
+router.get('/:userId', validateChars, async (req, res) => {
   try {
   const user = await User.scope('filter').findByPk(req.params.userId);
   res.json(user)
   } catch (err) { res.json(err)}
 })
-router.get('/uploads/:userId', async (req, res) => {
+router.get('/uploads/:userId', validateChars, async (req, res) => {
   try {
   const user = await User.scope('filter').findByPk(req.params.userId);
   const songs = await user.getSongs({scope: ['filter']});

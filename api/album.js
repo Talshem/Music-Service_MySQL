@@ -1,6 +1,8 @@
 const { Router } = require('express');
 const { Album } = require('../models');
 const { Artist } = require('../models');
+
+const validateChars = require('../middlewares/validateChars');
 const checkToken = require('../middlewares/checkToken');
 
 const { Op } = require("sequelize");
@@ -23,7 +25,7 @@ router.post('/', checkToken, async (req, res) => {
   } catch (err) { res.json(err) }
 })
 
-router.get('/:albumId', async (req, res) => {
+router.get('/:albumId', validateChars, async (req, res) => {
   try {
   const album = await Album.scope('filter').findByPk(req.params.albumId, {include: [{model: Artist, attributes: ['name']}]});
   const songs = await album.getSongs();

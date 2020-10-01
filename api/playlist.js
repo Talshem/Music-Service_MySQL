@@ -1,6 +1,8 @@
 const { Router } = require('express');
 const { Playlist } = require('../models');
 const { User } = require('../models');
+
+const validateChars = require('../middlewares/validateChars');
 const checkToken = require('../middlewares/checkToken');
 
 const { Op } = require("sequelize");
@@ -22,7 +24,7 @@ try {
 } catch (err) {res.json(err)}
 })
 
-router.get('/:playlistId', async (req, res) => {
+router.get('/:playlistId', validateChars, async (req, res) => {
 try {
   const playlist = await Playlist.findByPk(req.params.playlistId, { include: [{model: User, attributes: ['username']}]});
   res.json(playlist)

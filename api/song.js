@@ -3,6 +3,7 @@ const { Song } = require('../models');
 const { Album } = require('../models');
 const { Artist } = require('../models');
 
+const validateChars = require('../middlewares/validateChars');
 const checkToken = require('../middlewares/checkToken');
 
 const { Op } = require("sequelize");
@@ -25,7 +26,7 @@ try {
   } catch (err) { res.json(err)}
 })
 
-router.get('/:songId', async (req, res) => {
+router.get('/:songId', validateChars, async (req, res) => {
 try {
   const song = await Song.findByPk(req.params.songId, {include: [{model: Album, attributes: ['name']}, {model: Artist, attributes: ['name']}]});
   res.json(song)

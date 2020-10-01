@@ -58,13 +58,15 @@ setUser(data)
 }; autoLogin();
 }, [])
 
-
 const handleLogout = () => {
 setUser(undefined)
 localStorage.clear();
 }
 
+
   const handleRegister = async (username, password, repassword) => {
+
+
     try{
     if (password !== repassword){
     return document.getElementById('errorMessage2').innerHTML='Password fields do not match';
@@ -92,12 +94,11 @@ setRegisterOpen(false)
 
     const handleLogin = async (username, password) => {
     try{
-       var date = new Date();
       const { data } = await network.post(`/api/users/login`, {
       username: username,
       password: password,
-      last_login: date.toISOString().substring(0, 10),
     });
+console.log(data)
 if (data && data.success && data.token) {
 localStorage.setItem('token', data.token);
 setLoginOpen(false)   
@@ -105,12 +106,13 @@ setTimeout(() => {
 setUser(data.user)
 }, 500);
 } else {
-  document.getElementById('errorMessage').innerHTML = "Either the username or password you entered is incorrect"
+  document.getElementById('errorMessage').innerHTML = data.message
 }
   } catch (response) {
   document.getElementById('errorMessage').innerHTML = response.message
   }; 
 };
+
 
 function login(){
 let username;
