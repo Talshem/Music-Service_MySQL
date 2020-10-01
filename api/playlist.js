@@ -50,8 +50,10 @@ try {
   const playlist = await Playlist.findByPk(req.params.playlistId);
   if(req.admin || playlist.username === req.username) {
   await playlist.destroy();
-  }
   res.json({ deleted: true })
+} else {
+res.send('You are not authorized to do this action.')
+}
 } catch (err) { res.json(err)}
 })
 

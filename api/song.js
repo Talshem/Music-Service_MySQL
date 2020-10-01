@@ -54,8 +54,10 @@ try {
   const song = await Song.findByPk(req.params.songId);
   if(req.admin || song.username === req.username) {
   await song.destroy()
-  }
   res.json({ deleted: true })
+} else {
+res.send('You are not authorized to do this action.')
+}
   } catch (err) { res.json(err)}
 })
 

@@ -52,8 +52,10 @@ router.delete('/:albumId', checkToken, async (req, res) => {
   try {
   const album = await Album.findByPk(req.params.albumId);
   if(req.admin || album.username === req.username) {
-  await album.destroy();
-  }
+  res.json({ deleted: true })
+} else {
+res.send('You are not authorized to do this action.')
+}
   res.json({ deleted: true })
   } catch (err) {res.json(err)}
 })

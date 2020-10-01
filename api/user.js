@@ -89,8 +89,10 @@ router.delete('/:userId', checkToken, async (req, res) => {
   const user = await User.findByPk(req.params.userId);
 if(req.admin) {
   await user.destroy();
-}
   res.json({ deleted: true })
+} else {
+res.send('You are not authorized to do this action.')
+}
 })
 
 
