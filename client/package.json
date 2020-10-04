@@ -26,6 +26,7 @@
     "react-spinners": "^0.9.0",
     "react-transition-group": "^4.4.1",
     "react-youtube": "^7.12.0",
+    "use-state-if-mounted": "^1.0.4",
     "webpack": "^4.42.0"
   },
   "scripts": {

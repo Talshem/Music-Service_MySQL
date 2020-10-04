@@ -1,25 +1,22 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import axios from 'axios';
 import {
-  Switch,
-  Route,
   NavLink,
   useRouteMatch,
   } from "react-router-dom";
 import LoadingOverlay from 'react-loading-overlay';
 import ClipLoader from "react-spinners/ClipLoader";
-import AlbumData from './AlbumData.js';
 import network from '../Network.js';
 import UserContext from '../UserContext'
-
+import { useStateIfMounted } from "use-state-if-mounted";
 
 function Album({item, adminDelete, like, include}){
-  
+
 let match = useRouteMatch();
 
 return (
-<li key={item.name} className="grid-item">
+<li className="grid-item">
 <span style={{cursor:'pointer'}}>{like} {" "} </span>
 <p>
 <NavLink className="navTo" to={`${match.url}/${item.id}`}>
@@ -41,16 +38,14 @@ const MemoAlbum = React.memo(Album, (prevProps, nextProps) => {
 });
 
 
-function AlbumsList(props) {
-const [list, setList] = useState([])
-const [search, setSearch] = useState('')
-const [toggle, setToggle] = useState(0)
-const [favorites, setFavorites] = useState(false)
-const [loading, setLoading] = useState(true);
+function Albums(props) {
+const [list, setList] = useStateIfMounted([])
+const [search, setSearch] = useStateIfMounted('')
+const [toggle, setToggle] = useStateIfMounted(0)
+const [favorites, setFavorites] = useStateIfMounted(false)
+const [loading, setLoading] = useStateIfMounted(true);
 
 const user = useContext(UserContext)
-
-
 
 useEffect(() => {
     const fetchData = async () => {
@@ -123,6 +118,7 @@ const adminDelete = user && user.admin === 1 ? deleteButton : '';
 
 return (
             <MemoAlbum
+            key={e.id}
             item={e}
             adminDelete={adminDelete}
             like={like}
@@ -150,6 +146,7 @@ const override =`
 
   return (
 <div> 
+
 <LoadingOverlay
   active={loading}
   spinner={<ClipLoader css={override} color="white" style={{zIndex:1010}} size={150}/>}
@@ -166,22 +163,6 @@ const override =`
 </ul>
 </div>
   );
-}
-
-function Albums(props){
-
-let match = useRouteMatch(); 
-
-return(
-      <Switch>
-        <Route path={`${match.path}/:albumId`}>
-          <AlbumData/>
-        </Route>
-        <Route path={match.path}>
-          <AlbumsList/>
-        </Route>
-      </Switch>
-)
 }
 
 

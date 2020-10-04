@@ -1,25 +1,23 @@
 /* eslint-disable react-hooks/exhaustive-deps */
   
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import axios from 'axios';
 import {
-  Switch,
-  Route,
   NavLink,
   useRouteMatch,
 } from "react-router-dom";
 import LoadingOverlay from 'react-loading-overlay';
 import ClipLoader from "react-spinners/ClipLoader";
-import PlaylistData from './PlaylistData.js';
 import network from '../Network.js';
 import UserContext from '../UserContext'
+import { useStateIfMounted } from "use-state-if-mounted";
 
 function Playlist({item, adminDelete, like, include}){
 
 let match = useRouteMatch();
 
 return (
-<li key={item.name} className="grid-item">
+<li className="grid-item">
 <span style={{cursor:'pointer'}} >{like} </span>
 <p>
 <NavLink className="navTo"  to={`${match.url}/${item.id}`}>
@@ -41,12 +39,12 @@ const MemoPlaylist = React.memo(Playlist, (prevProps, nextProps) => {
 });
 
 
-function PlaylistsList(props) {
-const [list, setList] = useState([])
-const [search, setSearch] = useState('')
-const [favorites, setFavorites] = useState(false)
-const [toggle, setToggle] = useState(0)
-const [loading, setLoading] = useState(true);
+function Playlists(props) {
+const [list, setList] = useStateIfMounted([])
+const [search, setSearch] = useStateIfMounted('')
+const [favorites, setFavorites] = useStateIfMounted(false)
+const [toggle, setToggle] = useStateIfMounted(0)
+const [loading, setLoading] = useStateIfMounted(true);
 
 
 const user = useContext(UserContext)
@@ -123,6 +121,7 @@ const adminDelete = user && user.admin === 1 ? deleteButton : '';
 
 return (
             <MemoPlaylist
+            key={e.id}
             item={e}
             adminDelete={adminDelete}
             like={like}
@@ -166,22 +165,6 @@ const override =`
 </div>
   );
 }
-
-function Playlists(props){
-
-let match = useRouteMatch();
-
-return(
-      <Switch>
-        <Route path={`${match.path}/:playlistId`}>
-          <PlaylistData/>
-        </Route>
-        <Route path={match.path}>
-          <PlaylistsList/>
-        </Route>
-      </Switch>
-)}
-
 
 
 

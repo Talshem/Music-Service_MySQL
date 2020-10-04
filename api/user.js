@@ -96,13 +96,13 @@ router.get('/:userId', validateChars, async (req, res) => {
 router.get('/uploads/:userId', validateChars, async (req, res) => {
   try {
   const user = await User.scope('filter').findByPk(req.params.userId);
-  const songs = await user.getSongs({scope: ['filter']});
-  const albums = await user.getAlbums({scope: ['filter']});
-  const artists = await user.getArtists({scope: ['filter']});
-  const playlists = await user.getPlaylists({scope: ['filter']});
+  const songs = await user.getSongs();
+  const albums = await user.getAlbums();
+  const artists = await user.getArtists();
+  const playlists = await user.getPlaylists();
   let data = {user: user, songs: songs, albums: albums, artists: artists, playlists: playlists}
   res.json(data)
-  } catch (err) { res.json(err)}
+  } catch (err) { res.json({message: err})}
 })
 
 router.delete('/:userId', checkToken, async (req, res) => {

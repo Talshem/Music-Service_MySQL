@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
 import {
   NavLink,
@@ -8,10 +8,12 @@ import {
 import YouTube from 'react-youtube';
 import LoadingOverlay from 'react-loading-overlay';
 import ClipLoader from "react-spinners/ClipLoader";
+import { useStateIfMounted } from "use-state-if-mounted";
 
 function AlbumData(props) {
-const [album, setAlbum] = useState(undefined)
-const [loading, setLoading] = useState(true);
+
+const [album, setAlbum] = useStateIfMounted(undefined);
+const [loading, setLoading] = useStateIfMounted(true);
 
 let { albumId } = useParams();
 
@@ -32,11 +34,10 @@ play_count: e.play_count + 1,
   return setAlbum(<p style={{top:"430px", fontSize:"120px",textAlign:"right",width:"86%"}} className="listTitle">Unknown album</p>)
   }
     }; fetchData();
-   }, [])
+   }, [albumId])
 
 
-
-function makeID(e, songs){
+const makeID = (e, songs) => {
 let list = songs.map(e => {
 return (
 <li key={e.youtube_id} className="grid-item2">
@@ -92,7 +93,7 @@ const override =`
 
 
   return (
-<div>
+album ? <div>
   <LoadingOverlay
   active={loading}
   spinner={<ClipLoader css={override} color="white" style={{zIndex:1010}} size={150}/>}
@@ -100,6 +101,7 @@ const override =`
   </LoadingOverlay>
 {album}
 </div>
+: null
   );
   }
 

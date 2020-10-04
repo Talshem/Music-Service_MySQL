@@ -1,4 +1,5 @@
-import React, { useContext, useEffect, useState} from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useContext, useEffect} from 'react';
 import axios from 'axios';
 import {
   NavLink,
@@ -6,20 +7,21 @@ import {
 import Select from 'react-select';
 import UserContext from '../UserContext'
 import network from '../Network.js';
+import { useStateIfMounted } from "use-state-if-mounted";
 
 function PostSong(props) {
-const [albums, setAlbums] = useState([]);
-const [artists, setArtists] = useState([]);
+const [albums, setAlbums] = useStateIfMounted([]);
+const [artists, setArtists] = useStateIfMounted([]);
 
-const [selectAlbum, setSelectAlbum] = useState(undefined)
-const [title, setTitle] = useState(undefined)
-const [length, setLength] = useState(undefined)
-const [youtube_id, setYoutube_id] = useState(undefined)
-const [artist, setArtist] = useState(undefined)
-const [album, setAlbum] = useState(undefined)
-const [lyrics, setLyrics] = useState(undefined)
-const [track_number, setTrack_number] = useState(undefined)
-const [created_at, setCreated_at] = useState(undefined)
+const [selectAlbum, setSelectAlbum] = useStateIfMounted(undefined)
+const [title, setTitle] = useStateIfMounted(undefined)
+const [length, setLength] = useStateIfMounted(undefined)
+const [youtube_id, setYoutube_id] = useStateIfMounted(undefined)
+const [artist, setArtist] = useStateIfMounted(undefined)
+const [album, setAlbum] = useStateIfMounted(undefined)
+const [lyrics, setLyrics] = useStateIfMounted(undefined)
+const [track_number, setTrack_number] = useStateIfMounted(undefined)
+const [created_at, setCreated_at] = useStateIfMounted(undefined)
 
 const user = useContext(UserContext)
 

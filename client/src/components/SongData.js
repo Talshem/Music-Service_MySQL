@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
 import {
   NavLink,
@@ -8,10 +8,11 @@ import {
 import YouTube from 'react-youtube';
 import LoadingOverlay from 'react-loading-overlay';
 import ClipLoader from "react-spinners/ClipLoader";
+import { useStateIfMounted } from "use-state-if-mounted";
 
 function SongData(props) {
-const [song, setSong] = useState(undefined)
-const [loading, setLoading] = useState(true);
+const [song, setSong] = useStateIfMounted(undefined)
+const [loading, setLoading] = useStateIfMounted(true);
 
 let { songId } = useParams();
 
@@ -31,7 +32,7 @@ useEffect(() => {
     return setSong(<p style={{top:"430px", fontSize:"120px",textAlign:"right",width:"86%"}} className="listTitle">Unknown song</p>)
   }
     }; fetchData();
-   }, [])
+   }, [songId])
 
 
        

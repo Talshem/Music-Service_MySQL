@@ -1,4 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useContext, useEffect } from 'react';
 import axios from 'axios';
 import {
   NavLink,
@@ -6,9 +7,10 @@ import {
 import Select from 'react-select';
 import UserContext from '../UserContext'
 import network from '../Network.js';
+import { useStateIfMounted } from "use-state-if-mounted";
 
 function PostAlbum(props) {
-const [artists, setArtists] = useState([]);
+const [artists, setArtists] = useStateIfMounted([]);
 
 const user = useContext(UserContext)
 

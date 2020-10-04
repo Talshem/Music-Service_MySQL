@@ -1,18 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import axios from 'axios';
 import YouTube from 'react-youtube';
 import {
-  Switch,
-  Route,
   NavLink,
   useRouteMatch,
 } from "react-router-dom";
 import LoadingOverlay from 'react-loading-overlay';
 import ClipLoader from "react-spinners/ClipLoader";
-import SongData from './SongData.js';
 import network from '../Network.js';
 import UserContext from '../UserContext'
+import { useStateIfMounted } from "use-state-if-mounted";
 
 function Song({item, adminDelete, like, include}){
 
@@ -25,7 +23,7 @@ play_count: e.play_count + 1,
 };
 
 return (
-<li key={item.youtube_id} className="grid-item">
+<li className="grid-item">
 <span style={{cursor:'pointer'}} >
 {like}
 </span>
@@ -44,12 +42,12 @@ const MemoSong = React.memo(Song, (prevProps, nextProps) => {
   return false;
 });
 
-function SongsList(props) {
-const [list, setList] = useState([])
-const [search, setSearch] = useState('')
-const [favorites, setFavorites] = useState(false)
-const [toggle, setToggle] = useState(0)
-const [loading, setLoading] = useState(true);
+function Songs(props) {
+const [list, setList] = useStateIfMounted([])
+const [search, setSearch] = useStateIfMounted('')
+const [favorites, setFavorites] = useStateIfMounted(false)
+const [toggle, setToggle] = useStateIfMounted(0)
+const [loading, setLoading] = useStateIfMounted(true);
 
 const user = useContext(UserContext)
 
@@ -126,6 +124,7 @@ const adminDelete = user && user.admin === 1 ? deleteButton : '';
 return (
 
             <MemoSong
+            key={e.youtube_id} 
             item={e}
             adminDelete={adminDelete}
             like={like}
@@ -167,22 +166,6 @@ const override =`
 </ul>
 </div>
   );
-}
-
-function Songs(props){
-
-let match = useRouteMatch();
-
-return(
-      <Switch>
-        <Route path={`${match.path}/:songId`}>
-          <SongData/>
-        </Route>
-        <Route path={match.path}>
-          <SongsList/>
-        </Route>
-      </Switch>
-)
 }
 
 export default Songs;

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
 import {
   NavLink,
@@ -8,11 +8,11 @@ import {
 import YouTube from 'react-youtube';
 import LoadingOverlay from 'react-loading-overlay';
 import ClipLoader from "react-spinners/ClipLoader";
-
+import { useStateIfMounted } from "use-state-if-mounted";
 
 function ArtistData(props) {
-const [loading, setLoading] = useState(true);
-const [artist, setArtist] = useState(undefined)
+const [loading, setLoading] = useStateIfMounted(true);
+const [artist, setArtist] = useStateIfMounted(undefined)
 
 let { artistId } = useParams();
 
@@ -33,7 +33,7 @@ useEffect(() => {
     return setArtist(<p style={{top:"430px", fontSize:"120px",textAlign:"right",width:"86%"}} className="listTitle">Unknown artist</p>)
   }
     }; fetchData();
-   }, [])
+   }, [artistId])
 
 
 function makeID(e, albums, songs){
@@ -115,9 +115,6 @@ const override =`
   active={loading}
   spinner={<ClipLoader css={override} color="white" style={{zIndex:1010}} size={150}/>}
   >
-  {loading ?
-  <p style={{left:"0", top:"-15px", zIndex:"1007", background:"rgb(0,0,0,0.5)", position:"fixed", width:"100vw", height:"100vh"}}></p> : ''
-  }
   </LoadingOverlay>
 {artist}
 </div>

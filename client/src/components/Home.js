@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import axios from 'axios';
 import YouTube from 'react-youtube';
 import {
@@ -12,18 +12,19 @@ import {
 } from 'pure-react-carousel';
 import 'pure-react-carousel/dist/react-carousel.es.css';
 import UserContext from '../UserContext'
+import { useStateIfMounted } from "use-state-if-mounted";
 
 function Home(props) {
-const [songs, setSongs] = useState([]);
-const [albums, setAlbums] = useState([]);
-const [artists, setArtists] = useState([]);
-const [playlists, setPlaylists] = useState([]);
-const [loading, setLoading] = useState(true);
+const [songs, setSongs] = useStateIfMounted([]);
+const [albums, setAlbums] = useStateIfMounted([]);
+const [artists, setArtists] = useStateIfMounted([]);
+const [playlists, setPlaylists] = useStateIfMounted([]);
+const [loading, setLoading] = useStateIfMounted(true);
 
-const [songsLength, setSongsLength] = useState(0);
-const [albumsLength, setAlbumsLength] = useState(0);
-const [artistsLength, setArtistsLength] = useState(0);
-const [playlistsLength, setPlaylistsLength] = useState(0);
+const [songsLength, setSongsLength] = useStateIfMounted(0);
+const [albumsLength, setAlbumsLength] = useStateIfMounted(0);
+const [artistsLength, setArtistsLength] = useStateIfMounted(0);
+const [playlistsLength, setPlaylistsLength] = useStateIfMounted(0);
 
 const user = useContext(UserContext)
 

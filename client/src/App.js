@@ -34,6 +34,12 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import Slide from '@material-ui/core/Slide';
 import network from './Network.js';
 import { UserProvider } from './UserContext'
+import AlbumData from './components/AlbumData.js';
+import ArtistData from './components/ArtistData.js';
+import PlaylistData from './components/PlaylistData.js';
+import SongData from './components/SongData.js';
+import UploadsData from './components/UploadsData.js';
+
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
@@ -256,15 +262,20 @@ const AnimatedSwitch = withRouter(({ location }) => (
       <Switch location={location}>
     <UserProvider value={user}>
 <Route exact path="/" component={() => <Home/>}/>
-<Route path="/songs" component={() => <Songs/>}/>
-<Route path="/artists" component={() => <Artists/>}/>
-<Route path="/playlists" component={() => <Playlists/>}/>
-<Route path="/albums" component={() => <Albums/>}/>
-<Route path="/Uploads" component={() => <Uploads/>}/>
-<Route path="/PostSong" component={() => <PostSong/>}/>
-<Route path="/PostAlbum" component={() => <PostAlbum/>}/>
-<Route path="/PostArtist" component={() => <PostArtist/>}/>
-<Route path="/PostPlaylist" component={() => <PostPlaylist/>}/>
+<Route exact path="/songs" component={() => <Songs/>}/>
+<Route path="/songs/:songId" component={() => <SongData/>}/>
+<Route exact path="/artists" component={() => <Artists/>}/>
+<Route path="/artists/:artistId" component={() => <ArtistData/>}/>
+<Route exact path="/playlists" component={() => <Playlists/>}/>
+<Route path="/playlists/:playlistId" component={() => <PlaylistData/>}/>
+<Route exact path="/albums" component={() => <Albums/>}/>
+<Route path="/albums/:albumId" component={() => <AlbumData/>}/>
+<Route exact path="/uploads" component={() => <Uploads/>}/>
+<Route path="/uploads/:userId" component={() => <UploadsData/>}/>
+<Route exact path="/PostSong" component={() => <PostSong/>}/>
+<Route exact path="/PostAlbum" component={() => <PostAlbum/>}/>
+<Route exact path="/PostArtist" component={() => <PostArtist/>}/>
+<Route exact path="/PostPlaylist" component={() => <PostPlaylist/>}/>
   </UserProvider>
 <Route path="*" component={() => <NoFound/>}/>
       </Switch>
