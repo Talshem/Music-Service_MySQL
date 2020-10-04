@@ -18,7 +18,6 @@ const date = new Date();
     defaultValue: 0,
     },
     remember_token: DataTypes.TEXT,
-    preferences: DataTypes.TEXT,
     created_at: DataTypes.DATE,
     last_login: DataTypes.DATE,
     auto_code: DataTypes.STRING,

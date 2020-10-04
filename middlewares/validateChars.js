@@ -1,7 +1,8 @@
+// prevent SQL injections
+
 let validateChars =  (req, res, next) => {
 let body = req.body
 let params = req.params
-
 function validate(e) {
    if (/^[a-zA-Z0-9_]+$/.test(e))
   {

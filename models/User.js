@@ -17,6 +17,9 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.Playlist, {
         foreignKey: 'username'
       });
+      this.hasMany(models.Preference, {
+        foreignKey: 'username'
+      });
     }
   };
   User.init({
@@ -32,7 +35,6 @@ module.exports = (sequelize, DataTypes) => {
     defaultValue: 0,
     },
     remember_token: DataTypes.TEXT,
-    preferences: DataTypes.TEXT,
     created_at: DataTypes.DATE,
     last_login: DataTypes.DATE,
   }, {

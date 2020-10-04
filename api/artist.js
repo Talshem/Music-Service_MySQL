@@ -54,6 +54,7 @@ try {
   const artist = await Artist.findByPk(req.params.artistId);
   const user = await User.findByPk(req.decoded.username);
   if(user.is_admin || artist.username === user.username) {
+  await artist.destroy()
   res.json({ deleted: true })
 } else {
 res.send('You are not authorized to do this action.')

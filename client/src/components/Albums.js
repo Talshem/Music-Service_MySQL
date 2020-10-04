@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import {
   Switch,
@@ -11,134 +11,130 @@ import LoadingOverlay from 'react-loading-overlay';
 import ClipLoader from "react-spinners/ClipLoader";
 import AlbumData from './AlbumData.js';
 import network from '../Network.js';
+import UserContext from '../UserContext'
+
+
+function Album({item, adminDelete, like, include}){
+  
+let match = useRouteMatch();
+
+return (
+<li key={item.name} className="grid-item">
+<span style={{cursor:'pointer'}}>{like} {" "} </span>
+<p>
+<NavLink className="navTo" to={`${match.url}/${item.id}`}>
+{item.name} - {item.Artist.name}
+</NavLink>
+</p>
+<NavLink className="navTo" to={`${match.url}/${item.id}`}>
+<img onError={(item)=>{item.target.onerror = null; item.target.src="/no_image.jpg"}} alt={item.name} width="250" height="250" src={item.cover_img}></img>
+</NavLink>
+{adminDelete}
+</li>
+)}
+
+const MemoAlbum = React.memo(Album, (prevProps, nextProps) => {
+  if (prevProps.include === nextProps.include) {
+    return true;
+  }
+  return false;
+});
+
 
 function AlbumsList(props) {
 const [list, setList] = useState([])
 const [search, setSearch] = useState('')
-const [preferences, setPreferences] = useState("[]")
-const [admin, setAdmin] = useState(0)
-const [toggle, setToggle] = useState(false)
+const [toggle, setToggle] = useState(0)
 const [favorites, setFavorites] = useState(false)
 const [loading, setLoading] = useState(true);
-const [disabled, setDisabled] = useState(false)
 
-let match = useRouteMatch();
+const user = useContext(UserContext)
 
-useEffect(() => {
-const getPreferences = async () => {
-try {
-const { data } = await axios.get(`/api/users/preferences/${props.user.email}`)
-setPreferences(data)
-} catch {
-return
-}
-}; getPreferences();
-}, [toggle])
 
-useEffect(() => {
-if(props.user){
-let isAdmin = props.user.is_admin;
-setAdmin(isAdmin)
-}}, [props.user])
 
 useEffect(() => {
     const fetchData = async () => {
       try{
       const albums = await (await axios.get(`/api/albums?name=${search}`)).data;
+      const preferences = await (await axios.get(`/api/preferences/album/${user.username}`)).data;
+      let prefArray = preferences.map(e => e.item_id)
       let list = albums.filter(e => e.name.toUpperCase().includes(search.toUpperCase()))
       if (!favorites) {
-      makeAlbums(list) 
+      makeAlbums(list, prefArray) 
       } else {
-      let favoriteList = list.filter(e => JSON.parse(preferences).includes(`album: ${e.id}`))
-      makeAlbums(favoriteList)
+      let favoriteList = list.filter(e => prefArray.includes(e.id))
+      makeAlbums(favoriteList, prefArray)
       }} catch(response) {
     setLoading(false)
-    return alert(response)
+    return
       }
     }; fetchData();
-   }, [disabled, toggle, favorites, preferences])
+   }, [toggle, favorites])
 
 const handleSearch = () => {
-setToggle(!toggle)
+setToggle(e => e + 1)
 setLoading(true)
 }
 
 const deleteAlbum = async (e) => {
 const newName = e.name.replace(`'`,`''`);
 await network.delete(`/api/albums/${newName}`);
-setToggle(!toggle)
+setToggle(e => e + 1)
 };
-const isLiked= (e) => {
-const promise = new Promise((resolve, reject) => {
-    resolve(setDisabled(true));
-})
-const promise2 = new Promise((resolve, reject) => {
-    resolve(handleLike(e));
-})
-promise.then(() => promise2)
-promise2.then(() => {
-  setTimeout(() => {
-    setDisabled(false)
-  }, 1500);
-})
 
-}
-
-const handleLike = async (e) => {
-let newPreferences = JSON.parse(preferences)
-if (newPreferences.includes(`album: ${e.id}`)){
-let x = newPreferences.filter(element => element !== `album: ${e.id}`)
-
-await axios.patch(`/api/albums/like/${e.id}`, {
+const isLiked = async (e, preferences) => {
+document.getElementById(e.id + 'like').setAttribute('disabled', false);
+try{
+document.getElementById(e.id + 'like').classList.replace('fas', 'far');
+if (preferences.includes(e.id.toString())){
+await network.patch(`/api/albums/like/${e.id}`, {
 is_liked: e.is_liked - 1,
-})
-await axios.patch(`/api/users/${props.user.email}`, {
-preferences: JSON.stringify(x),
-password: props.user.password
-})
+});
+await network.patch(`/api/preferences`, {
+username: user.username,
+type: 'album',
+item_id: e.id
+});
 } else {
-newPreferences.push(`album: ${e.id}`)
-await axios.patch(`/api/albums/like/${e.id}`, {
+document.getElementById(e.id + 'like').classList.replace('far', 'fas');
+await network.patch(`/api/albums/like/${e.id}`, {
 is_liked: e.is_liked + 1,
 });
-await axios.patch(`/api/users/${props.user.email}`, {
-preferences: JSON.stringify(newPreferences),
-password: props.user.password
+await network.post(`/api/preferences`, {
+username: user.username,
+type: 'album',
+item_id: e.id
 });
 }
-setToggle(!toggle)
+} catch (response) {
+console.log(response)
+}
+setToggle(e => e + 1)
 }
 
-const makeAlbums = (albums) => {
-
-let x = JSON.parse(preferences);
-
+const makeAlbums = (albums, preferences) => {
 let array = albums.map(e => {
-const heart = x.includes(`album: ${e.id}`) ?
-<button  onClick={() => isLiked(e)} disabled={disabled} className="like fas fa-heart"/> :
-<button  onClick={() => isLiked(e)} disabled={disabled} className="like far fa-heart"/>
-const like = props.user ? heart :  '';
-
+const heart = preferences.includes(e.id.toString()) ? 
+<button  onClick={() => isLiked(e, preferences)} id={e.id + 'like'} className="like fas fa-heart"/> :
+<button  onClick={() => isLiked(e, preferences)} id={e.id + 'like'} className="like far fa-heart"/>
 const deleteButton = <button onClick={() => deleteAlbum(e)} className="deleteButton">Delete</button>;
-const adminDelete = admin === 1 ? deleteButton : '';
+const like = user ? heart :  '';
+const adminDelete = user && user.admin === 1 ? deleteButton : '';
 
 return (
-<li key={e.name} className="grid-item">
-<span style={{cursor:'pointer'}}>{like} {" "} </span>
-<p>
-<NavLink className="navTo" to={`${match.url}/${e.id}`}>
-{e.name} - {e.Artist.name}
-</NavLink>
-</p>
-<NavLink className="navTo" to={`${match.url}/${e.id}`}>
-<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
-</NavLink>
-{adminDelete}
-</li>
+            <MemoAlbum
+            item={e}
+            adminDelete={adminDelete}
+            like={like}
+            include={preferences.includes(e.id.toString())}
+            />
 )}
 )
 setList(array)
 setLoading(false)
+albums.forEach(e =>{
+document.getElementById(e.id + 'like').removeAttribute('disabled');
+})
 }
 
 
@@ -164,7 +160,7 @@ const override =`
 {" "} Albums</p>
 <input className="filterList" onChange={(event) => setSearch(event.target.value)} /> 
 <button onClick={() => handleSearch()} className="searchButton">Search</button>
-{props.user ? <i className="filterFavorites" onClick={() => setFavorites(!favorites)}>{filterFavorites}</i> : ''}
+{user ? <i className="filterFavorites" onClick={() => setFavorites(!favorites)}>{filterFavorites}</i> : ''}
 <ul className="grid-container">
 {list}
 </ul>
@@ -179,10 +175,10 @@ let match = useRouteMatch();
 return(
       <Switch>
         <Route path={`${match.path}/:albumId`}>
-          <AlbumData user={props.user}/>
+          <AlbumData/>
         </Route>
         <Route path={match.path}>
-          <AlbumsList user={props.user}/>
+          <AlbumsList/>
         </Route>
       </Switch>
 )

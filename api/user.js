@@ -18,8 +18,16 @@ const { username } = req.body;
     { expiresIn: '3d' }
   );
   const newUser = await User.create(req.body);
-  await newUser.update({remember_token: token});
-  res.json(newUser)
+  await newUser.update({
+  remember_token: token,
+  created_at: date.toISOString().substring(0, 10),
+  last_login: date.toISOString().substring(0, 10),
+});
+  res.json({
+    user: newUser,
+    success: true,
+    token
+  })
   } catch (err) { res.json(err) }
 })
 
@@ -39,7 +47,11 @@ router.post('/login', validateChars, async (req, res) => {
     { expiresIn: '3d' }
   );
   await user.update(req.body);
-  await user.update({last_login: date.toISOString().substring(0, 10), remember_token: token});
+  await user.update(
+  {
+  last_login: date.toISOString().substring(0, 10),
+  remember_token: token
+});
   res.json({
     user: user,
     success: true,
@@ -56,11 +68,15 @@ router.patch('/auto', checkToken, async (req, res) => {
   } catch (err) { res.json(err)}
 })
 
-router.get('/preferences/:userId', validateChars, async (req, res) => {
+
+
+router.patch('/:userId', checkToken, async (req, res) => {
+
   try {
   const user = await User.findByPk(req.params.userId);
-  res.json(user.preferences)
-  } catch (err) { res.json(err)}
+  user.update(req.body)
+  res.json(req.body)
+  } catch (err) { res.json(err) }
 })
 
 router.get('/', async (req, res) => {
@@ -74,6 +90,7 @@ router.get('/:userId', validateChars, async (req, res) => {
   try {
   const user = await User.scope('filter').findByPk(req.params.userId);
   res.json(user)
+
   } catch (err) { res.json(err)}
 })
 router.get('/uploads/:userId', validateChars, async (req, res) => {

@@ -44,8 +44,6 @@ const [registerOpen, setRegisterOpen] = useState(false)
 const [loginOpen,setLoginOpen] = useState(false)
 const [user, setUser] = useState(undefined);
 
-
-
 useEffect(() => {
 const autoLogin = async () => {
 try {
@@ -65,30 +63,30 @@ localStorage.clear();
 
 
   const handleRegister = async (username, password, repassword) => {
-
-
     try{
     if (password !== repassword){
-    return document.getElementById('errorMessage2').innerHTML='Password fields do not match';
+    return document.getElementById('errorMessage').innerHTML='Password fields do not match';
            }
       let occupied = await axios.get(`api/users/${username}`)  
-      if(occupied.data){
-      return document.getElementById('errorMessage2').innerHTML = 'Username is already in use';
+      if(occupied.data && occupied.data.username){
+      return document.getElementById('errorMessage').innerHTML = 'Username is already in use';
       } else {
-      const date = new Date();
       const { data } = await network.post(`/api/users/register`, {
       username: username,
       password: password,
-      preferences: '[]',
-      created_at: date.toISOString().substring(0, 10),
-      last_login: date.toISOString().substring(0, 10)
       })
-setUser(data)
-localStorage.setItem('token', data.remember_token);
-setRegisterOpen(false)
+if (data && data.success && data.token) {
+localStorage.setItem('token', data.token);
+setRegisterOpen(false)   
+setTimeout(() => {
+setUser(data.user)
+}, 500);
+} else {
+  document.getElementById('errorMessage').innerHTML = data.message
+}
     }
   } catch (response){
-  document.getElementById('errorMessage2').innerHTML='The username you tried to register with is already in use';
+  document.getElementById('errorMessage2').innerHTML= response;
   }; 
   }
 
@@ -98,7 +96,6 @@ setRegisterOpen(false)
       username: username,
       password: password,
     });
-console.log(data)
 if (data && data.success && data.token) {
 localStorage.setItem('token', data.token);
 setLoginOpen(false)   
@@ -232,7 +229,7 @@ return (
             fullWidth
           />
         </DialogContent>
-        <DialogTitle style={{color:'red'}} id="errorMessage2"></DialogTitle>
+        <DialogTitle style={{color:'red'}} id="errorMessage"></DialogTitle>
         <DialogActions>
           <Button onClick={() => setRegisterOpen(false)} color="primary">
             Cancel

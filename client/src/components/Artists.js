@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import {
   Switch,
@@ -11,139 +11,128 @@ import LoadingOverlay from 'react-loading-overlay';
 import ClipLoader from "react-spinners/ClipLoader";
 import ArtistData from './ArtistData.js';
 import network from '../Network.js';
+import UserContext from '../UserContext'
 
+function Artist({item, adminDelete, like, include}){
+
+let match = useRouteMatch();
+
+return (
+<li key={item.name} className="grid-item">
+<span style={{cursor:'pointer'}}>{like} {" "}</span>
+<p>
+<NavLink className="navTo" to={`${match.url}/${item.id}`}>
+{item.name}
+</NavLink>
+</p>
+<NavLink className="navTo"to={`${match.url}/${item.id}`}>
+<img onError={(item)=>{item.target.onerror = null; item.target.src="/no_image.jpg"}} alt={item.name} width="250" height="250" src={item.cover_img}></img>
+</NavLink>
+{adminDelete}
+</li>
+)}
+
+const MemoArtist = React.memo(Artist, (prevProps, nextProps) => {
+  if (prevProps.include === nextProps.include) {
+    return true;
+  }
+  return false;
+});
 
 function ArtistsList(props) {
 const [list, setList] = useState([])
 const [search, setSearch] = useState('')
-const [preferences, setPreferences] = useState("[]")
-const [admin, setAdmin] = useState(0)
 const [favorites, setFavorites] = useState(false)
-const [toggle, setToggle] = useState(false)
+const [toggle, setToggle] = useState(0)
 const [loading, setLoading] = useState(true);
-const [disabled, setDisabled] = useState(false)
 
-let match = useRouteMatch();
-
-useEffect(() => {
-const getPreferences = async () => {
-try {
-const { data } = await axios.get(`/api/users/preferences/${props.user.email}`)
-setPreferences(data)
-} catch {
-return
-}
-}; getPreferences();
-}, [toggle])
-
-useEffect(() => {
-if(props.user){
-let isAdmin = props.user.is_admin;
-setAdmin(isAdmin)
-}}, [props.user])
+const user = useContext(UserContext)
 
 useEffect(() => {
     const fetchData = async () => {
-      try {
+      try{
       const artists = await (await axios.get(`/api/artists?name=${search}`)).data;
+      const preferences = await (await axios.get(`/api/preferences/artist/${user.username}`)).data;
+      let prefArray = preferences.map(e => e.item_id)
       let list = artists.filter(e => e.name.toUpperCase().includes(search.toUpperCase()))
       if (!favorites) {
-      makeArtists(list) 
+      makeArtists(list, prefArray) 
       } else {
-      let favoriteList = list.filter(e => JSON.parse(preferences).includes(`artist: ${e.id}`))
-      makeArtists(favoriteList)
+      let favoriteList = list.filter(e => prefArray.includes(e.id))
+      makeArtists(favoriteList, prefArray)
       }} catch(response) {
     setLoading(false)
-    return alert(response)
+    return
       }
-
     }; fetchData();
-     }, [disabled, toggle, favorites, preferences])
+   }, [toggle, favorites])
 
 const handleSearch = () => {
-setToggle(!toggle)
+setToggle(e => e + 1)
 setLoading(true)
 }
 
 const deleteArtist = async (e) => {
 const newName = e.name.replace(`'`,`''`);
 await network.delete(`/api/artists/${newName}`);
-setToggle(!toggle)
+setToggle(e => e + 1)
 };
 
-const isLiked= (e) => {
-const promise = new Promise((resolve, reject) => {
-    resolve(setDisabled(true));
-})
-const promise2 = new Promise((resolve, reject) => {
-    resolve(handleLike(e));
-})
-promise.then(() => promise2)
-promise2.then(() => {
-  setTimeout(() => {
-    setDisabled(false)
-  }, 1500);
-})
 
-}
-
-
-const handleLike = async (e) => {
-let newPreferences = JSON.parse(preferences)
-if (newPreferences.includes(`artist: ${e.id}`)){
-let x = newPreferences.filter(element => element !== `artist: ${e.id}`)
-
-await axios.patch(`/api/artists/like/${e.id}`, {
+const isLiked = async (e, preferences) => {
+document.getElementById(e.id + 'like').setAttribute('disabled', false);
+try{
+document.getElementById(e.id + 'like').classList.replace('fas', 'far');
+if (preferences.includes(e.id.toString())){
+await network.patch(`/api/artists/like/${e.id}`, {
 is_liked: e.is_liked - 1,
-})
-await axios.patch(`/api/users/${props.user.email}`, {
-preferences: JSON.stringify(x),
-password: props.user.password
-})
+});
+await network.patch(`/api/preferences`, {
+username: user.username,
+type: 'artist',
+item_id: e.id
+});
 } else {
-newPreferences.push(`artist: ${e.id}`)
-await axios.patch(`/api/artists/like/${e.id}`, {
+document.getElementById(e.id + 'like').classList.replace('far', 'fas');
+await network.patch(`/api/artists/like/${e.id}`, {
 is_liked: e.is_liked + 1,
 });
-await axios.patch(`/api/users/${props.user.email}`, {
-preferences: JSON.stringify(newPreferences),
-password: props.user.password
+await network.post(`/api/preferences`, {
+username: user.username,
+type: 'artist',
+item_id: e.id
 });
 }
-setToggle(!toggle)
+} catch (response) {
+console.log(response)
+}
+setToggle(e => e + 1)
 }
 
 
-const makeArtists = (artists) => {
-
-let x = JSON.parse(preferences);
-
+const makeArtists = (artists, preferences) => {
 let array = artists.map(e => {
-const heart = x.includes(`artist: ${e.id}`) ? 
-<button  onClick={() => isLiked(e)} disabled={disabled} className="like fas fa-heart"/> :
-<button  onClick={() => isLiked(e)} disabled={disabled} className="like far fa-heart"/>
-const like = props.user ? heart :  '';
-
+const heart = preferences.includes(e.id.toString()) ? 
+<button  onClick={() => isLiked(e, preferences)} id={e.id + 'like'} className="like fas fa-heart"/> :
+<button  onClick={() => isLiked(e, preferences)} id={e.id + 'like'} className="like far fa-heart"/>
 const deleteButton = <button onClick={() => deleteArtist(e)} className="deleteButton">Delete</button>;
-const adminDelete = admin === 1 ? deleteButton : '';
+const like = user ? heart :  '';
+const adminDelete = user && user.admin === 1 ? deleteButton : '';
 
 return (
-<li key={e.name} className="grid-item">
-<span style={{cursor:'pointer'}}>{like} {" "}</span>
-<p>
-<NavLink className="navTo" to={`${match.url}/${e.id}`}>
-{e.name}
-</NavLink>
-</p>
-<NavLink className="navTo"to={`${match.url}/${e.id}`}>
-<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
-</NavLink>
-{adminDelete}
-</li>
+            <MemoArtist
+            item={e}
+            adminDelete={adminDelete}
+            like={like}
+            include={preferences.includes(e.id.toString())}
+            />
 )}
 )
 setList(array)
 setLoading(false)
+artists.forEach(e =>{
+document.getElementById(e.id + 'like').removeAttribute('disabled');
+})
 }
 
 
@@ -169,7 +158,7 @@ const override =`
 {" "} Artists</p>
 <input className="filterList" onChange={(event) => setSearch(event.target.value)} /> 
 <button onClick={() => handleSearch()} className="searchButton">Search</button>
-{props.user ? <i className="filterFavorites" onClick={() => setFavorites(!favorites)}>{filterFavorites}</i> : ''}
+{user ? <i className="filterFavorites" onClick={() => setFavorites(!favorites)}>{filterFavorites}</i> : ''}
 <ul className="grid-container">
 {list}
 </ul>
@@ -184,10 +173,10 @@ let match = useRouteMatch();
 return(
       <Switch>
         <Route path={`${match.path}/:artistId`}>
-          <ArtistData user={props.user}/>
+          <ArtistData/>
         </Route>
         <Route path={match.path}>
-          <ArtistsList user={props.user}/>
+          <ArtistsList />
         </Route>
       </Switch>
 )}
