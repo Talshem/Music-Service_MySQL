@@ -35,7 +35,7 @@ import ArtistData from './components/ArtistData.js';
 import PlaylistData from './components/PlaylistData.js';
 import SongData from './components/SongData.js';
 import UploadsData from './components/UploadsData.js';
-
+import { ConfirmProvider } from "material-ui-confirm";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
@@ -255,6 +255,7 @@ const platform = user ? <h5> <Button disabled={true} style={{fontSize:"20px", co
 const AnimatedSwitch = withRouter(({ location }) => (
   <TransitionGroup >
     <CSSTransition key={location.key} classNames="page" timeout={1000}>
+<ConfirmProvider>
 <UserProvider value={user}>
       <Switch location={location}>
 <Route exact path="/" component={() => <Home/>}/>
@@ -275,6 +276,7 @@ const AnimatedSwitch = withRouter(({ location }) => (
 <Route component={() => <NoFound/>}/>
       </Switch>
 </UserProvider>
+</ConfirmProvider>
     </CSSTransition>
   </TransitionGroup>
 ));

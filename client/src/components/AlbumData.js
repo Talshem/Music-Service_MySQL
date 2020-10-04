@@ -38,7 +38,7 @@ let url = [];
 let list = songs.map(e => {
 url.push(`https://www.youtube.com/watch?v=${e.youtube_id}`)
 return (
-<li key={e.youtube_id} className="test">
+<li key={e.youtube_id} className="item">
 <NavLink className="navTo" to={`/songs/${e.youtube_id}?album=${albumId}`} >
 <span>	&#119136; &nbsp; {e.title} </span>
 <span style={{float:"right"}}>{e.length}</span>
@@ -49,7 +49,7 @@ return (
 
 let x = () => {
 return (
-<div  style={{marginLeft:'50px'}}>
+<div style={{marginLeft:'50px'}}>
 <p className="dataTitle">{e.name}</p>
 
 <div style={{width:'100%', marginTop:'-60px', color:"white", display:"flex"}}>
@@ -64,7 +64,7 @@ return (
 
 <div style={{width:'62%'}}>
 <h6 className="songsTitle">Songs</h6>
-<div className="dataTest">
+<div className="dataItem">
 {list}
 </div>
 

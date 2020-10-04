@@ -50,17 +50,10 @@ if (/^([0-5]?[0-9]|2[0-3]):[0-5][0-9]$/.test(length)) {
 
 const addSong = async (event, title, length, youtube_id, artist, album, track_number, lyrics, created_at) => {
 event.preventDefault();
-
     const date = new Date();
     let regex = /'/gi
     let enter = /\n/gi
 
-    if(!artist) {
-    return document.getElementById('songError').innerHTML = "Select an artist";
-    }
-    if(!album) {
-    return document.getElementById('songError').innerHTML = "Select an album";
-    }
   const newCreated_at = created_at.slice(0,10)
   const newLyrics = lyrics.replace(regex,`''`).replace(enter,`&&`);
   const newTitle = title.replace(regex,`''`);
@@ -154,13 +147,13 @@ return (
     <input id="song_id" required type="text" defaultValue={youtube_id} onChange={insertYoutube}/><br/><br/>
     <label> Length: </label><i className='tooltip fas fa-info'> <span className="tooltiptext">M M : S S</span></i><br/>
     <input id="song_length" required type="text" defaultValue={length} onChange={insertLength}/> <br/><br/>
-    <label>Artist: </label><i className='tooltip fas fa-info'> <span className="tooltiptext">You can only post albums of uploaded artists</span></i><br/>
+    <label>Artist: </label><i className='tooltip fas fa-info'> <span className="tooltiptext">You can only select uploaded artists </span></i><br/>
     <Select required maxMenuHeight={160}
     defaultValue={artist}
     onChange={insertArtist}
     options={selectArtist}>
     </Select><br/>
-    <label> Album: </label><i className='tooltip fas fa-info'> <span className="tooltiptext">You can only post songs of uploaded albums</span></i><br/>
+    <label> Album: </label><i className='tooltip fas fa-info'> <span className="tooltiptext">You can only select an uploaded albums</span></i><br/>
     <Select required maxMenuHeight={160}
     defaultValue={album}
     onChange={insertAlbum}

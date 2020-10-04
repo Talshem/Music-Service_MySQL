@@ -5,7 +5,6 @@ import {
   NavLink,
   useParams,
 } from "react-router-dom";
-import YouTube from 'react-youtube';
 import LoadingOverlay from 'react-loading-overlay';
 import ClipLoader from "react-spinners/ClipLoader";
 import { useStateIfMounted } from "use-state-if-mounted";
@@ -15,13 +14,6 @@ const [loading, setLoading] = useStateIfMounted(true);
 const [artist, setArtist] = useStateIfMounted(undefined)
 
 let { artistId } = useParams();
-
-const playCount = async (e) => {
-await axios.patch(`/api/songs/count/${e.youtube_id}`, {
-play_count: e.play_count + 1,
-});
-};
-
 
 useEffect(() => {
   const fetchData = async () => {
@@ -43,12 +35,12 @@ let songList = songs.map(e => {
 z--;
 
 return (
-<div style={{zIndex:z}} key={e.youtube_id} className="hov grid-item3">
-<YouTube className="video" onPlay={() => playCount(e)} videoId={e.youtube_id} opts={{width:'200', height:'200'}} id="video"/>
-<p style={{marginTop:"10px"}}>
-<NavLink className="navTo" to={`/songs/${e.youtube_id}?artist=${artistId}`}>{e.title}</NavLink>
-</p>
-</div>   
+<li key={e.youtube_id} className="item">
+<NavLink className="navTo" to={`/songs/${e.youtube_id}?artist=${artistId}`} >
+<span>	&#119136; &nbsp; {e.title} </span>
+<span style={{float:"right"}}>{e.length}</span>
+</NavLink>
+</li>   
 )})
 
 let albumList = albums.map(e => {
@@ -70,7 +62,6 @@ return (
 <p className="dataTitle">{e.name}</p>
 <br/><br/>
 
-
 <div style={{width:'100%', marginTop:'-105px', color:"white", display:"flex"}}>
 
 <div style={{fontSize:'20px', width:'36%', marginRight:"2%"}}>
@@ -80,19 +71,20 @@ return (
 
 </div>
 
-
 <div style={{width:'62%', marginLeft:'40px'}}>
 <h6 style={{textAlign:"left", left:"2%"}} className="songsTitle">Songs</h6>
-<div className="artistData">
+<div className="dataItem">
 {songList}
-</div><br/><br/><br/><br/><br/>
-<h6 style={{textAlign:"left", left:"2%"}} className="songsTitle">Albums</h6>
+</div>
+</div>
+</div>
+
+<h6 style={{textAlign:"left", left:"10px"}} className="songsTitle">Albums</h6>
 <div className="artistData">
 {albumList}
 </div>
-</div>
 
-</div>
+<br/><br/><br/>
 <NavLink className="fa fa-arrow-left back" to="/artists"></NavLink>
 </div>
 )}

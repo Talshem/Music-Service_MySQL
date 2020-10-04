@@ -59,7 +59,7 @@ useEffect(() => {
       if (!favorites) {
       makePlaylists(list, prefArray) 
       } else {
-      let favoriteList = list.filter(e => prefArray.includes(e.id))
+      let favoriteList = list.filter(e => prefArray.includes(e.id.toString()))
       makePlaylists(favoriteList, prefArray)
       }} catch(response) {
     setLoading(false)

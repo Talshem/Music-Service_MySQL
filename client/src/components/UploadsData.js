@@ -12,13 +12,14 @@ import ScrollContainer from 'react-indiana-drag-scroll'
 import UserContext from '../UserContext'
 import network from '../Network.js';
 import { useStateIfMounted } from "use-state-if-mounted";
-
+import { useConfirm } from "material-ui-confirm";
 
 export default function UploadsData(props) {
 const [loading, setLoading] = useStateIfMounted(true);
 const [toggle, setToggle] = useStateIfMounted(false);
 const [name, setName] = useStateIfMounted('Uploads')
 const [uploads, setUploads] = useStateIfMounted('')
+const confirm = useConfirm();
 
 const user = useContext(UserContext)
 
@@ -43,23 +44,25 @@ play_count: e.play_count + 1,
 };
 
 const deleteSong = async (e) => {
-const newId = e.youtube_id.replace(`'`,`''`);
-await network.delete(`/api/songs/${newId}`);
-setToggle(!toggle)
+confirm({ description: `This will permanently delete ${e.title}.` })
+.then( async () => { await network.delete(`/api/songs/${e.youtube_id}`); setToggle(!toggle)})
+.catch(() => {return});
 };
 const deleteArtist = async (e) => {
-const newName = e.name.replace(`'`,`''`);
-await network.delete(`/api/artists/${newName}`);
-setToggle(!toggle)
+confirm({ description: `This will permanently delete ${e.name}.` })
+.then( async () => { await network.delete(`/api/artists/${e.id}`); setToggle(!toggle)})
+.catch(() => {return});
 };
 const deleteAlbum = async (e) => {
-const newName = e.name.replace(`'`,`''`);
-await network.delete(`/api/albums/${newName}`);
-setToggle(!toggle)
+confirm({ description: `This will permanently delete ${e.name}.` })
+.then( async () => { await network.delete(`/api/albums/${e.id}`); setToggle(!toggle)})
+.catch(() => {return});
 };
+
 const deletePlaylist = async (e) => {
-await network.delete(`/api/playlists/${e.id}`);
-setToggle(!toggle)
+confirm({ description: `This will permanently delete ${e.name}.` })
+.then( async () => { await network.delete(`/api/playlists/${e.id}`); setToggle(!toggle)})
+.catch(() => {return});
 };
 
 
@@ -78,18 +81,20 @@ let z =1000
 let sArray = songs.map(e => {
 console.log()
 z--;
-const deleteButton = user && user.email === e.user ? <button onClick={() => deleteSong(e)} style={{marginBottom:"15px"}} className="deleteButton">Delete</button> : ''
+const deleteButton = user && user.email === e.user ? <button onClick={() => deleteSong(e)} style={{marginBottom:"15px"}} className="fa fa-remove"></button> : ''
 
 return (
 <li key={e.youtube_id} style={{zIndex: z}} className="hov">
+<YouTube className="video" onPlay={() => playCount(e)}videoId={e.youtube_id} id="video" opts={{width:"250",height:"250"}}/>
+<span style={{cursor:'pointer'}} >
+{deleteButton}
+</span>
 <p>
-<NavLink className="navTo" to="/songs">
+<NavLink className="navTo" to={`/songs/${e.youtube_id}`}>
 {e.title}
 </NavLink>
 </p>
-<YouTube className="video" onPlay={() => playCount(e)}videoId={e.youtube_id} id="video" opts={{width:"250",height:"250"}}/>
 <br/>
-{deleteButton}
 </li>
 )
 
@@ -98,57 +103,63 @@ return (
 
 
 let alArray = albums.map(e => {
-const deleteButton = user && user.email === e.user ? <button onClick={() => deleteAlbum(e)} className="deleteButton">Delete</button> : ''
+const deleteButton = user && user.email === e.user ? <button onClick={() => deleteAlbum(e)} className="fa fa-remove"></button> : ''
 z--;
 return (
 <li style={{zIndex: z}} key={e.name} className="hov">
+<NavLink className="navTo" to={`/albums/${e.id}`}>
+<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
+</NavLink>
+<span style={{cursor:'pointer'}} >
+{deleteButton}
+</span>
 <p>
-<NavLink className="navTo" to="/albums">
+<NavLink className="navTo" to={`/albums/${e.id}`}>
 {e.name}
 </NavLink>
 </p>
-<NavLink className="navTo" to="/albums">
-<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
-</NavLink>
 <br/>
-{deleteButton}
 </li>
 )}
 )
 
 let arArray = artists.map(e => {
-const deleteButton = user && user.email === e.user ? <button onClick={() => deleteArtist(e)} className="deleteButton">Delete</button> : ''
+const deleteButton = user && user.email === e.user ? <button onClick={() => deleteArtist(e)} className="fa fa-remove"></button> : ''
 z--;
 return (
 <li style={{zIndex: z}} key={e.name} className="hov">
+<NavLink className="navTo"  to={`/artists/${e.id}`}>
+<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
+</NavLink>
+<span style={{cursor:'pointer'}} >
+{deleteButton}
+</span>
 <p>
-<NavLink className="navTo" to="/artists">
+<NavLink className="navTo" to={`/artists/${e.id}`}>
 {e.name}
 </NavLink>
 </p>
-<NavLink className="navTo" to="/artists">
-<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
-</NavLink>
 <br/> 
-{deleteButton}
 </li>
 )}
 ) 
 let pArray = playlists.map(e => {
-const deleteButton = user && user.email === e.user ? <button onClick={() => deletePlaylist(e)} className="deleteButton">Delete</button> : ''
+const deleteButton = user && user.email === e.user ? <button onClick={() => deletePlaylist(e)} className="fa fa-remove"></button> : ''
 z--
 return (
 <li style={{zIndex: z}} key={e.name} className="hov">
+<NavLink className="navTo" to={`/playlists/${e.id}`}>
+<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
+</NavLink>
+<span style={{cursor:'pointer'}} >
+{deleteButton}
+</span>
 <p>
-<NavLink className="navTo" to="/playlists" >
+<NavLink className="navTo"  to={`/playlists/${e.id}`}>
 {e.name}
 </NavLink>
 </p>
-<NavLink className="navTo" to="/playlists">
-<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
-</NavLink>
 <br/>
-{deleteButton}
 </li>
 )}
 )
@@ -157,7 +168,7 @@ let x = () => {
 return(
 <div>
 <p id="listTitle" className='listTitle'>{name}</p>
-
+<br/><br/>
 <div className='uploadsList'>
 <h6 className="upTitle">Songs</h6>
 <ScrollContainer className="upload" >

@@ -46,46 +46,52 @@ text-shadow: 1.5px 1.5px 0px rgb(105, 32, 32);
 }
 
 .carouselist{
-background: rgb(10, 10, 10);
+background: rgb(30,30,30);
 transition: 0.5s;
-font-size: 25px;
 white-space: nowrap;
 text-align: center;
+margin-left:30px;
 }
 
-img, iframe{
-margin-top: -10px;
-border-radius: 5px;
-transition: 0.5s;
-border: 2px solid white;
+.carouselist iframe, .carouselist img{
+margin-left:25px;
+margin-right:100px;
 }
 
 .carouselist:hover iframe, .carouselist:hover img{
-transform: scale(1.2);
-margin-top:15px;
+transform: scale(1.15);
+margin-right:100px;
 }
 
 .carouselist:hover p{
-margin-top:60px;
+margin-top:15px;
+margin-bottom: 35px;
 overflow: hidden;
-width:86%;
+width:325px;
 }
 
 .carousel{
 min-height:493px;
 }
 
-
 .carouselist p{
 background: transparent;
 overflow: hidden;
-width:73.5%;;
+width:290px;
+margin-left:32px;
 font-size: 35px;
 height:45px;
 margin-bottom:12px;
 transition: 0.5s;
 text-align: center;
-margin-left:13%;
+}
+
+img, iframe{
+display: block;
+margin-top: -10px;
+border-radius: 5px;
+transition: 0.5s;
+border: 2px solid white;
 }
 
 .hov:hover a{
@@ -95,7 +101,7 @@ color: rgb(149, 243, 215, 1)
 .hov:hover .video, .hov:hover img{
  border: 2px solid rgb(149, 243, 215, 1); 
 }
-.grid-item2:hover p,.grid-item:hover p, .hov:hover p{
+.grid-item:hover p, .hov:hover p{
 animation-iteration-count: infinite;
 animation-name: movement;
 animation-duration: 15s;
@@ -219,11 +225,11 @@ margin-bottom:50px;
 
 
 
-.grid-item2:hover .video, .grid-item:hover img, .grid-item:hover .video, .grid-item:hover img{
+.grid-item:hover img, .grid-item:hover .video, .grid-item:hover img{
  border: 2px solid rgb(149, 243, 215, 1)
 }
 
-.grid-item:hover a, .grid-item2:hover a{
+.grid-item:hover a{
 color: rgb(149, 243, 215, 1)
 }
 
@@ -233,7 +239,7 @@ margin-bottom: -21px;
 
 
 
-.like:active{
+.fa-remove:active, .like:active{
 color:rgb(156, 37, 37);
 }
 
@@ -277,11 +283,13 @@ h5 {
 }
 
 .homeLists{
-box-shadow: 0 0 40px 30px rgb(10, 10, 10);
-margin-left: 60px;
+border: 20px solid rgb(30,30,30);
+margin-left: 2%;
+border-radius: 5px;
+width:97%;
 margin-top:100px;
 position: relative;
-background: rgb(10, 10, 10);
+background: rgb(30,30,30);
 }
 
 
@@ -311,8 +319,8 @@ padding-bottom:30px;
 overflow-y: hidden;
 overflow-x: scroll;
 height:255px;
-width:98%;
-margin-top:-115px;
+width:100%;
+margin-top:-110px;
 margin-bottom: -35px;
 white-space: nowrap;
 }
@@ -351,22 +359,11 @@ margin-top:-115px;
 margin-bottom: -35px;
 }
 
-.grid-item2 {
-width:220px;
-position: relative;
-border-right: 30px solid transparent;
-color:white;
-display: inline-block;
-height:240px;
-margin-top:15px;
-overflow:hidden;
-}
-
-
 .songsTitle{
 text-shadow:2px 0px 0px rgb(0, 0, 0);
 position: relative;;
 text-align: right;
+color:white;
 margin-top:-52px;
 margin-bottom: 103px;
 font-weight:100;
@@ -532,6 +529,7 @@ position: absolute;
 }
 
 .arrow{
+color: rgb(149, 243, 215);
 background: none;
 border: none;
 text-decoration: none;
@@ -539,7 +537,9 @@ font-size: 36px;
 padding-bottom:30px;
 padding-left:25px;
 margin-right:20px;
-}
+} 
+
+
 
 #songError{
 position: absolute;
@@ -587,34 +587,39 @@ padding-bottom:200px;
 .upload{
 width:92.5%;
 margin-right:20px;
-background:rgb(10, 10, 10);
 min-height: 310px;
 display:flex;
+background:rgb(30, 30, 30);
 justify-content:flex-start;
+
 overflow:auto;
 margin-bottom:80px;
 padding-top:5px;
 border-radius: 5px;
 padding-left:15px;
-border: 1px solid white;
 }
 
 .upload p{
 white-space: nowrap;
 overflow: hidden;
 z-index: 1;
+border-right: 60px solid rgb(30, 30, 30);
+background: rgb(30, 30, 30);
 font-size: 26px;
-margin-top:-0px;
-margin-bottom:15px;
+margin-top:2px;
+padding-bottom: 5px;
+margin-bottom:-15px;
 max-height:30px;
-width:254px;
+width:75%;
 height:40px;
-text-align: center;
+margin-left:35px;
+}
+.horizontalSlider___281Ls{
+outline:0;
 }
 
-
 .upload li{
-background:rgb(10, 10, 10);
+padding-top:20px;
 padding-right:30px;
 }
 
@@ -626,7 +631,7 @@ border: 2px solid rgb(149, 243, 215);
 border-radius: 10px; 
 cursor: pointer;
 font-size: 26px;
-margin-left:645px;
+margin-left:655px;
 margin-top:140px;
 position: absolute;
 }
@@ -638,25 +643,24 @@ border:2px solid rgb(95, 206, 171);
 button:focus {outline:0;}
 
 .arrow:hover, .add:hover, .post:hover, .back:hover, .filterFavorites:hover{
-color:rgb(95, 206, 171)
+color:rgb(95, 206, 171);
 }
 
 .upTitle{
 color:rgb(255, 255, 255);
 background: transparent;
-text-align: right;
 z-index:1200;
 position: absolute;
 font-size: 40px;
 height:42px;
-width:90%;
 height:50px;
-margin-top:-42px;
+margin-left:1%;
+margin-top:-43px;
 font-weight: 100;
 }
 
 
-.test{
+.item{
 border-radius: 5px;
 display: block;
 background:rgb(180, 60, 60);
@@ -671,19 +675,33 @@ margin-bottom:4px;
 transition: 0.3s;
 }
 
-.test:hover{
+.item:hover{
+transform: scale(1.03);
 border: 2px solid white;
-padding-top: 15px;
-padding-bottom: 30px;
+padding-top: 10px;
+padding-bottom: 25px;
 }
 
-.dataTest{
-padding-right:2%;
+.dataItem{
+padding-right:3%;
 position: relative;
+padding-left:2%;
 overflow-y: scroll;
 overflow-x: hidden;
 height:650px;
-left:2%;
 width:96.5%;
 margin-top:-115px;
+}
+
+.fa-remove{
+position: absolute;
+background:none;
+border:none;
+color: rgb(200, 60, 60);
+font-size:30px;
+cursor: pointer;
+margin-top:5px;
+margin-left:-15px;
+background: rgb(30, 30, 30);
+border-left:10px solid rgb(30, 30, 30);
 }

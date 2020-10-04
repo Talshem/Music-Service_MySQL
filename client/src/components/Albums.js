@@ -57,7 +57,7 @@ useEffect(() => {
       if (!favorites) {
       makeAlbums(list, prefArray) 
       } else {
-      let favoriteList = list.filter(e => prefArray.includes(e.id))
+      let favoriteList = list.filter(e => prefArray.includes(e.id.toString()))
       makeAlbums(favoriteList, prefArray)
       }} catch(response) {
     setLoading(false)

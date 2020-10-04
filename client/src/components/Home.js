@@ -62,7 +62,7 @@ return (
 <p>
 <NavLink className="navTo" to={`/songs/${e.youtube_id}`} >{e.title} - {e.Artist.name}</NavLink>
 </p>
-<YouTube className="video" onPlay={() => playCount(e)}videoId={e.youtube_id} id="video" opts={{width:"250",height:"250"}}/>
+<YouTube className="video" onPlay={() => playCount(e)}videoId={e.youtube_id} id="video" opts={{width:"300",height:"300"}}/>
 <br/><br/>
 </div>
 </Slide>
@@ -82,7 +82,7 @@ return (
 </NavLink>
 </p>
 <NavLink className="navTo" to={`/albums/${e.id}`} >
-<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
+<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="300" height="300" src={e.cover_img}></img>
 </NavLink>
 <br/><br/>
 </Slide>
@@ -100,7 +100,7 @@ return (
 </NavLink>
 </p>
 <NavLink className="navTo" to={`/artists/${e.id}`}>
-<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
+<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="300" height="300" src={e.cover_img}></img>
 </NavLink>
 <br/><br/>
 </Slide>
@@ -118,7 +118,7 @@ return (
 </NavLink>
 </p>
 <NavLink className="navTo" to={`/playlists/${e.id}`}>
-<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
+<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="300" height="300" src={e.cover_img}></img>
 </NavLink>
 <br/><br/>
 </Slide>
@@ -137,8 +137,6 @@ const override =`
   margin-top:200px;
   left: 40%;
 `;
-
-const arrowColor = loading ? 'rgb(10, 10, 10)' : 'rgb(149, 243, 215)';
 
   return (
     <div>
@@ -162,9 +160,13 @@ const arrowColor = loading ? 'rgb(10, 10, 10)' : 'rgb(149, 243, 215)';
 <Slider style={{maxHeight:"420px"}}>
 {songs}
 </Slider>
-    <ButtonBack style={{color:arrowColor}} className="arrow fa fa-arrow-left" ></ButtonBack>
-    <ButtonNext style={{color:arrowColor, float:"right"}}  className="arrow fa fa-arrow-right"></ButtonNext>
-</CarouselProvider>
+{!loading ?
+<>
+    <ButtonBack className="arrow fa fa-arrow-left" ></ButtonBack>
+    <ButtonNext style={{float:"right"}}  className="arrow fa fa-arrow-right"></ButtonNext>
+</>
+: null}
+    </CarouselProvider>
 
 
 <h4> Top Albums </h4> 
@@ -179,8 +181,12 @@ const arrowColor = loading ? 'rgb(10, 10, 10)' : 'rgb(149, 243, 215)';
 <Slider style={{maxHeight:"420px"}}>
 {albums}
 </Slider>
-    <ButtonBack style={{color:arrowColor}} className="arrow fa fa-arrow-left" ></ButtonBack>
-    <ButtonNext style={{color:arrowColor, float:"right"}} className="arrow fa fa-arrow-right"></ButtonNext>
+{!loading ?
+<>
+    <ButtonBack className="arrow fa fa-arrow-left" ></ButtonBack>
+    <ButtonNext style={{float:"right"}} className="arrow fa fa-arrow-right"></ButtonNext>
+</>
+: null}
 </CarouselProvider>
 
 <h4> Top Artists </h4> 
@@ -195,8 +201,12 @@ const arrowColor = loading ? 'rgb(10, 10, 10)' : 'rgb(149, 243, 215)';
 <Slider style={{maxHeight:"420px"}}>
 {artists}
 </Slider>
-    <ButtonBack style={{color:arrowColor}} className="arrow fa fa-arrow-left" ></ButtonBack>
-    <ButtonNext style={{color:arrowColor, float:"right"}} className="arrow fa fa-arrow-right"></ButtonNext>
+{!loading ?
+<>
+    <ButtonBack className="arrow fa fa-arrow-left" ></ButtonBack>
+    <ButtonNext style={{float:"right"}} className="arrow fa fa-arrow-right"></ButtonNext>
+</>
+: null}
 </CarouselProvider>
 
 <h4> Top Playlists </h4> 
@@ -210,9 +220,12 @@ const arrowColor = loading ? 'rgb(10, 10, 10)' : 'rgb(149, 243, 215)';
   >
 <Slider style={{maxHeight:"420px"}}>
 {playlists}
-</Slider>
-    <ButtonBack style={{color:arrowColor}}className="arrow fa fa-arrow-left" ></ButtonBack>
-    <ButtonNext style={{color:arrowColor, float:"right"}} className="arrow fa fa-arrow-right"></ButtonNext>
+</Slider>{!loading ?
+<>
+    <ButtonBack className="arrow fa fa-arrow-left" ></ButtonBack>
+    <ButtonNext style={{float:"right"}} className="arrow fa fa-arrow-right"></ButtonNext>
+</>
+: null}
 </CarouselProvider>
 </div>
 
