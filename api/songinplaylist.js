@@ -27,7 +27,7 @@ console.log(req.body.id)
 router.get('/:playlistId', validateChars, async (req, res) => {
   try {
 const songs = await SongInPlaylist.scope('filter').findAll({where: {playlist_id: req.params.playlistId },
-include: [{model: Song, attributes: ['youtube_id', 'title'], 
+include: [{model: Song, attributes: ['youtube_id', 'title', 'length'], 
 }]})
   res.json(songs)
   } catch (err) { console.log(err); res.json(err)}

@@ -34,7 +34,6 @@ try {
 })
 
 router.patch('/count/:songId', async (req, res) => {
-console.log(5)
 try {
   const song = await Song.findByPk(req.params.songId);
   await song.update(req.body);

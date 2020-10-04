@@ -28,7 +28,7 @@ router.post('/', checkToken, async (req, res) => {
 router.get('/:albumId', validateChars, async (req, res) => {
   try {
   const album = await Album.scope('filter').findByPk(req.params.albumId, {include: [{model: Artist, attributes: ['name']}]});
-  const songs = await album.getSongs();
+  const songs = await album.getSongs()
   let data = {album: album, songs: songs}
   res.json(data)
   } catch (err) { res.json(err)}

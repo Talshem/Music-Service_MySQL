@@ -654,3 +654,35 @@ height:50px;
 margin-top:-42px;
 font-weight: 100;
 }
+
+
+.test{
+border-radius: 5px;
+display: block;
+background:rgb(180, 60, 60);
+font-size: 30px;
+height:30px;
+opacity: 0.75;
+padding:10px;
+padding-bottom:20px;
+padding-top:5px;
+margin-bottom:4px;
+transition: 0.3s;
+}
+
+.test:hover{
+border: 2px solid white;
+padding-top: 15px;
+padding-bottom: 30px;
+}
+
+.dataTest{
+padding-right:2%;
+position: relative;
+overflow-y: scroll;
+overflow-x: hidden;
+height:650px;
+left:2%;
+width:96.5%;
+margin-top:-115px;
+}

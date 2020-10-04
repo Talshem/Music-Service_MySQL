@@ -5,10 +5,10 @@ import {
   NavLink,
   useParams,
 } from "react-router-dom";
-import YouTube from 'react-youtube';
 import LoadingOverlay from 'react-loading-overlay';
 import ClipLoader from "react-spinners/ClipLoader";
 import { useStateIfMounted } from "use-state-if-mounted";
+import ReactPlayer from 'react-player/youtube'
 
 function AlbumData(props) {
 
@@ -16,12 +16,6 @@ const [album, setAlbum] = useStateIfMounted(undefined);
 const [loading, setLoading] = useStateIfMounted(true);
 
 let { albumId } = useParams();
-
-const playCount = async (e) => {
-await axios.patch(`/api/songs/count/${e.youtube_id}`, {
-play_count: e.play_count + 1,
-});
-};
 
 
    useEffect(() => {
@@ -38,13 +32,17 @@ play_count: e.play_count + 1,
 
 
 const makeID = (e, songs) => {
+
+let url = [];
+
 let list = songs.map(e => {
+url.push(`https://www.youtube.com/watch?v=${e.youtube_id}`)
 return (
-<li key={e.youtube_id} className="grid-item2">
-<p>
-<NavLink className="navTo" to={`/songs/${e.youtube_id}?name=${albumId}`} >{e.title}</NavLink>
-</p>
-<YouTube className="video" onPlay={() => playCount(e)} videoId={e.youtube_id} id="video" opts={{width:"200",height:"200"}}/>
+<li key={e.youtube_id} className="test">
+<NavLink className="navTo" to={`/songs/${e.youtube_id}?name=${albumId}`} >
+<span>	&#119136; &nbsp; {e.title} </span>
+<span style={{float:"right"}}>{e.length}</span>
+</NavLink>
 </li>   
 )
 })    
@@ -57,8 +55,7 @@ return (
 <div style={{width:'100%', marginTop:'-60px', color:"white", display:"flex"}}>
 
 <div style={{fontSize:'20px', width:'36%', marginRight:"2%"}}>
-<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="100%" height="75%" src={e.cover_img}></img>
-<br/>
+<ReactPlayer playing url={url} controls={true} width="100%" height="450px" /><br/>
 <i><strong>{e.is_liked}</strong> people liked this album</i><br/>
 <br/><br/>
 <i><strong>Artist:</strong>{" "} {e.Artist.name}</i><br/>
@@ -67,7 +64,7 @@ return (
 
 <div style={{width:'62%'}}>
 <h6 className="songsTitle">Songs</h6>
-<div className="dataSongs">
+<div className="dataTest">
 {list}
 </div>
 
