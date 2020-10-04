@@ -2,10 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import './Page.css';
-import '@trendmicro/react-sidenav/dist/react-sidenav.css';
-import SideNav, {
- NavItem, NavIcon, NavText,
-} from '@trendmicro/react-sidenav';
 import Home from './components/Home.js'
 import Songs from './components/Songs.js'
 import Artists from './components/Artists.js'
@@ -13,7 +9,7 @@ import Playlists from './components/Playlists.js'
 import Albums from './components/Albums.js'
 import {
   Route,
-  Link,
+  NavLink,
   Switch,
   withRouter
 } from "react-router-dom";
@@ -253,7 +249,7 @@ const logout =
 Logout
 </Button>
 
-const platform = user ? <h5> {logout} </h5> :  <h5> {login()} | {register()} </h5>
+const platform = user ? <h5> <Button disabled={true} style={{fontSize:"20px", color:"rgb(180, 60, 60)"}} variant="text">{user.username}</Button> | {logout} </h5> :  <h5> {login()} | {register()} </h5>
 
 
 const AnimatedSwitch = withRouter(({ location }) => (
@@ -286,61 +282,14 @@ const AnimatedSwitch = withRouter(({ location }) => (
   return (
 <div className="App">
 {platform}
-   <SideNav
-        style={{background:'rgb(180, 60, 60)', borderRight:"2px solid white"}}
-        expanded={true}
-        onToggle={() => {return}}
-      >
-        <SideNav.Toggle/>
-        <SideNav.Nav defaultSelected="home">
-          <NavItem eventKey="home">
-            <NavIcon>
-              <i style={{ fontSize: '1.75em' }} />
-            </NavIcon>
-              <Link to="/"><i style={{color:'white', fontSize:'44px', paddingTop:"3px"}} className="fa fa-fw fa-home" /></Link>
-          </NavItem>
-          <NavItem eventKey="1">
-            <NavIcon>
-              <i className="fa fa-fw " style={{ fontSize: '1.75em' }} />
-            </NavIcon>
-            <NavText>
-               <Link className="navItem" to="/songs">Songs</Link>
-            </NavText>
-          </NavItem>
-             <NavItem eventKey="2">
-            <NavIcon>
-              <i className="fa fa-fw " style={{ fontSize: '1.75em' }} />
-            </NavIcon>
-            <NavText>
-               <Link className="navItem" to="/albums">Albums</Link>
-            </NavText>
-          </NavItem>
-          <NavItem eventKey="3">
-            <NavIcon>
-              <i className="fa fa-fw " style={{ fontSize: '1.75em' }} />
-            </NavIcon>
-            <NavText>
-           <Link className="navItem" to="/artists">Artists</Link>
-            </NavText>
-          </NavItem>
-          <NavItem eventKey="4">
-            <NavIcon>
-              <i className="fa fa-fw " style={{ fontSize: '1.75em' }} />
-            </NavIcon>
-            <NavText>
-             <Link className="navItem" to="/playlists">Playlists</Link>
-            </NavText>
-          </NavItem>
-           <NavItem eventKey="5">
-            <NavIcon>
-              <i className="fa fa-fw " style={{ fontSize: '1.75em' }} />
-            </NavIcon>
-            <NavText>
-             <Link className="navItem" to="/Uploads">Uploads</Link>
-            </NavText>
-          </NavItem>
-        </SideNav.Nav>
-      </SideNav>
+   <div className="nav">
+            <NavLink to="/"><i style={{ fontSize:'44px', paddingTop:"3px", fontWeight:'normal'}} className="navItem fa fa-fw fa-home" /></NavLink>
+            <NavLink className="navItem" to="/songs">Songs</NavLink>
+            <NavLink className="navItem" to="/albums">Albums</NavLink>
+            <NavLink className="navItem" to="/artists">Artists</NavLink>
+            <NavLink className="navItem" to="/playlists">Playlists</NavLink>
+            <NavLink className="navItem" to="/Uploads">Uploads</NavLink>
+    </div>
       <AnimatedSwitch />
     </div>
   );

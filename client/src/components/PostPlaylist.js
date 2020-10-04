@@ -17,7 +17,7 @@ const user = useContext(UserContext)
   useEffect(() => {
     const fetchData = async () => {
     const songs = await axios.get(`/api/songs`);
-    let selectSong = songs.data.map(e => { return { value: e.youtube_id, label: `${e.title} - ${e.Artist.name}`}} )
+    let selectSong = songs.data.map(e => { return { artist: e.Artist.name, value: e.youtube_id, label: `${e.title} - ${e.Artist.name}`}} )
 setSongs(selectSong)
 
     }; fetchData();
@@ -27,10 +27,7 @@ setSongs(selectSong)
   event.preventDefault();
   const date = new Date();
   let regex = /'/gi
-  let newSongs = []
-  for (let song of songs){
-  newSongs.push(song.value)
-  }
+
 
     if(!songs) {
     return document.getElementById('playlistError').innerHTML = "Select songs";
@@ -40,9 +37,14 @@ setSongs(selectSong)
     await network.post(`/api/playlists`, {
     name: newName, 
     username: user.username,
-    songs: JSON.stringify(newSongs), 
     cover_img: image,
     created_at: date.toISOString().substring(0, 10)
+    }).then( async (result) => {
+    console.log(result);
+    await network.post(`/api/songinplaylist`, {
+    id: result.data.id, 
+    songs: JSON.stringify(songs)
+    })
     })
   document.getElementById("playlistForm").reset();
 } catch (response){
@@ -65,7 +67,6 @@ let song;
 
       function insertSongs(event) {
         song = event;
-        console.log(song)
       }
 
 let selectSong = songs

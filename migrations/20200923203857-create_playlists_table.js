@@ -13,7 +13,6 @@ module.exports = {
     autoIncrement: true
     },
     name: DataTypes.STRING,
-    songs: DataTypes.TEXT,
     is_liked: {
     type: DataTypes.INTEGER,
     defaultValue: 0,

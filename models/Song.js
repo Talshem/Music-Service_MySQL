@@ -14,6 +14,9 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models.User, {
         foreignKey: 'username', as:'userUsername'
       });
+      this.hasMany(models.SongInPlaylist, {
+        foreignKey: 'SongId'
+      });
     }
   };
   const date = new Date();

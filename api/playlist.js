@@ -26,9 +26,9 @@ try {
 
 router.get('/:playlistId', validateChars, async (req, res) => {
 try {
-  const playlist = await Playlist.findByPk(req.params.playlistId, { include: [{model: User, attributes: ['username']}]});
+  const playlist = await Playlist.findByPk(req.params.playlistId);
   res.json(playlist)
-} catch (err) { res.json(err)}
+} catch (err) {res.json(err)}
 })
 
 router.patch('/:playlistId', checkToken, async (req, res) => {

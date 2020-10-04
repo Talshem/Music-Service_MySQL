@@ -8,6 +8,9 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models.User, {
         foreignKey: 'username', as:'userUsername'
       });
+      this.hasMany(models.SongInPlaylist, {
+        foreignKey: 'PlaylistId'
+      });
     }
   };
 
@@ -19,7 +22,6 @@ module.exports = (sequelize, DataTypes) => {
     autoIncrement: true
     },
     name: DataTypes.STRING,
-    songs: DataTypes.TEXT,
     is_liked: {
     type: DataTypes.INTEGER,
     defaultValue: 0,

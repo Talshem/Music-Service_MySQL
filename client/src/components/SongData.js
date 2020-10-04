@@ -58,10 +58,10 @@ return(
 <YouTube className="video" onPlay={() => playCount(e)} videoId={e.youtube_id} id="video" opts={{width:"600",height:"600"}}/>
 <br/>
 <i><strong>{e.is_liked}</strong>  people liked this song</i><br/>
-<br/><br/><br/><br/><br/><br/><br/>
+<br/><br/>
 <i><strong>Views:</strong>{" "} {e.play_count}</i><br/>
-<i><strong>Album:</strong>{" "}{e.album_name}</i><br/>
-<i><strong>Artist:</strong>{" "} {e.artist_name}</i><br/>
+<i><strong>Album:</strong>{" "}{e.Album.name}</i><br/>
+<i><strong>Artist:</strong>{" "} {e.Artist.name}</i><br/>
 <i><strong>Release date:</strong>{" "} {e.created_at.substr(0, 10)}</i><br/><br/>
 </div>
 <div className="dataLyrics">
@@ -71,7 +71,7 @@ return(
 </div>
 </div>
 </div>
-<NavLink style={{marginTop:'-35px', marginLeft:'50px'}}  className="fa fa-arrow-left back" to="/songs"></NavLink>
+<NavLink style={{marginTop:'0px', marginLeft:'50px'}}  className="fa fa-arrow-left back" to="/songs"></NavLink>
 </div>
 )}
 setSong(x)

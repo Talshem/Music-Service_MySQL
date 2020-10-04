@@ -61,7 +61,7 @@ return (
 <br/>
 <i><strong>{e.is_liked}</strong> people liked this album</i><br/>
 <br/><br/>
-<i><strong>Artist:</strong>{" "} {e.artist_name}</i><br/>
+<i><strong>Artist:</strong>{" "} {e.Artist.name}</i><br/>
 <i><strong>Release date:</strong>{" "} {e.created_at.substr(0, 10)}</i>
 </div>
 

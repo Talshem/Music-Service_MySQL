@@ -51,7 +51,7 @@ useEffect(() => {
     const fetchData = async () => {
       try{
       const albums = await (await axios.get(`/api/albums?name=${search}`)).data;
-      const preferences = await (await axios.get(`/api/preferences/album/${user.username}`)).data;
+      const preferences = user ? await (await axios.get(`/api/preferences/album/${user.username}`)).data : [];
       let prefArray = preferences.map(e => e.item_id)
       let list = albums.filter(e => e.name.toUpperCase().includes(search.toUpperCase()))
       if (!favorites) {

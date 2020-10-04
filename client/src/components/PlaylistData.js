@@ -27,10 +27,8 @@ useEffect(() => {
   const fetchData = async () => {
       try{
       const { data } = await axios.get(`/api/playlists/${playlistId}`);
-      const songs = await axios.get(`/api/songs`)
-      let list = JSON.parse(data.songs);
-      let songList = songs.data.filter(e => list.includes(e.youtube_id))
-      makeID(data, songList)
+      const songs = await axios.get(`/api/songinplaylist/${playlistId}`)
+      makeID(data, songs.data)
   } catch(response) {
         setLoading(false)
     return setPlaylist(<p style={{top:"430px", fontSize:"120px",textAlign:"right",width:"86%"}} className="listTitle">Unknown playlist</p>)
@@ -42,21 +40,22 @@ useEffect(() => {
 
 function makeID(e, songs){
 
-let url = []
+let url = [];
 
 let list = songs.map(e => {
-url.push(`https://www.youtube.com/watch?v=${e.youtube_id}`)
+url.push(`https://www.youtube.com/watch?v=${e.Song.youtube_id}`)
 return (
-<li key={e.youtube_id} className="grid-item2">
+<li key={e.Song.youtube_id} className="grid-item2">
 <p>
-<NavLink className="navTo" to={`/songs/${e.youtube_id}?name=${playlistId}`}>{e.title} - {e.Artist.name}</NavLink>
+<NavLink className="navTo" to={`/songs/${e.Song.youtube_id}?name=${playlistId}`}>{e.Song.title} - {e.artist}</NavLink>
 </p>
-<YouTube className="video" onPlay={() => playCount(e)} videoId={e.youtube_id} id="video" opts={{width:"200",height:"200"}}/>
+<YouTube className="video" onPlay={() => playCount(e)} videoId={e.Song.youtube_id} id="video" opts={{width:"200",height:"200"}}/>
 </li>   
 )
 })    
 
 let x = () => {
+console.log(url)
 return (
 <div style={{marginLeft:'50px'}}>
 <p className="dataTitle">{e.name}</p>

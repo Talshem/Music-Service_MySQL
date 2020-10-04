@@ -33,12 +33,13 @@ try {
   } catch (err) { res.json(err)}
 })
 
-router.patch('/count/:songId', checkToken, async (req, res) => {
+router.patch('/count/:songId', async (req, res) => {
+console.log(5)
 try {
   const song = await Song.findByPk(req.params.songId);
   await song.update(req.body);
   res.json(song)
-  } catch (err) { res.json(err)}
+  } catch (err) {res.json(err)}
 })
 
 router.patch('/like/:songId', checkToken, async (req, res) => {

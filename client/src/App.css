@@ -10,19 +10,40 @@ format("svg");
 }
 
 .App{
+  top:100px;
   font-family: "Avenir Light";
   background: rgb(20, 20, 20);
-  border-radius: 25px;
-border: solid 2px white;
-  top: 50px;
-  padding-right:2%;
-  padding-left:6%;
   padding-bottom:60px;
-  left: 3.5%;
 position: absolute;
-width: 85%;
+padding-right:4%;
+width: 96%;
 margin-bottom:50px;
 min-height:550px;
+}
+
+.nav{
+position: absolute;
+background:rgb(180, 60, 60);
+border-bottom:2px solid white;
+width:100%;
+height:100px;
+margin-top:-100px;
+}
+
+.navItem:hover{
+color:rgb(0, 0, 0);
+}
+
+.navItem{
+color:white;
+font-weight: bolder;
+position: relative;
+margin-top:25px;
+left:60px;
+font-size:30px;
+margin-right:40px;
+text-decoration: none;
+text-shadow: 1.5px 1.5px 0px rgb(105, 32, 32);
 }
 
 .carouselist{
@@ -61,8 +82,8 @@ background: transparent;
 overflow: hidden;
 width:73.5%;;
 font-size: 35px;
-height:38px;
-margin-bottom:20px;
+height:45px;
+margin-bottom:12px;
 transition: 0.5s;
 text-align: center;
 margin-left:13%;
@@ -217,7 +238,7 @@ color:rgb(156, 37, 37);
 }
 
 .like{
-color:rgb(199, 60, 60);
+color:rgb(200, 60, 60);
 border: 2px solid transparent;
 position: absolute;
 z-index: 1;
@@ -249,39 +270,24 @@ font-size:24px;
 
 h5 {
   position: absolute;
-  font-size:16px;
   color:white;
- width:91%;
+ width:97%;
  text-align: right;
+ z-index: 1000;
 }
 
-
-h3{
+.homeLists{
+box-shadow: 0 0 15px 15px rgb(10, 10, 10);
+margin-left: 60px;
+margin-top:100px;
 position: relative;
-margin-top:50px;
-margin-bottom:-150px;
-color: rgb(245, 245, 245);
-font-size:120px;
-word-break: break-all;
-left:100px;
-margin-right:100px;
-width:95%;
-text-shadow:
-3px 3px 0px rgb(48, 145, 114);
+background: rgb(10, 10, 10);
 }
 
-.dataTitle{
-color: rgb(245, 245, 245);
-font-size:80px;
-margin-top:30px;
-text-shadow:
-3px 3px 0px rgb(48, 145, 114); 
-}
 
 .dataLyrics{
 position: relative;
 font-size: 21px;
-height:1010px;
 overflow:auto;
 margin-top:-15px;
 margin-left:75px;
@@ -346,7 +352,7 @@ margin-bottom: -35px;
 }
 
 .grid-item2 {
-width:215px;
+width:220px;
 position: relative;
 border-right: 30px solid transparent;
 color:white;
@@ -407,10 +413,12 @@ font-size: 80px;
 color:rgb(149, 243, 215)
 }
 
-.navItem{
-font-size:24px;
-margin-left:-40px;
-text-decoration: none;
+
+.dataTitle{
+color: rgb(245, 245, 245);
+font-size:80px;
+margin-top:30px;
+text-shadow:2px 2px 0px rgb(48, 145, 114); 
 }
 
 .songForm{
@@ -440,13 +448,7 @@ margin-bottom:-2px;
   color: black; 
 }
 
-.homeLists{
-box-shadow: 0 0 15px 15px rgb(10, 10, 10);
-margin-top: 500px;
-margin-left: 61px;
-position: relative;
-background: rgb(10, 10, 10);
-}
+
 
 form input{
   border-radius: 5px;

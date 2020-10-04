@@ -26,8 +26,6 @@ const [albumsLength, setAlbumsLength] = useStateIfMounted(0);
 const [artistsLength, setArtistsLength] = useStateIfMounted(0);
 const [playlistsLength, setPlaylistsLength] = useStateIfMounted(0);
 
-const user = useContext(UserContext)
-
 useEffect(() => {
     const fetchData = async () => {
       try {
@@ -150,9 +148,6 @@ const arrowColor = loading ? 'rgb(10, 10, 10)' : 'rgb(149, 243, 215)';
   spinner={<ClipLoader css={override} color="white" style={{zIndex:1010}} size={150}/>}
   >
   </LoadingOverlay>
-
-
-<h3>Hello, {user ? user.username : 'Guest'}</h3>
 
 
 <div className="homeLists">
