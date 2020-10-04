@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
 import YouTube from 'react-youtube';
 import {
@@ -11,7 +11,6 @@ import {
   ButtonBack, ButtonNext, CarouselProvider, Slide, Slider,
 } from 'pure-react-carousel';
 import 'pure-react-carousel/dist/react-carousel.es.css';
-import UserContext from '../UserContext'
 import { useStateIfMounted } from "use-state-if-mounted";
 
 function Home(props) {

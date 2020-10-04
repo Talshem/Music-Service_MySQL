@@ -17,7 +17,6 @@ format("svg");
 position: absolute;
 padding-right:4%;
 width: 96%;
-margin-bottom:50px;
 min-height:550px;
 }
 
@@ -96,12 +95,18 @@ color: rgb(149, 243, 215, 1)
 .hov:hover .video, .hov:hover img{
  border: 2px solid rgb(149, 243, 215, 1); 
 }
-
-.grid-item3:hover p, .grid-item2:hover p,.grid-item:hover p, .hov:hover p{
+.grid-item2:hover p,.grid-item:hover p, .hov:hover p{
 animation-iteration-count: infinite;
 animation-name: movement;
 animation-duration: 15s;
 animation-timing-function: linear;
+}
+
+@keyframes movement {
+100%{
+padding-right:500px;
+margin-left:-500px;
+}
 }
 
 h4{
@@ -204,9 +209,9 @@ width:250px;
 display:inline-block;
 margin-left:0px;
 padding-left: 10px;
-padding-bottom: 70px;
 padding-right: 45px;
-height:305px;
+min-height:300px;
+margin-bottom:50px;
   font-size: 16px;
   overflow:hidden;
 }
@@ -226,11 +231,6 @@ color: rgb(149, 243, 215, 1)
 margin-bottom: -21px;
 }
 
-@keyframes movement {
-100% {
-padding-right:500px;
-margin-left:-500px;
-}}
 
 
 .like:active{
@@ -277,7 +277,7 @@ h5 {
 }
 
 .homeLists{
-box-shadow: 0 0 15px 15px rgb(10, 10, 10);
+box-shadow: 0 0 40px 30px rgb(10, 10, 10);
 margin-left: 60px;
 margin-top:100px;
 position: relative;
@@ -288,7 +288,9 @@ background: rgb(10, 10, 10);
 .dataLyrics{
 position: relative;
 font-size: 21px;
-overflow:auto;
+width:100%;
+overflow-y:scroll;
+overflow-x:hidden;
 margin-top:-15px;
 margin-left:75px;
 }
@@ -305,12 +307,9 @@ display: inline-flex;
 
 .artistData{
 position: relative;
-border: 1px solid white;
-border-radius: 10px;
-background:rgb(10, 10, 10);
-padding-left:2.5%;
-overflow-x: auto;
+padding-bottom:30px;
 overflow-y: hidden;
+overflow-x: scroll;
 height:255px;
 width:98%;
 margin-top:-115px;
@@ -320,20 +319,21 @@ white-space: nowrap;
 
 .grid-item3 {
 width:210px;;
+background:rgb(20, 20, 20);
 position: relative;
 border-right: 30px solid transparent;
 color:white;
 display: inline-block;
 height:260px;
-margin-top:-15px;
-overflow-y: auto;
-overflow-x: hidden;
+padding-top:20px;
+margin-top:-10px;
 font-size: 20px;
 }
 
 .grid-item3 p{
-margin-bottom:10px;
-margin-left:5%;
+margin-top:-10px;
+font-size: 26px;
+margin-left:5.5%;
 width:87%;
 }
 
@@ -515,6 +515,7 @@ border: 1.5px solid rgb(218, 218, 218);
 border-radius: 5px;
 font-size:20px;
 margin-top:0px;
+margin-bottom:15px;
 cursor: pointer;
 }
 
@@ -602,13 +603,12 @@ border: 1px solid white;
 white-space: nowrap;
 overflow: hidden;
 z-index: 1;
-font-size: 20px;
+font-size: 26px;
 margin-top:-0px;
-padding-top:10px;
-margin-bottom:13px;
+margin-bottom:15px;
 max-height:30px;
 width:254px;
-height:26px;
+height:40px;
 text-align: center;
 }
 
@@ -666,6 +666,7 @@ opacity: 0.75;
 padding:10px;
 padding-bottom:20px;
 padding-top:5px;
+margin-top:2px;
 margin-bottom:4px;
 transition: 0.3s;
 }

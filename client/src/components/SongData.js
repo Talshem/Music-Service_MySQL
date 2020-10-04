@@ -21,7 +21,6 @@ await axios.patch(`/api/songs/count/${e.youtube_id}`, {
 play_count: e.play_count + 1,
 });
 };
-
 useEffect(() => {
   const fetchData = async () => {
       try{
@@ -32,7 +31,7 @@ useEffect(() => {
     return setSong(<p style={{top:"430px", fontSize:"120px",textAlign:"right",width:"86%"}} className="listTitle">Unknown song</p>)
   }
     }; fetchData();
-   }, [songId])
+   }, [])
 
 
        

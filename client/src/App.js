@@ -255,26 +255,26 @@ const platform = user ? <h5> <Button disabled={true} style={{fontSize:"20px", co
 const AnimatedSwitch = withRouter(({ location }) => (
   <TransitionGroup >
     <CSSTransition key={location.key} classNames="page" timeout={1000}>
+<UserProvider value={user}>
       <Switch location={location}>
-    <UserProvider value={user}>
 <Route exact path="/" component={() => <Home/>}/>
 <Route exact path="/songs" component={() => <Songs/>}/>
-<Route path="/songs/:songId" component={() => <SongData/>}/>
+<Route exact path="/songs/:songId" component={() => <SongData/>}/>
 <Route exact path="/artists" component={() => <Artists/>}/>
-<Route path="/artists/:artistId" component={() => <ArtistData/>}/>
+<Route exact path="/artists/:artistId" component={() => <ArtistData/>}/>
 <Route exact path="/playlists" component={() => <Playlists/>}/>
-<Route path="/playlists/:playlistId" component={() => <PlaylistData/>}/>
+<Route exact path="/playlists/:playlistId" component={() => <PlaylistData/>}/>
 <Route exact path="/albums" component={() => <Albums/>}/>
-<Route path="/albums/:albumId" component={() => <AlbumData/>}/>
+<Route exact path="/albums/:albumId" component={() => <AlbumData/>}/>
 <Route exact path="/uploads" component={() => <Uploads/>}/>
-<Route path="/uploads/:userId" component={() => <UploadsData/>}/>
+<Route exact path="/uploads/:userId" component={() => <UploadsData/>}/>
 <Route exact path="/PostSong" component={() => <PostSong/>}/>
 <Route exact path="/PostAlbum" component={() => <PostAlbum/>}/>
 <Route exact path="/PostArtist" component={() => <PostArtist/>}/>
 <Route exact path="/PostPlaylist" component={() => <PostPlaylist/>}/>
-  </UserProvider>
-<Route path="*" component={() => <NoFound/>}/>
+<Route component={() => <NoFound/>}/>
       </Switch>
+</UserProvider>
     </CSSTransition>
   </TransitionGroup>
 ));

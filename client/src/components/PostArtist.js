@@ -24,7 +24,6 @@ function PostArtist(props) {
     })
   document.getElementById("artistForm").reset();
 } catch (response){
-  console.log(response)
    document.getElementById('artistError').innerHTML = "Only registered users can post new artists to the website";
   }; 
 };

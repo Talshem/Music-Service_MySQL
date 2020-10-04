@@ -40,7 +40,6 @@ setSongs(selectSong)
     cover_img: image,
     created_at: date.toISOString().substring(0, 10)
     }).then( async (result) => {
-    console.log(result);
     await network.post(`/api/songinplaylist`, {
     id: result.data.id, 
     songs: JSON.stringify(songs)

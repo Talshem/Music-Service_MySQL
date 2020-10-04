@@ -66,26 +66,25 @@ setToggle(!toggle)
 const makeLists = (username, songs, albums, artists, playlists) => {
 
 let capitalUserId = userId.charAt(0).toUpperCase() + userId.slice(1)
-if (props.user) {
-if(props.user.username.toUpperCase() === userId.toUpperCase()){
+if (user) {
+if(user.username.toUpperCase() === userId.toUpperCase()){
 setName('My Uploads') 
 } else {
 setName(`${capitalUserId}'s Uploads`)
 }
-} else {
-setName(`${capitalUserId}'s Uploads`)
-} 
+}
 
 let z =1000
 let sArray = songs.map(e => {
+console.log()
 z--;
-const deleteButton = props.user && props.user.email === e.user ? <button onClick={() => deleteSong(e)} style={{marginBottom:"15px"}} className="deleteButton">Delete</button> : ''
+const deleteButton = user && user.email === e.user ? <button onClick={() => deleteSong(e)} style={{marginBottom:"15px"}} className="deleteButton">Delete</button> : ''
 
 return (
 <li key={e.youtube_id} style={{zIndex: z}} className="hov">
 <p>
-<NavLink className="navTo" to="/songs" onClick={() => props.song(e)}>
-{e.title}  - {e.artist}
+<NavLink className="navTo" to="/songs">
+{e.title}
 </NavLink>
 </p>
 <YouTube className="video" onPlay={() => playCount(e)}videoId={e.youtube_id} id="video" opts={{width:"250",height:"250"}}/>
@@ -99,16 +98,16 @@ return (
 
 
 let alArray = albums.map(e => {
-const deleteButton = props.user && props.user.email === e.user ? <button onClick={() => deleteAlbum(e)} className="deleteButton">Delete</button> : ''
+const deleteButton = user && user.email === e.user ? <button onClick={() => deleteAlbum(e)} className="deleteButton">Delete</button> : ''
 z--;
 return (
 <li style={{zIndex: z}} key={e.name} className="hov">
 <p>
-<NavLink className="navTo" to="/albums" onClick={() => props.album(e)}>
-{e.name} - {e.artist}
+<NavLink className="navTo" to="/albums">
+{e.name}
 </NavLink>
 </p>
-<NavLink className="navTo" to="/albums" onClick={() => props.album(e)}>
+<NavLink className="navTo" to="/albums">
 <img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
 </NavLink>
 <br/>
@@ -118,16 +117,16 @@ return (
 )
 
 let arArray = artists.map(e => {
-const deleteButton = props.user && props.user.email === e.user ? <button onClick={() => deleteArtist(e)} className="deleteButton">Delete</button> : ''
+const deleteButton = user && user.email === e.user ? <button onClick={() => deleteArtist(e)} className="deleteButton">Delete</button> : ''
 z--;
 return (
 <li style={{zIndex: z}} key={e.name} className="hov">
 <p>
-<NavLink className="navTo" to="/artists" onClick={() => props.artist(e)}>
+<NavLink className="navTo" to="/artists">
 {e.name}
 </NavLink>
 </p>
-<NavLink className="navTo" to="/artists" onClick={() => props.artist(e)}>
+<NavLink className="navTo" to="/artists">
 <img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
 </NavLink>
 <br/> 
@@ -136,16 +135,16 @@ return (
 )}
 ) 
 let pArray = playlists.map(e => {
-const deleteButton = props.user && props.user.email === e.user ? <button onClick={() => deletePlaylist(e)} className="deleteButton">Delete</button> : ''
+const deleteButton = user && user.email === e.user ? <button onClick={() => deletePlaylist(e)} className="deleteButton">Delete</button> : ''
 z--
 return (
 <li style={{zIndex: z}} key={e.name} className="hov">
 <p>
-<NavLink className="navTo" to="/playlists" onClick={() => props.playlist(e)}>
+<NavLink className="navTo" to="/playlists" >
 {e.name}
 </NavLink>
 </p>
-<NavLink className="navTo" to="/playlists" onClick={() => props.playlist(e)}>
+<NavLink className="navTo" to="/playlists">
 <img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
 </NavLink>
 <br/>

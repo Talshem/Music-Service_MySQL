@@ -56,7 +56,6 @@ useEffect(() => {
       try {
       const songs = await (await axios.get(`/api/songs?name=${search}`)).data;
       const preferences = user ? await (await axios.get(`/api/preferences/song/${user.username}`)).data : [];
-      console.log(songs)
       let prefArray = preferences.map(e => e.item_id)
       let list = songs.filter(e => e.title.toUpperCase().includes(search.toUpperCase()))
       if (!favorites) {

@@ -28,7 +28,7 @@ let { albumId } = useParams();
   return setAlbum(<p style={{top:"430px", fontSize:"120px",textAlign:"right",width:"86%"}} className="listTitle">Unknown album</p>)
   }
     }; fetchData();
-   }, [albumId])
+   }, [])
 
 
 const makeID = (e, songs) => {
@@ -39,7 +39,7 @@ let list = songs.map(e => {
 url.push(`https://www.youtube.com/watch?v=${e.youtube_id}`)
 return (
 <li key={e.youtube_id} className="test">
-<NavLink className="navTo" to={`/songs/${e.youtube_id}?name=${albumId}`} >
+<NavLink className="navTo" to={`/songs/${e.youtube_id}?album=${albumId}`} >
 <span>	&#119136; &nbsp; {e.title} </span>
 <span style={{float:"right"}}>{e.length}</span>
 </NavLink>

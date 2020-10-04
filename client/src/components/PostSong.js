@@ -130,7 +130,6 @@ function form(){
        function insertAlbum(event) {
         setAlbum(event);
       }
-console.log(albums)
 let selectArtist = artists.map(e => ({ value: e.id, label: e.name }))
 let albumList = albums.map(e => ({value: e.id, label: `${e.name} - ${e.Artist.name}` }))
 

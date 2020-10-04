@@ -13,7 +13,6 @@ import { useStateIfMounted } from "use-state-if-mounted";
 function PlaylistData(props) {
 const [loading, setLoading] = useStateIfMounted(true);
 const [playlist, setPlaylist] = useStateIfMounted(undefined)
-
 let { playlistId } = useParams();
 
 useEffect(() => {
@@ -27,7 +26,7 @@ useEffect(() => {
     return setPlaylist(<p style={{top:"430px", fontSize:"120px",textAlign:"right",width:"86%"}} className="listTitle">Unknown playlist</p>)
   }
     }; fetchData();
-   }, [playlistId])
+   }, [])
 
   
 
@@ -39,7 +38,7 @@ let list = songs.map(e => {
 url.push(`https://www.youtube.com/watch?v=${e.Song.youtube_id}`)
 return (
 <li key={e.Song.youtube_id} className="test">
-<NavLink className="navTo" to={`/songs/${e.Song.youtube_id}?name=${playlistId}`}>
+<NavLink className="navTo" to={`/songs/${e.Song.youtube_id}?playlist=${playlistId}`}>
 <span>	&#119136; &nbsp; {e.Song.title} - {e.artist} </span>
 <span style={{float:"right"}}>{e.Song.length}</span>
 </NavLink>
