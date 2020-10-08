@@ -4,7 +4,6 @@ import axios from 'axios';
 import {
   NavLink,
   useParams,
-  useRouteMatch
 } from "react-router-dom";
 import YouTube from 'react-youtube';
 import LoadingOverlay from 'react-loading-overlay';
@@ -16,8 +15,6 @@ const [song, setSong] = useStateIfMounted(undefined)
 const [loading, setLoading] = useStateIfMounted(true);
 
 let { songId } = useParams();
-
-let match = useRouteMatch();
 
 const playCount = async (e) => {
 await axios.patch(`/api/songs/count/${e.youtube_id}`, {
@@ -64,19 +61,19 @@ return(
 <i><strong>Views:</strong>{" "} {e.play_count}</i><br/>
 
 <i className="hov"><strong>Artist:</strong>
-<a>
+<i>
 <NavLink className="navTo" to={`/artists/${e.Artist.id}`}>
 {" "} {e.Artist.name}
 </NavLink>
-</a>
+</i>
 </i><br/>
 
 <i className="hov"><strong>Album:</strong>
-<a>
+<i>
 <NavLink className="navTo" to={`/artists/${e.Album.id}`}>
 {" "} {e.Album.name}
 </NavLink>
-</a>
+</i>
 </i><br/>
 <i><strong>Release date:</strong>{" "} {e.created_at.substr(0, 10)}</i>
 </div>
