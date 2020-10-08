@@ -6,7 +6,6 @@ import ClipLoader from "react-spinners/ClipLoader";
 function NoFound() {
 const [unfound, setUnfound] = useState(undefined)
 const [loading, setLoading] = useState(true);
-
 useEffect(() => {
     const fetchData = async () => {
       setUnfound(page)
@@ -17,7 +16,7 @@ useEffect(() => {
  let page =
 <div>
 <p style={{height:"100px", marginTop:"-50px", fontSize:"400px",textAlign:"center",width:"825px"}} className="dataTitle">404</p>
-<p style={{position:'relative', top:"180px", fontSize:"120px",textAlign:"right",width:'95%'}} className="listTitle">Page not found</p>
+<p style={{marginBottom:"-100px", position:'relative', fontSize:"120px",textAlign:"right",width:'95%'}} className="listTitle">Page not found</p>
 </div>
 
   const override =`

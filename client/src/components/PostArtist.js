@@ -1,25 +1,28 @@
-import React from 'react';
-import axios from 'axios';
+import React, { useContext } from 'react';
 import {
   NavLink,
 } from "react-router-dom";
+import UserContext from '../UserContext'
+import network from '../Network.js';
 
 function PostArtist(props) {
 
+  const user = useContext(UserContext)
+
   const addArtist = async (event, name, image) => {
   event.preventDefault();
-  let regex = /'/gi
-  const newName = name.replace(regex,`''`);
+  const date = new Date();
+
     try{
-    await axios.post(`/artist`, {
-    name: newName, 
+    await network.post(`/api/artists`, {
+    name: name, 
     cover_img: image,
-    user: props.user.email,
-    user_name: props.user.username
+    username: user.username,
+    upload_at: date.toISOString().substring(0, 10)
     })
   document.getElementById("artistForm").reset();
 } catch (response){
-   document.getElementById('artistError').innerHTML = "Undetected Error";
+   document.getElementById('artistError').innerHTML = "Only registered users can post new artists to the website";
   }; 
 };
 
