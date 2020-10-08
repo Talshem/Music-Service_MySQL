@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
 import YouTube from 'react-youtube';
 import {
@@ -11,58 +11,53 @@ import {
   ButtonBack, ButtonNext, CarouselProvider, Slide, Slider,
 } from 'pure-react-carousel';
 import 'pure-react-carousel/dist/react-carousel.es.css';
+import { useStateIfMounted } from "use-state-if-mounted";
 
 function Home(props) {
-const [songs, setSongs] = useState([]);
-const [albums, setAlbums] = useState([]);
-const [artists, setArtists] = useState([]);
-const [playlists, setPlaylists] = useState([]);
-const [loading, setLoading] = useState(true);
+const [songs, setSongs] = useStateIfMounted([]);
+const [albums, setAlbums] = useStateIfMounted([]);
+const [artists, setArtists] = useStateIfMounted([]);
+const [playlists, setPlaylists] = useStateIfMounted([]);
+const [loading, setLoading] = useStateIfMounted(true);
 
-const [songsLength, setSongsLength] = useState(0);
-const [albumsLength, setAlbumsLength] = useState(0);
-const [artistsLength, setArtistsLength] = useState(0);
-const [playlistsLength, setPlaylistsLength] = useState(0);
+const [songsLength, setSongsLength] = useStateIfMounted(0);
+const [albumsLength, setAlbumsLength] = useStateIfMounted(0);
+const [artistsLength, setArtistsLength] = useStateIfMounted(0);
+const [playlistsLength, setPlaylistsLength] = useStateIfMounted(0);
 
 useEffect(() => {
     const fetchData = async () => {
       try {
-      const songs = await axios.get(`/top_songs`)
-      const albums = await axios.get(`/top_albums`);
-      const artists = await axios.get(`/top_artists`);
-      const playlists = await axios.get(`/top_playlists`);
-      makeLists(songs.data[0], albums.data[0], artists.data, playlists.data)
+      const songs = await axios.get(`/api/songs`)
+      const albums = await axios.get(`/api/albums`);
+      const artists = await axios.get(`/api/artists`);
+      const playlists = await axios.get(`/api/playlists`);
+      makeLists(songs.data, albums.data, artists.data, playlists.data)
       setLoading(false)
       }
        catch(response) {
       setLoading(false)
-      return alert(response)
+console.log(response)
       }
     }; fetchData();
    }, [])
 
 const playCount = async (e) => {
-await axios.put(`/count`, {
-song_id: e.youtube_id,
-count: e.play_count + 1,
+await axios.patch(`/api/songs/count/${e.youtube_id}`, {
+play_count: e.play_count + 1,
 });
 };
 
 const makeLists = (songs, albums, artists, playlists) => {
-let z =30;
-let index= 0;
-
 let sArray = songs.map(e => {
 setSongsLength(songs.length)
-index++;
-z--;
 return (
-<Slide index={index} style={{zIndex: z}} key={e.youtube_id} className="hov carouselist">
+<Slide key={e.youtube_id} className="hov carouselist">
 <div>
 <p>
-<NavLink className="navTo" to={`/songs/${e.youtube_id}`} >{e.title} - {e.artist}</NavLink>
+<NavLink className="navTo" to={`/songs/${e.youtube_id}`} > {e.Artist ? <> {e.title} - {e.Artist.name} </> : <> {e.title}</>}</NavLink>
 </p>
-<YouTube className="video" onPlay={() => playCount(e)}videoId={e.youtube_id} id="video" opts={{width:"250",height:"250"}}/>
+<YouTube className="video" onPlay={() => playCount(e)}videoId={e.youtube_id} id="video" opts={{width:"300",height:"300"}}/>
 <br/><br/>
 </div>
 </Slide>
@@ -73,16 +68,15 @@ return (
 
 let alArray = albums.map(e => {
 setAlbumsLength(albums.length)
-z--;
 return (
-<Slide style={{zIndex: z}} key={e.name} className="hov carouselist">
+<Slide key={e.name} className="hov carouselist">
 <p>
 <NavLink className="navTo" to={`/albums/${e.id}`} >
-{e.name} - {e.artist}
+{e.Artist ? <> {e.name} - {e.Artist.name} </> : <> {e.name}</>}
 </NavLink>
 </p>
 <NavLink className="navTo" to={`/albums/${e.id}`} >
-<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
+<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="300" height="300" src={e.cover_img}></img>
 </NavLink>
 <br/><br/>
 </Slide>
@@ -90,17 +84,16 @@ return (
 )
 
 let arArray = artists.map(e => {
-z--;
 setArtistsLength(artists.length)
 return (
-<Slide style={{zIndex: z}} key={e.name} className="hov carouselist">
+<Slide key={e.name} className="hov carouselist">
 <p>
 <NavLink className="navTo" to={`/artists/${e.id}`}>
 {e.name}
 </NavLink>
 </p>
 <NavLink className="navTo" to={`/artists/${e.id}`}>
-<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
+<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="300" height="300" src={e.cover_img}></img>
 </NavLink>
 <br/><br/>
 </Slide>
@@ -108,17 +101,16 @@ return (
 )
 
 let pArray = playlists.map(e => {
-z--;
 setPlaylistsLength(playlists.length)
 return (
-<Slide style={{zIndex: z}} key={e.name} className="hov carouselist">
+<Slide key={e.name} className="hov carouselist">
 <p>
 <NavLink className="navTo" to={`/playlists/${e.id}`}>
 {e.name}
 </NavLink>
 </p>
 <NavLink className="navTo" to={`/playlists/${e.id}`}>
-<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
+<img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="300" height="300" src={e.cover_img}></img>
 </NavLink>
 <br/><br/>
 </Slide>
@@ -138,8 +130,6 @@ const override =`
   left: 40%;
 `;
 
-const arrowColor = loading ? 'rgb(10, 10, 10)' : 'rgb(149, 243, 215)';
-
   return (
     <div>
 <LoadingOverlay
@@ -147,9 +137,6 @@ const arrowColor = loading ? 'rgb(10, 10, 10)' : 'rgb(149, 243, 215)';
   spinner={<ClipLoader css={override} color="white" style={{zIndex:1010}} size={150}/>}
   >
   </LoadingOverlay>
-
-
-<h3>Hello, {props.user ? props.user.username : 'Guest'}</h3>
 
 
 <div className="homeLists">
@@ -165,9 +152,13 @@ const arrowColor = loading ? 'rgb(10, 10, 10)' : 'rgb(149, 243, 215)';
 <Slider style={{maxHeight:"420px"}}>
 {songs}
 </Slider>
-    <ButtonBack style={{color:arrowColor}} className="arrow fa fa-arrow-left" ></ButtonBack>
-    <ButtonNext style={{color:arrowColor, float:"right"}}  className="arrow fa fa-arrow-right"></ButtonNext>
-</CarouselProvider>
+{!loading ?
+<>
+    <ButtonBack className="arrow fa fa-arrow-left" ></ButtonBack>
+    <ButtonNext style={{float:"right"}}  className="arrow fa fa-arrow-right"></ButtonNext>
+</>
+: null}
+    </CarouselProvider>
 
 
 <h4> Top Albums </h4> 
@@ -182,8 +173,12 @@ const arrowColor = loading ? 'rgb(10, 10, 10)' : 'rgb(149, 243, 215)';
 <Slider style={{maxHeight:"420px"}}>
 {albums}
 </Slider>
-    <ButtonBack style={{color:arrowColor}} className="arrow fa fa-arrow-left" ></ButtonBack>
-    <ButtonNext style={{color:arrowColor, float:"right"}} className="arrow fa fa-arrow-right"></ButtonNext>
+{!loading ?
+<>
+    <ButtonBack className="arrow fa fa-arrow-left" ></ButtonBack>
+    <ButtonNext style={{float:"right"}} className="arrow fa fa-arrow-right"></ButtonNext>
+</>
+: null}
 </CarouselProvider>
 
 <h4> Top Artists </h4> 
@@ -198,8 +193,12 @@ const arrowColor = loading ? 'rgb(10, 10, 10)' : 'rgb(149, 243, 215)';
 <Slider style={{maxHeight:"420px"}}>
 {artists}
 </Slider>
-    <ButtonBack style={{color:arrowColor}} className="arrow fa fa-arrow-left" ></ButtonBack>
-    <ButtonNext style={{color:arrowColor, float:"right"}} className="arrow fa fa-arrow-right"></ButtonNext>
+{!loading ?
+<>
+    <ButtonBack className="arrow fa fa-arrow-left" ></ButtonBack>
+    <ButtonNext style={{float:"right"}} className="arrow fa fa-arrow-right"></ButtonNext>
+</>
+: null}
 </CarouselProvider>
 
 <h4> Top Playlists </h4> 
@@ -213,9 +212,12 @@ const arrowColor = loading ? 'rgb(10, 10, 10)' : 'rgb(149, 243, 215)';
   >
 <Slider style={{maxHeight:"420px"}}>
 {playlists}
-</Slider>
-    <ButtonBack style={{color:arrowColor}}className="arrow fa fa-arrow-left" ></ButtonBack>
-    <ButtonNext style={{color:arrowColor, float:"right"}} className="arrow fa fa-arrow-right"></ButtonNext>
+</Slider>{!loading ?
+<>
+    <ButtonBack className="arrow fa fa-arrow-left" ></ButtonBack>
+    <ButtonNext style={{float:"right"}} className="arrow fa fa-arrow-right"></ButtonNext>
+</>
+: null}
 </CarouselProvider>
 </div>
 

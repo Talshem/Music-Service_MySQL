@@ -1,147 +1,143 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import axios from 'axios';
 import YouTube from 'react-youtube';
 import {
-  Switch,
-  Route,
   NavLink,
   useRouteMatch,
 } from "react-router-dom";
 import LoadingOverlay from 'react-loading-overlay';
 import ClipLoader from "react-spinners/ClipLoader";
-import SongData from './SongData.js';
+import network from '../Network.js';
+import UserContext from '../UserContext'
+import { useStateIfMounted } from "use-state-if-mounted";
 
-function SongsList(props) {
-const [list, setList] = useState([])
-const [search, setSearch] = useState('')
-const [preferences, setPreferences] = useState("[]")
-const [admin, setAdmin] = useState(0)
-const [favorites, setFavorites] = useState(false)
-const [toggle, setToggle] = useState(false)
-const [loading, setLoading] = useState(true);
-const [disabled, setDisabled] = useState(false)
+function Song({item, adminDelete, like, include}){
 
 let match = useRouteMatch();
 
-useEffect(() => {
-const getPreferences = async () => {
-try {
-const { data } = await axios.get(`/preferences/${props.user.email}`)
-setPreferences(data[0].preferences)
-} catch(error) {
-return 
-}
-}; getPreferences();
-}, [toggle])
+const playCount = async (e) => {
+await axios.patch(`/api/songs/count/${e.youtube_id}`, {
+play_count: e.play_count + 1,
+});
+};
+return (
+<li className="grid-item">
+<span style={{cursor:'pointer'}} >
+{like}
+</span>
+<p style={{width: like ? '200px': '250px'}}>
+<NavLink className="navTo" to={`${match.url}/${item.youtube_id}`}>{item.Artist ? <> {item.title} - {item.Artist.name} </> : <> {item.title}</>}</NavLink>
+</p>
+<YouTube className="video" onPlay={() => playCount(item)} videoId={item.youtube_id} id="video" opts={{width:"250",height:"250"}}/>
+{adminDelete}
+</li>
+)}
 
-useEffect(() => {
-if(props.user){
-let isAdmin = props.user.is_admin;
-setAdmin(isAdmin)
-}}, [props.user])
+const MemoSong = React.memo(Song, (prevProps, nextProps) => {
+  if (prevProps.include === nextProps.include) {
+    return true;
+  }
+  return false;
+});
+
+function Songs(props) {
+const [list, setList] = useStateIfMounted([])
+const [search, setSearch] = useStateIfMounted('')
+const [favorites, setFavorites] = useStateIfMounted(false)
+const [toggle, setToggle] = useStateIfMounted(0)
+const [loading, setLoading] = useStateIfMounted(true);
+
+const user = useContext(UserContext)
 
 useEffect(() => {
     const fetchData = async () => {
-      let x = JSON.parse(preferences)
       try {
-      const songs = await (await axios.get(`/top_songs?name=${search}`)).data[0];
-
+      const songs = await (await axios.get(`/api/songs?name=${search}`)).data;
+      const preferences = user ? await (await axios.get(`/api/preferences/song/${user.username}`)).data : [];
+      let prefArray = preferences.map(e => e.item_id)
       let list = songs.filter(e => e.title.toUpperCase().includes(search.toUpperCase()))
       if (!favorites) {
-      makeSongs(list) 
+      makeSongs(list, prefArray) 
       } else {
-      let favoriteList = list.filter(e => x.includes(`song: ${e.youtube_id}`))
-      makeSongs(favoriteList)
+      let favoriteList = list.filter(e => prefArray.includes(e.youtube_id))
+      makeSongs(favoriteList, prefArray)
       }
     } catch(response) {
     setLoading(false)  
-    return alert(response)
+    return
     }
     }; fetchData();
-   }, [disabled, toggle, favorites, preferences])
+   }, [toggle, favorites])
 
 
 const handleSearch = () => {
-setToggle(!toggle)
+setToggle(e => e + 1)
+setLoading(true)
+}
+
+const handleFavorite = () => {
+setFavorites(!favorites)
 setLoading(true)
 }
 
 const deleteSong = async (e) => {
-const newId = e.youtube_id.replace(`'`,`''`);
-await axios.delete(`/song/${newId}`);
-setToggle(!toggle)
+await network.delete(`/api/songs/${e.youtube_id}`);
+setToggle(e => e + 1)
 };
 
-const playCount = async (e) => {
-await axios.put(`/count`, {
-song_id: e.youtube_id,
-count: e.play_count + 1,
+const isLiked = async (e, preferences) => {
+document.getElementById(e.youtube_id + 'like').setAttribute('disabled', false);
+try{
+if (preferences.includes(e.youtube_id)){
+document.getElementById(e.youtube_id + 'like').classList.replace('fas', 'far');
+await network.patch(`/api/songs/like/${e.youtube_id}`, {
+is_liked: e.is_liked - 1,
 });
-};
-
-const isLiked= (e) => {
-const promise = new Promise((resolve, reject) => {
-    resolve(setDisabled(true));
-})
-const promise2 = new Promise((resolve, reject) => {
-    resolve(handleLike(e));
-})
-promise.then(() => promise2)
-promise2.then(() => {
-  setTimeout(() => {
-    setDisabled(false)
-  }, 1500);
-})
-
-}
-
-
-const handleLike = async (e) => {
-let x = JSON.parse(preferences)
-if (x.includes(`song: ${e.youtube_id}`)){
-await axios.put(`/song/like`, {
-toggle: 'unlike',
-is_liked: e.is_liked,
-preferences: x,
-user: props.user.email,
-youtube_id: e.youtube_id,
+await network.patch(`/api/preferences`, {
+username: user.username,
+type: 'song',
+item_id: e.youtube_id
 });
 } else {
-await axios.put(`/song/like`, {
-toggle: 'like',
-is_liked: e.is_liked,
-user: props.user.email,
-youtube_id: e.youtube_id,
+document.getElementById(e.youtube_id + 'like').classList.replace('far', 'fas');
+await network.patch(`/api/songs/like/${e.youtube_id}`, {
+is_liked: e.is_liked + 1,
+});
+await network.post(`/api/preferences`, {
+username: user.username,
+type: 'song',
+item_id: e.youtube_id
 });
 }
-setToggle(!toggle)
+} catch (response) {
+console.log(response)
+}
+setToggle(e => e + 1)
 }
 
-const makeSongs = (songs) => {
-let x = JSON.parse(preferences);
 
+const makeSongs = (songs, preferences) => {
 let array = songs.map(e => {
-const heart = x.includes(`song: ${e.youtube_id}`) ? 
-<button  onClick={() => isLiked(e)} disabled={disabled} className="like fas fa-heart"/> :
-<button  onClick={() => isLiked(e)} disabled={disabled} className="like far fa-heart"/>
-const like = props.user ? heart :  '';
-
-const deleteButton = <button style={{marginTop:"20px"}} onClick={() => deleteSong(e)} className="deleteButton">Delete</button>;
-const adminDelete = admin === 1 ? deleteButton : '';
-
+const heart = 
+<button onClick={() => isLiked(e, preferences)} id={e.youtube_id + 'like'} className={preferences.includes(e.youtube_id) ? "like fas fa-heart" : "like far fa-heart"}/>
+const deleteButton = <button onClick={() => deleteSong(e)} style={{marginTop:'30px'}} className="deleteButton">Delete</button>;
+const like = user ? heart :  null;
+const adminDelete = user && user.is_admin ? deleteButton : null;
 return (
-<li key={e.youtube_id} className="grid-item">
-<span style={{cursor:'pointer'}} >{like}</span>
-<p>
-<NavLink className="navTo" to={`${match.url}/${e.youtube_id}`}>{e.title} - {e.artist}</NavLink>
-</p>
-<YouTube className="video" onPlay={() => playCount(e)} videoId={e.youtube_id} id="video" opts={{width:"250",height:"250"}}/>
-{adminDelete}
-</li>
-)}
-)
+
+            <MemoSong
+            key={e.youtube_id} 
+            item={e}
+            adminDelete={adminDelete}
+            like={like}
+            include={preferences.includes(e.youtube_id)}
+            />
+)})
 setList(array)
+songs.forEach(e =>{
+document.getElementById(e.youtube_id + 'like').removeAttribute('disabled');
+})
 setLoading(false)
 }
 
@@ -167,29 +163,12 @@ const override =`
 {" "} Songs</p>
 <input className="filterList" onChange={(event) => setSearch(event.target.value)} /> 
 <button onClick={() => handleSearch()} className="searchButton">Search</button>
-{props.user ? <i className="filterFavorites" onClick={() => setFavorites(!favorites)}>{filterFavorites}</i> : ''}
+{user ? <i className="filterFavorites" onClick={() => handleFavorite()}>{filterFavorites}</i> : ''}
 <ul className="grid-container"><br/>
 {list}
 </ul>
 </div>
   );
-}
-
-function Songs(props){
-
-let match = useRouteMatch();
-
-
-return(
-      <Switch>
-        <Route path={`${match.path}/:songId`}>
-          <SongData user={props.user}/>
-        </Route>
-        <Route path={match.path}>
-          <SongsList user={props.user}/>
-        </Route>
-      </Switch>
-)
 }
 
 export default Songs;

@@ -2,10 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import './Page.css';
-import '@trendmicro/react-sidenav/dist/react-sidenav.css';
-import SideNav, {
- NavItem, NavIcon, NavText,
-} from '@trendmicro/react-sidenav';
 import Home from './components/Home.js'
 import Songs from './components/Songs.js'
 import Artists from './components/Artists.js'
@@ -13,7 +9,7 @@ import Playlists from './components/Playlists.js'
 import Albums from './components/Albums.js'
 import {
   Route,
-  Link,
+  NavLink,
   Switch,
   withRouter
 } from "react-router-dom";
@@ -28,11 +24,18 @@ import PostSong from './components/PostSong.js';
 import PostAlbum from './components/PostAlbum.js';
 import PostArtist from './components/PostArtist.js';
 import PostPlaylist from './components/PostPlaylist.js';
-import generator from 'generate-password'
 import Uploads from './components/Uploads.js';
 import NoFound from './NoFound.js';
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import Slide from '@material-ui/core/Slide';
+import network from './Network.js';
+import { UserProvider } from './UserContext'
+import AlbumData from './components/AlbumData.js';
+import ArtistData from './components/ArtistData.js';
+import PlaylistData from './components/PlaylistData.js';
+import SongData from './components/SongData.js';
+import UploadsData from './components/UploadsData.js';
+import { ConfirmProvider } from "material-ui-confirm";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
@@ -44,117 +47,78 @@ const [loginOpen,setLoginOpen] = useState(false)
 const [user, setUser] = useState(undefined);
 
 useEffect(() => {
-  const autoLogin = async () => {
-  var name = "session=";
-  var decodedCookie = decodeURIComponent(document.cookie);
-  var sessionCookie = decodedCookie.replace(name, '');
-
-if (sessionCookie != "" && sessionCookie != "0") {
+const autoLogin = async () => {
 try {
-const { data } = await axios.get(`/auto/${sessionCookie}`);
-setTimeout(() => {
-setUser(data[0])
-}, 500);
+var date = new Date();
+const { data } = await network.patch(`/api/users/auto`, {
+last_login: date.toISOString().substring(0, 10),
+});
+setUser(data)
 } catch { return }
-  }
 }; autoLogin();
 }, [])
 
-const handleLogout = async () => {
-await axios.put(`/logout`, {
-email: user.email,
-});
+const handleLogout = () => {
 setUser(undefined)
-document.cookie = "session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    };
-
- 
-function validateEmail(mail) {
- if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail))
-  {
-    return (true)
-  }
-    return (false)
+localStorage.clear();
 }
 
 
-  const handleRegister = async (email, name, password, repassword) => {
-    let code = generator.generate({
-    length: 50,
-    numbers: true
-});
-
+  const handleRegister = async (username, password, repassword) => {
     try{
-    if(!validateEmail(email)) {
-     return document.getElementById('errorMessage').innerHTML='Please enter a valid email address';
-    }
-     if(name.length > 10) {
-     return document.getElementById('errorMessage').innerHTML='Username can not exceed 10 characters';
-    }
     if (password !== repassword){
     return document.getElementById('errorMessage').innerHTML='Password fields do not match';
            }
-
-      let occupied = await axios.get(`user/${name}`)  
-      if(occupied.data.length !== 0){
+      let occupied = await axios.get(`api/users/${username}`)  
+      if(occupied.data && occupied.data.username){
       return document.getElementById('errorMessage').innerHTML = 'Username is already in use';
       } else {
-      const { data } = await axios.post(`/users`, {
-      username: name,
-      email: email,
+      const { data } = await network.post(`/api/users/register`, {
+      username: username,
       password: password,
-      auto_code: code,
       })
+if (data && data.success && data.token) {
+localStorage.setItem('token', data.token);
+setRegisterOpen(false)   
 setTimeout(() => {
-setUser(data[0])
+setUser(data.user)
 }, 500);
-setRegisterOpen(false)
-
- var d = new Date();
-  d.setTime(d.getTime() + (24*60*60*7));
-  var expires = "expires=" + d.toGMTString();
-  document.cookie = "session=" + code + ";" + expires + ";path=/";
+} else {
+  document.getElementById('errorMessage').innerHTML = data.message
+}
     }
   } catch (response){
-  document.getElementById('errorMessage').innerHTML='The email you tried to register with is already in use';
+  document.getElementById('errorMessage2').innerHTML= response;
   }; 
   }
 
-    const handleLogin = async (email, password) => {
-    if(!validateEmail(email)) {
-    return document.getElementById('errorMessage').innerHTML='Please enter a valid email address';
-    }
-    let code = generator.generate({
-    length: 50,
-    numbers: true
-});
+    const handleLogin = async (username, password) => {
     try{
-      const { data } = await axios.put(`/users`, {
-      email: email,
+      const { data } = await network.post(`/api/users/login`, {
+      username: username,
       password: password,
-      auto_code: code,
-      });
-
- var d = new Date();
-  d.setTime(d.getTime() + (24*60*60*7));
-  var expires = "expires=" + d.toGMTString();
-  document.cookie = "session=" + code + ";" + expires + ";path=/";
-
+    });
+if (data && data.success && data.token) {
+localStorage.setItem('token', data.token);
 setLoginOpen(false)   
 setTimeout(() => {
-setUser(data[0])
+setUser(data.user)
 }, 500);
-  } catch (response){
-  document.getElementById('errorMessage').innerHTML='Either the email or password you entered is incorrect';
+} else {
+  document.getElementById('errorMessage').innerHTML = data.message
+}
+  } catch (response) {
+  document.getElementById('errorMessage').innerHTML = response.message
   }; 
 };
 
+
 function login(){
-let email;
+let username;
 let password;
 
-      function insertEmail(event) {
-        email = event.target.value;
+      function insertUsername(event) {
+        username = event.target.value;
       }
 
       function insertPassword(event) {
@@ -170,14 +134,15 @@ return (
         <DialogTitle id="form-dialog-title">Login</DialogTitle>
         <DialogContent>
           <TextField
-            onChange={insertEmail}
-            defaultValue={email}
+            onChange={insertUsername}
+            defaultValue={username}
             autoFocus
             margin="dense"
-            id="email"
-            label="Email Address"
-            type="email"
+            id="username"
+            label="Username"
+            type="username"
             required
+            inputProps={{maxLength: 12}}
             fullWidth
           />
             <TextField
@@ -189,6 +154,7 @@ return (
             label="Password"
             type="password"
             required
+            minLength={{maxLength: 36}}
             fullWidth
           />
         </DialogContent>
@@ -197,7 +163,7 @@ return (
           <Button type="submit" onClick={() => setLoginOpen(false)} color="primary">
             Cancel
           </Button>
-          <Button onClick={() => handleLogin(email, password)} color="primary">
+          <Button onClick={() => handleLogin(username, password)} color="primary">
             login
           </Button>
         </DialogActions>
@@ -206,14 +172,9 @@ return (
 )}
 
 function register(){
-let email;
 let username;
 let password;
 let repassword
-
-      function insertEmail(event) {
-        email = event.target.value;
-      }
 
       function insertUsername(event) {
         username = event.target.value;
@@ -236,16 +197,6 @@ return (
         <DialogTitle id="form-dialog-title">Register</DialogTitle>
         <DialogContent>
           <TextField
-            onChange={insertEmail}
-            autoFocus
-            required
-            margin="dense"
-            id="email"
-            label="Email Address"
-            type="email"
-            fullWidth
-          />
-          <TextField
             onChange={insertUsername}
             autoFocus
             required
@@ -253,6 +204,7 @@ return (
             id="username"
             label="Username"
             type="name"
+            inputProps={{maxLength: 12}}
             fullWidth
           />
            <TextField
@@ -263,6 +215,7 @@ return (
             id="password"
             label="Password"
             type="password"
+            inputProps={{maxLength: 36}}
             fullWidth
           />
            <TextField
@@ -274,6 +227,7 @@ return (
             label="Confirm password"
             autoComplete=""
             type="password"
+            minLength={{maxLength: 36}}
             fullWidth
           />
         </DialogContent>
@@ -282,7 +236,7 @@ return (
           <Button onClick={() => setRegisterOpen(false)} color="primary">
             Cancel
           </Button>
-          <Button onClick={() => handleRegister(email, username, password, repassword)} color="primary">
+          <Button onClick={() => handleRegister(username, password, repassword)} color="primary">
             Register
           </Button>
         </DialogActions>
@@ -291,29 +245,38 @@ return (
 )}
 
 const logout =
-<Button style={{fontSize:"20px"}} variant="text" color="inherit" onClick={handleLogout}>
+<Button style={{fontSize:"20px"}} variant="text" color="inherit" onClick={() => handleLogout()}>
 Logout
 </Button>
 
-const platform = user ? <h5> {logout} </h5> :  <h5> {login()} | {register()} </h5>
+const platform = user ? <h5> <Button disabled={true} style={{fontSize:"20px", color:"rgb(180, 60, 60)"}} variant="text">{user.username}</Button> | {logout} </h5> :  <h5> {login()} | {register()} </h5>
 
 
 const AnimatedSwitch = withRouter(({ location }) => (
   <TransitionGroup >
     <CSSTransition key={location.key} classNames="page" timeout={1000}>
+<ConfirmProvider>
+<UserProvider value={user}>
       <Switch location={location}>
-<Route exact path="/" component={() => <Home user={user}/>}/>
-<Route path="/songs" component={() => <Songs user={user}/>}/>
-<Route path="/artists" component={() => <Artists user={user}/>}/>
-<Route path="/playlists" component={() => <Playlists user={user}/>}/>
-<Route path="/albums" component={() => <Albums user={user}/>}/>
-<Route path="/Uploads" component={() => <Uploads user={user}/>}/>
-<Route path="/PostSong" component={() => <PostSong user={user}/>}/>
-<Route path="/PostAlbum" component={() => <PostAlbum user={user}/>}/>
-<Route path="/PostArtist" component={() => <PostArtist user={user}/>}/>
-<Route path="/PostPlaylist" component={() => <PostPlaylist user={user}/>}/>
-<Route path="*" component={() => <NoFound user={user}/>}/>
+<Route exact path="/" component={() => <Home/>}/>
+<Route exact path="/songs" component={() => <Songs/>}/>
+<Route exact path="/songs/:songId" component={() => <SongData/>}/>
+<Route exact path="/artists" component={() => <Artists/>}/>
+<Route exact path="/artists/:artistId" component={() => <ArtistData/>}/>
+<Route exact path="/playlists" component={() => <Playlists/>}/>
+<Route exact path="/playlists/:playlistId" component={() => <PlaylistData/>}/>
+<Route exact path="/albums" component={() => <Albums/>}/>
+<Route exact path="/albums/:albumId" component={() => <AlbumData/>}/>
+<Route exact path="/uploads" component={() => <Uploads/>}/>
+<Route exact path="/uploads/:userId" component={() => <UploadsData/>}/>
+<Route exact path="/PostSong" component={() => <PostSong/>}/>
+<Route exact path="/PostAlbum" component={() => <PostAlbum/>}/>
+<Route exact path="/PostArtist" component={() => <PostArtist/>}/>
+<Route exact path="/PostPlaylist" component={() => <PostPlaylist/>}/>
+<Route component={() => <NoFound/>}/>
       </Switch>
+</UserProvider>
+</ConfirmProvider>
     </CSSTransition>
   </TransitionGroup>
 ));
@@ -321,61 +284,14 @@ const AnimatedSwitch = withRouter(({ location }) => (
   return (
 <div className="App">
 {platform}
-   <SideNav
-        style={{background:'rgb(180, 60, 60)', borderRight:"2px solid white"}}
-        expanded={true}
-        onToggle={() => {return}}
-      >
-        <SideNav.Toggle/>
-        <SideNav.Nav defaultSelected="home">
-          <NavItem eventKey="home">
-            <NavIcon>
-              <i style={{ fontSize: '1.75em' }} />
-            </NavIcon>
-              <Link to="/"><i style={{color:'white', fontSize:'44px', paddingTop:"3px"}} className="fa fa-fw fa-home" /></Link>
-          </NavItem>
-          <NavItem eventKey="1">
-            <NavIcon>
-              <i className="fa fa-fw " style={{ fontSize: '1.75em' }} />
-            </NavIcon>
-            <NavText>
-               <Link className="navItem" to="/songs">Songs</Link>
-            </NavText>
-          </NavItem>
-             <NavItem eventKey="2">
-            <NavIcon>
-              <i className="fa fa-fw " style={{ fontSize: '1.75em' }} />
-            </NavIcon>
-            <NavText>
-               <Link className="navItem" to="/albums">Albums</Link>
-            </NavText>
-          </NavItem>
-          <NavItem eventKey="3">
-            <NavIcon>
-              <i className="fa fa-fw " style={{ fontSize: '1.75em' }} />
-            </NavIcon>
-            <NavText>
-           <Link className="navItem" to="/artists">Artists</Link>
-            </NavText>
-          </NavItem>
-          <NavItem eventKey="4">
-            <NavIcon>
-              <i className="fa fa-fw " style={{ fontSize: '1.75em' }} />
-            </NavIcon>
-            <NavText>
-             <Link className="navItem" to="/playlists">Playlists</Link>
-            </NavText>
-          </NavItem>
-           <NavItem eventKey="5">
-            <NavIcon>
-              <i className="fa fa-fw " style={{ fontSize: '1.75em' }} />
-            </NavIcon>
-            <NavText>
-             <Link className="navItem" to="/Uploads">Uploads</Link>
-            </NavText>
-          </NavItem>
-        </SideNav.Nav>
-      </SideNav>
+   <div className="nav">
+            <NavLink to="/"><i style={{ fontSize:'44px', paddingTop:"3px", fontWeight:'normal'}} className="navItem fa fa-fw fa-home" /></NavLink>
+            <NavLink className="navItem" to="/songs">Songs</NavLink>
+            <NavLink className="navItem" to="/albums">Albums</NavLink>
+            <NavLink className="navItem" to="/artists">Artists</NavLink>
+            <NavLink className="navItem" to="/playlists">Playlists</NavLink>
+            <NavLink className="navItem" to="/Uploads">Uploads</NavLink>
+    </div>
       <AnimatedSwitch />
     </div>
   );

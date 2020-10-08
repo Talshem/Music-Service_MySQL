@@ -1,44 +1,52 @@
-import React, {useState, useEffect} from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {useContext, useEffect} from 'react';
 import axios from 'axios';
 import {
   NavLink,
 } from "react-router-dom";
 import Select from 'react-select';
+import UserContext from '../UserContext'
+import network from '../Network.js';
+import { useStateIfMounted } from "use-state-if-mounted";
 
 function PostPlaylist(props) {
-const [songs, setSongs] = useState([])
+const [songs, setSongs] = useStateIfMounted([])
+
+const user = useContext(UserContext)
 
   useEffect(() => {
     const fetchData = async () => {
-      setSongs(await (await axios.get(`/top_songs`)).data[0]);
+    const songs = await axios.get(`/api/songs`);
+    let selectSong = songs.data.map(e => { return { artist: e.Artist.name, value: e.youtube_id, label: `${e.title} - ${e.Artist.name}`}} )
+setSongs(selectSong)
+
     }; fetchData();
    }, []); 
 
   const addPlaylist = async (event, name, songs, image) => {
   event.preventDefault();
-  let regex = /'/gi
-  let newSongs = []
-  for (let song of songs){
-  newSongs.push(song.value)
-  }
-    if (!props.user) {
-    return document.getElementById('playlistError').innerHTML = 'Only registered users can post new playlists to the website!';
-    }
+  const date = new Date();
+
+
     if(!songs) {
     return document.getElementById('playlistError').innerHTML = "Select songs";
     }
-  const newName = name.replace(regex,`''`);
     try{
-    await axios.post(`/playlist`, {
-    name: newName, 
-    songs: newSongs, 
+    await network.post(`/api/playlists`, {
+    name: name, 
+    username: user.username,
     cover_img: image,
-    user: props.user.email,
-    user_name: props.user.username
+    created_at: date.toISOString().substring(0, 10)
+    }).then( async (result) => {
+    await network.post(`/api/songinplaylist`, {
+    id: result.data.id, 
+    songs: JSON.stringify(songs)
     })
+    })
+  window.location.reload(false);
   document.getElementById("playlistForm").reset();
 } catch (response){
-   document.getElementById('playlistError').innerHTML = "Undetected error";
+document.getElementById('playlistError').innerHTML = 'Only registered users can post new playlists to the website!';
   }; 
 };
 
@@ -59,7 +67,8 @@ let song;
         song = event;
       }
 
-let selectSong = songs.map(e => ({ value: e.youtube_id, label: `${e.title} - ${e.artist}` }))
+let selectSong = songs
+
 
 return (
  <form style={{marginTop:"150px"}} id="playlistForm" onSubmit={(event) => addPlaylist(event, name, song, image)}>

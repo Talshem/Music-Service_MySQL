@@ -1,28 +1,34 @@
-import React, { useEffect, useState} from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useContext, useEffect} from 'react';
 import axios from 'axios';
 import {
   NavLink,
 } from "react-router-dom";
 import Select from 'react-select';
+import UserContext from '../UserContext'
+import network from '../Network.js';
+import { useStateIfMounted } from "use-state-if-mounted";
 
 function PostSong(props) {
-const [albums, setAlbums] = useState([]);
-const [artists, setArtists] = useState([]);
+const [albums, setAlbums] = useStateIfMounted([]);
+const [artists, setArtists] = useStateIfMounted([]);
 
-const [selectAlbum, setSelectAlbum] = useState(undefined)
-const [title, setTitle] = useState(undefined)
-const [length, setLength] = useState(undefined)
-const [youtube_id, setYoutube_id] = useState(undefined)
-const [artist, setArtist] = useState(undefined)
-const [album, setAlbum] = useState(undefined)
-const [lyrics, setLyrics] = useState(undefined)
-const [track_number, setTrack_number] = useState(undefined)
-const [created_at, setCreated_at] = useState(undefined)
+const [selectAlbum, setSelectAlbum] = useStateIfMounted(undefined)
+const [title, setTitle] = useStateIfMounted(undefined)
+const [length, setLength] = useStateIfMounted(undefined)
+const [youtube_id, setYoutube_id] = useStateIfMounted(undefined)
+const [artist, setArtist] = useStateIfMounted(undefined)
+const [album, setAlbum] = useStateIfMounted(undefined)
+const [lyrics, setLyrics] = useStateIfMounted(undefined)
+const [track_number, setTrack_number] = useStateIfMounted(undefined)
+const [created_at, setCreated_at] = useStateIfMounted(undefined)
+
+const user = useContext(UserContext)
 
   useEffect(() => {
     const fetchData = async () => {
-      setAlbums(await (await axios.get(`/top_albums`)).data[0]);
-      setArtists(await (await axios.get(`/top_artists`)).data);
+      setAlbums(await (await axios.get(`/api/albums`)).data);
+      setArtists(await (await axios.get(`/api/artists`)).data);
     }; fetchData();
    }, []);
 
@@ -44,47 +50,41 @@ if (/^([0-5]?[0-9]|2[0-3]):[0-5][0-9]$/.test(length)) {
 
 const addSong = async (event, title, length, youtube_id, artist, album, track_number, lyrics, created_at) => {
 event.preventDefault();
-    let regex = /'/gi
+    const date = new Date();
     let enter = /\n/gi
 
-    if(!artist) {
-    return document.getElementById('songError').innerHTML = "Select an artist";
-    }
-    if(!album) {
-    return document.getElementById('songError').innerHTML = "Select an album";
-    }
   const newCreated_at = created_at.slice(0,10)
-  const newLyrics = lyrics.replace(regex,`''`).replace(enter,`&&`);
-  const newTitle = title.replace(regex,`''`);
-  const newArtist = artist.value.replace(regex,`''`);
-  const newAlbum = album.value.replace(regex,`''`);
-
-    if (!props.user) {
-    return document.getElementById('songError').innerHTML = 'Only registered users can post new songs to the website';
-    }
+  const newLyrics = lyrics.replace(enter,`&&`);
+  
     if (!validateLength(length)) {
     return document.getElementById('songError').innerHTML = 'Length form is invalid';
     }
     if(!validateTrack(track_number)) {
     return document.getElementById('songError').innerHTML = "Track number field must be a 2-digit number";
     }
+
+    let occupied = await axios.get(`api/songs/${youtube_id}`)  
+    if(occupied.data){
+    return document.getElementById('songError').innerHTML = 'This song was already posted';
+    }
+
     try{
-    await axios.post(`/song`, {
-    title: newTitle, 
+    await network.post(`/api/songs`, {
+    title: title, 
     length: length, 
     youtube_id: youtube_id, 
-    artist: newArtist, 
-    album: newAlbum, 
+    ArtistId: artist.value, 
+    AlbumId: album.value, 
     track_number: track_number, 
     lyrics: newLyrics, 
     created_at: newCreated_at,
-    user: props.user.email,
-    user_name: props.user.username
+    Username: user.username,
+    upload_at: date.toISOString().substring(0, 10)
     }
     )
   window.location.reload(false);
 } catch (response){
-  return document.getElementById('songError').innerHTML = "Song already exists";
+ document.getElementById('songError').innerHTML = 'Only registered users can post new songs to the website';
   }; 
 };
 
@@ -110,17 +110,16 @@ function form(){
         setCreated_at(event.target.value);
       }
       function insertArtist(event) {
-       let x = event.value
+       let x = event.label
        setArtist(event);
        setSelectAlbum(albumList.filter(e => e.label.includes(x)));
       }
        function insertAlbum(event) {
         setAlbum(event);
       }
-      
-let selectArtist = artists.map(e => ({ value: e.name, label: e.name }))
-let albumList = albums.map(e => ({value: e.name, label: `${e.name} - ${e.artist}` }))
 
+let selectArtist = artists.map(e => ({ value: e.id, label: e.name }))
+let albumList = albums.map(e => ({value: e.id, label: `${e.name} - ${e.Artist.name}` }))
 
 var today = new Date();
 var dd = today.getDate();
@@ -143,13 +142,13 @@ return (
     <input id="song_id" required type="text" defaultValue={youtube_id} onChange={insertYoutube}/><br/><br/>
     <label> Length: </label><i className='tooltip fas fa-info'> <span className="tooltiptext">M M : S S</span></i><br/>
     <input id="song_length" required type="text" defaultValue={length} onChange={insertLength}/> <br/><br/>
-    <label>Artist: </label><i className='tooltip fas fa-info'> <span className="tooltiptext">You can only post albums of uploaded artists</span></i><br/>
+    <label>Artist: </label><i className='tooltip fas fa-info'> <span className="tooltiptext">You can only select uploaded artists </span></i><br/>
     <Select required maxMenuHeight={160}
     defaultValue={artist}
     onChange={insertArtist}
     options={selectArtist}>
     </Select><br/>
-    <label> Album: </label><i className='tooltip fas fa-info'> <span className="tooltiptext">You can only post songs of uploaded albums</span></i><br/>
+    <label> Album: </label><i className='tooltip fas fa-info'> <span className="tooltiptext">You can only select an uploaded albums</span></i><br/>
     <Select required maxMenuHeight={160}
     defaultValue={album}
     onChange={insertAlbum}
