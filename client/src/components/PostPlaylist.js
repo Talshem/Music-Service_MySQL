@@ -26,16 +26,14 @@ setSongs(selectSong)
   const addPlaylist = async (event, name, songs, image) => {
   event.preventDefault();
   const date = new Date();
-  let regex = /'/gi
 
 
     if(!songs) {
     return document.getElementById('playlistError').innerHTML = "Select songs";
     }
-  const newName = name.replace(regex,`''`);
     try{
     await network.post(`/api/playlists`, {
-    name: newName, 
+    name: name, 
     username: user.username,
     cover_img: image,
     created_at: date.toISOString().substring(0, 10)
@@ -45,6 +43,7 @@ setSongs(selectSong)
     songs: JSON.stringify(songs)
     })
     })
+  window.location.reload(false);
   document.getElementById("playlistForm").reset();
 } catch (response){
 document.getElementById('playlistError').innerHTML = 'Only registered users can post new playlists to the website!';

@@ -51,14 +51,10 @@ if (/^([0-5]?[0-9]|2[0-3]):[0-5][0-9]$/.test(length)) {
 const addSong = async (event, title, length, youtube_id, artist, album, track_number, lyrics, created_at) => {
 event.preventDefault();
     const date = new Date();
-    let regex = /'/gi
     let enter = /\n/gi
 
   const newCreated_at = created_at.slice(0,10)
-  const newLyrics = lyrics.replace(regex,`''`).replace(enter,`&&`);
-  const newTitle = title.replace(regex,`''`);
-  const newArtist = artist.label.substr(0, artist.label.indexOf(' - ') -1).replace(regex,`''`);
-  const newAlbum = album.label.replace(regex,`''`);
+  const newLyrics = lyrics.replace(enter,`&&`);
   
     if (!validateLength(length)) {
     return document.getElementById('songError').innerHTML = 'Length form is invalid';
@@ -74,13 +70,11 @@ event.preventDefault();
 
     try{
     await network.post(`/api/songs`, {
-    title: newTitle, 
+    title: title, 
     length: length, 
     youtube_id: youtube_id, 
     ArtistId: artist.value, 
     AlbumId: album.value, 
-    artist_name: newArtist, 
-    album_name: newAlbum, 
     track_number: track_number, 
     lyrics: newLyrics, 
     created_at: newCreated_at,
@@ -123,6 +117,7 @@ function form(){
        function insertAlbum(event) {
         setAlbum(event);
       }
+
 let selectArtist = artists.map(e => ({ value: e.id, label: e.name }))
 let albumList = albums.map(e => ({value: e.id, label: `${e.name} - ${e.Artist.name}` }))
 

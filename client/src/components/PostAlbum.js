@@ -24,20 +24,15 @@ const user = useContext(UserContext)
   const addAlbum = async (event, name, image, artist, created_at) => {
    event.preventDefault();
     const date = new Date();
-    let regex = /'/gi
   const newCreated_at = created_at.slice(0,10)
 
     if(!artist) {
     return document.getElementById('albumError').innerHTML = "Select an artist";
     }
-  const newName = name.replace(regex,`''`);
-  const newArtist = artist.label.replace(regex,`''`);
-
     try{
     await network.post(`/api/albums`, {
-    name: newName, 
+    name: name, 
     ArtistId: artist.value,
-    artist_name: newArtist, 
     cover_img: image,
     created_at: newCreated_at,
     username: user.username,

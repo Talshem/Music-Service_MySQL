@@ -12,12 +12,10 @@ function PostArtist(props) {
   const addArtist = async (event, name, image) => {
   event.preventDefault();
   const date = new Date();
-  let regex = /'/gi
-  const newName = name.replace(regex,`''`);
 
     try{
     await network.post(`/api/artists`, {
-    name: newName, 
+    name: name, 
     cover_img: image,
     username: user.username,
     upload_at: date.toISOString().substring(0, 10)

@@ -21,14 +21,13 @@ await axios.patch(`/api/songs/count/${e.youtube_id}`, {
 play_count: e.play_count + 1,
 });
 };
-
 return (
 <li className="grid-item">
 <span style={{cursor:'pointer'}} >
 {like}
 </span>
-<p>
-<NavLink className="navTo" to={`${match.url}/${item.youtube_id}`}>{item.title} - {item.Artist.name}</NavLink>
+<p style={{width: like ? '200px': '250px'}}>
+<NavLink className="navTo" to={`${match.url}/${item.youtube_id}`}>{item.Artist ? <> {item.title} - {item.Artist.name} </> : <> {item.title}</>}</NavLink>
 </p>
 <YouTube className="video" onPlay={() => playCount(item)} videoId={item.youtube_id} id="video" opts={{width:"250",height:"250"}}/>
 {adminDelete}
@@ -77,9 +76,13 @@ setToggle(e => e + 1)
 setLoading(true)
 }
 
+const handleFavorite = () => {
+setFavorites(!favorites)
+setLoading(true)
+}
+
 const deleteSong = async (e) => {
-const newId = e.youtube_id.replace(`'`,`''`);
-await network.delete(`/api/songs/${newId}`);
+await network.delete(`/api/songs/${e.youtube_id}`);
 setToggle(e => e + 1)
 };
 
@@ -118,9 +121,9 @@ const makeSongs = (songs, preferences) => {
 let array = songs.map(e => {
 const heart = 
 <button onClick={() => isLiked(e, preferences)} id={e.youtube_id + 'like'} className={preferences.includes(e.youtube_id) ? "like fas fa-heart" : "like far fa-heart"}/>
-const deleteButton = <button style={{marginTop:"20px"}} onClick={() => deleteSong(e)} className="deleteButton">Delete</button>;
-const like = user ? heart :  '';
-const adminDelete = user && user.admin === 1 ? deleteButton : '';
+const deleteButton = <button onClick={() => deleteSong(e)} style={{marginTop:'30px'}} className="deleteButton">Delete</button>;
+const like = user ? heart :  null;
+const adminDelete = user && user.is_admin ? deleteButton : null;
 return (
 
             <MemoSong
@@ -160,7 +163,7 @@ const override =`
 {" "} Songs</p>
 <input className="filterList" onChange={(event) => setSearch(event.target.value)} /> 
 <button onClick={() => handleSearch()} className="searchButton">Search</button>
-{user ? <i className="filterFavorites" onClick={() => setFavorites(!favorites)}>{filterFavorites}</i> : ''}
+{user ? <i className="filterFavorites" onClick={() => handleFavorite()}>{filterFavorites}</i> : ''}
 <ul className="grid-container"><br/>
 {list}
 </ul>

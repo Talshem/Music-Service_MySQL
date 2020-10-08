@@ -72,19 +72,18 @@ return (
 </div>
 
 <div style={{width:'62%', marginLeft:'40px'}}>
-<h6 style={{textAlign:"left", left:"2%"}} className="songsTitle">Songs</h6>
+<h6 className="songsTitle">Songs</h6>
 <div className="dataItem">
 {songList}
 </div>
 </div>
 </div>
 
-<h6 style={{textAlign:"left", left:"10px"}} className="songsTitle">Albums</h6>
+<h6 style={{textAlign:"left", left:"10px", marginTop:'0px'}} className="songsTitle">Albums</h6>
 <div className="artistData">
 {albumList}
 </div>
 
-<br/><br/><br/>
 <NavLink className="fa fa-arrow-left back" to="/artists"></NavLink>
 </div>
 )}

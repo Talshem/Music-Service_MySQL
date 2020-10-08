@@ -43,7 +43,7 @@ return (
 <span>	&#119136; &nbsp; {e.title} </span>
 <span style={{float:"right"}}>{e.length}</span>
 </NavLink>
-</li>   
+</li>
 )
 })    
 

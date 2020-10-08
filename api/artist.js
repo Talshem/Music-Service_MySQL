@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const { Artist } = require('../models');
+const { User } = require('../models');
 
 const validateChars = require('../middlewares/validateChars');
 const checkToken = require('../middlewares/checkToken');
@@ -50,7 +51,7 @@ try {
 })
 
 router.delete('/:artistId',checkToken, async (req, res) => {
-try {
+  try {
   const artist = await Artist.findByPk(req.params.artistId);
   const user = await User.findByPk(req.decoded.username);
   if(user.is_admin || artist.username === user.username) {
@@ -59,7 +60,7 @@ try {
 } else {
 res.send('You are not authorized to do this action.')
 }
-  } catch (err) { res.json(err)}
+  } catch (err){ res.json(err) }
 })
 
 module.exports = router;

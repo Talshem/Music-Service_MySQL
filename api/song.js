@@ -2,6 +2,7 @@ const { Router } = require('express');
 const { Song } = require('../models');
 const { Album } = require('../models');
 const { Artist } = require('../models');
+const { User } = require('../models');
 
 const validateChars = require('../middlewares/validateChars');
 const checkToken = require('../middlewares/checkToken');
@@ -28,7 +29,7 @@ try {
 
 router.get('/:songId', validateChars, async (req, res) => {
 try {
-  const song = await Song.findByPk(req.params.songId, {include: [{model: Album, attributes: ['name']}, {model: Artist, attributes: ['name']}]});
+  const song = await Song.findByPk(req.params.songId, {include: [{model: Album, attributes: ['name', 'cover_img', 'id']}, {model: Artist, attributes: ['name', 'cover_img', 'id']}]});
   res.json(song)
   } catch (err) { res.json(err)}
 })

@@ -54,8 +54,9 @@ return (
 <div style={{width:'100%',marginTop:'-105px', color:"white", display:"flex"}}>
 <div style={{fontSize:'20px', width:'36%', marginRight:"2%"}}>
 <ReactPlayer playing url={url} controls={true} width="100%" height="450px" />
+<br/>
 <i><strong>{e.is_liked}</strong> people liked this playlist</i>
-<br/><br/>
+<br/><br/><br/>
 <i><strong>Created by:</strong>{" "} {e.username}</i><br/><br/><br/>
 </div>
 <div style={{width:'62%'}}>

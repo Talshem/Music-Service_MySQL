@@ -37,9 +37,10 @@ color:rgb(0, 0, 0);
 color:white;
 font-weight: bolder;
 position: relative;
-margin-top:25px;
+margin-top:20px;
 left:60px;
 font-size:30px;
+transition: 0.2s;
 margin-right:40px;
 text-decoration: none;
 text-shadow: 1.5px 1.5px 0px rgb(105, 32, 32);
@@ -48,6 +49,7 @@ text-shadow: 1.5px 1.5px 0px rgb(105, 32, 32);
 .carouselist{
 background: rgb(30,30,30);
 transition: 0.5s;
+overflow:hidden;
 white-space: nowrap;
 text-align: center;
 margin-left:30px;
@@ -95,11 +97,11 @@ border: 2px solid white;
 }
 
 .hov:hover a{
-color: rgb(149, 243, 215, 1)
+color:rgb(95, 206, 171)
 }
 
 .hov:hover .video, .hov:hover img{
- border: 2px solid rgb(149, 243, 215, 1); 
+ border: 2px solid rgb(95, 206, 171); 
 }
 .grid-item:hover p, .hov:hover p{
 animation-iteration-count: infinite;
@@ -198,39 +200,23 @@ position: absolute;
 }
 
 .grid-container{
-  top:0px;
-  left:16px;
   position: relative;
-  margin-left:34px;
-  padding: 10px;
+  margin-left:30px;
   width:98.5%;
   top:200px;
   margin-bottom:250px;
   overflow: auto;
-
-}
-
-.grid-item {
-width:250px;
-display:inline-block;
-margin-left:0px;
-padding-left: 10px;
-padding-right: 45px;
-min-height:300px;
-margin-bottom:50px;
-  font-size: 16px;
-  overflow:hidden;
 }
 
 
 
 
 .grid-item:hover img, .grid-item:hover .video, .grid-item:hover img{
- border: 2px solid rgb(149, 243, 215, 1)
+ border: 2px solid rgb(95, 206, 171)
 }
 
 .grid-item:hover a{
-color: rgb(149, 243, 215, 1)
+color:rgb(95, 206, 171)
 }
 
 .video{
@@ -243,35 +229,36 @@ margin-bottom: -21px;
 color:rgb(156, 37, 37);
 }
 
+.grid-item {
+width:250px;
+display:inline-block;
+overflow: hidden;
+padding-right: 80px;
+min-height:300px;
+padding-bottom: 20px;
+margin-bottom:50px;
+margin-top: -10px;
+}
+
 .like{
 color:rgb(200, 60, 60);
 border: 2px solid transparent;
-position: absolute;
-z-index: 1;
-margin-top:-8px;
-background: rgb(20, 20, 20);
-padding-right:3px;
+position: relative;
+top:-12px;
+padding-top:5px;
+background:rgb(20, 20, 20);
 font-size:30px;
-padding-left:50px;
-margin-left: -51px;
 cursor: pointer;
 }
 
 .grid-item p {
-height:34px;
-z-index: 0;
-position: relative;
-background: transparent;
 white-space: nowrap;
-overflow: hidden;
-margin-left:37px;
-margin-bottom:10px;
-margin-top:-5px;
-color:white;
-text-align: left;
-width:210px;
-border-right: 50px solid transparent;
-font-size:24px;
+overflow:hidden;
+display: inline-block;
+margin-bottom: 4px;
+background: rgb(20, 20, 20);
+padding-left: 2px;
+font-size: 26px;
 }
 
 h5 {
@@ -301,6 +288,7 @@ overflow-y:scroll;
 overflow-x:hidden;
 margin-top:-15px;
 margin-left:75px;
+max-height:680px;
 }
 
 .songDataPage{
@@ -339,7 +327,7 @@ font-size: 20px;
 }
 
 .grid-item3 p{
-margin-top:-10px;
+margin-top:-0px;
 font-size: 26px;
 margin-left:5.5%;
 width:87%;
@@ -511,8 +499,7 @@ color:white;
 border: 1.5px solid rgb(218, 218, 218);
 border-radius: 5px;
 font-size:20px;
-margin-top:0px;
-margin-bottom:15px;
+margin-top:10px;
 cursor: pointer;
 }
 
@@ -582,17 +569,15 @@ width:100%;
 top:160px;
 display: inline-block;
 padding-bottom:200px;
+
 }
 
 .upload{
 width:92.5%;
-margin-right:20px;
 min-height: 310px;
 display:flex;
 background:rgb(30, 30, 30);
 justify-content:flex-start;
-
-overflow:auto;
 margin-bottom:80px;
 padding-top:5px;
 border-radius: 5px;
@@ -602,25 +587,26 @@ padding-left:15px;
 .upload p{
 white-space: nowrap;
 overflow: hidden;
-z-index: 1;
-border-right: 60px solid rgb(30, 30, 30);
+display: inline-block;
 background: rgb(30, 30, 30);
-font-size: 26px;
-margin-top:2px;
 padding-bottom: 5px;
 margin-bottom:-15px;
-max-height:30px;
-width:75%;
+max-height:35px;
+font-size: 26px;
+margin-top: 0px;
+padding-left:3px;
 height:40px;
-margin-left:35px;
 }
+
 .horizontalSlider___281Ls{
 outline:0;
 }
 
 .upload li{
-padding-top:20px;
-padding-right:30px;
+overflow:hidden;
+padding-top:30px;
+background: rgb(30, 30, 30);
+border-right: 40px solid rgb(30,30,30);
 }
 
 .searchButton{
@@ -642,7 +628,7 @@ border:2px solid rgb(95, 206, 171);
 
 button:focus {outline:0;}
 
-.arrow:hover, .add:hover, .post:hover, .back:hover, .filterFavorites:hover{
+.hov:hover div, .arrow:hover, .add:hover, .post:hover, .back:hover, .filterFavorites:hover{
 color:rgb(95, 206, 171);
 }
 
@@ -694,7 +680,7 @@ margin-top:-115px;
 }
 
 .fa-remove{
-position: absolute;
+position: relative;
 background:none;
 border:none;
 color: rgb(200, 60, 60);
@@ -702,6 +688,7 @@ font-size:30px;
 cursor: pointer;
 margin-top:5px;
 margin-left:-15px;
+padding-bottom:10px;
 background: rgb(30, 30, 30);
 border-left:10px solid rgb(30, 30, 30);
 }

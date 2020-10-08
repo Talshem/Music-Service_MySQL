@@ -29,7 +29,7 @@ useEffect(() => {
     const fetchData = async () => {
       try {
       const { data } = await axios.get(`/api/users/uploads/${userId}`)
-      makeLists(data[0], data.songs, data.albums, data.artists, data.playlists)
+      makeLists(data.user, data.songs, data.albums, data.artists, data.playlists)
       } catch {
     setLoading(false)
     return setUploads(<p style={{top:"430px", fontSize:"120px",textAlign:"right",width:"86%"}} className="listTitle">User doesn't exist</p>)
@@ -77,19 +77,16 @@ setName(`${capitalUserId}'s Uploads`)
 }
 }
 
-let z =1000
 let sArray = songs.map(e => {
-console.log()
-z--;
-const deleteButton = user && user.email === e.user ? <button onClick={() => deleteSong(e)} style={{marginBottom:"15px"}} className="fa fa-remove"></button> : ''
+const deleteButton = user && user.email === e.user ? <button onClick={() => deleteSong(e)} style={{marginBottom:"15px", marginTop:'30px'}} className="fa fa-remove"></button> : ''
 
 return (
-<li key={e.youtube_id} style={{zIndex: z}} className="hov">
+<li key={e.youtube_id} className="hov">
 <YouTube className="video" onPlay={() => playCount(e)}videoId={e.youtube_id} id="video" opts={{width:"250",height:"250"}}/>
-<span style={{cursor:'pointer'}} >
+<span  style={{cursor:'pointer'}} >
 {deleteButton}
 </span>
-<p>
+<p style={{marginTop:'21px', width: deleteButton ? '220px' : null}}>
 <NavLink className="navTo" to={`/songs/${e.youtube_id}`}>
 {e.title}
 </NavLink>
@@ -104,16 +101,15 @@ return (
 
 let alArray = albums.map(e => {
 const deleteButton = user && user.email === e.user ? <button onClick={() => deleteAlbum(e)} className="fa fa-remove"></button> : ''
-z--;
 return (
-<li style={{zIndex: z}} key={e.name} className="hov">
+<li key={e.name} className="hov">
 <NavLink className="navTo" to={`/albums/${e.id}`}>
 <img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
 </NavLink>
 <span style={{cursor:'pointer'}} >
 {deleteButton}
 </span>
-<p>
+<p style={{width: deleteButton ? '220px' : null}}>
 <NavLink className="navTo" to={`/albums/${e.id}`}>
 {e.name}
 </NavLink>
@@ -125,16 +121,15 @@ return (
 
 let arArray = artists.map(e => {
 const deleteButton = user && user.email === e.user ? <button onClick={() => deleteArtist(e)} className="fa fa-remove"></button> : ''
-z--;
 return (
-<li style={{zIndex: z}} key={e.name} className="hov">
+<li key={e.name} className="hov">
 <NavLink className="navTo"  to={`/artists/${e.id}`}>
 <img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
 </NavLink>
 <span style={{cursor:'pointer'}} >
 {deleteButton}
 </span>
-<p>
+<p style={{width: deleteButton ? '220px' : null}}>
 <NavLink className="navTo" to={`/artists/${e.id}`}>
 {e.name}
 </NavLink>
@@ -144,17 +139,16 @@ return (
 )}
 ) 
 let pArray = playlists.map(e => {
-const deleteButton = user && user.email === e.user ? <button onClick={() => deletePlaylist(e)} className="fa fa-remove"></button> : ''
-z--
+const deleteButton = user && user.email === e.user ? <button onClick={() => deletePlaylist(e)} className="fa fa-remove"></button> : null
 return (
-<li style={{zIndex: z}} key={e.name} className="hov">
+<li key={e.name} className="hov">
 <NavLink className="navTo" to={`/playlists/${e.id}`}>
 <img onError={(e)=>{e.target.onerror = null; e.target.src="/no_image.jpg"}} alt={e.name} width="250" height="250" src={e.cover_img}></img>
 </NavLink>
 <span style={{cursor:'pointer'}} >
 {deleteButton}
 </span>
-<p>
+<p style={{width: deleteButton ? '220px' : null}}>
 <NavLink className="navTo"  to={`/playlists/${e.id}`}>
 {e.name}
 </NavLink>

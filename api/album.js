@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const { Album } = require('../models');
 const { Artist } = require('../models');
+const { User } = require('../models');
 
 const validateChars = require('../middlewares/validateChars');
 const checkToken = require('../middlewares/checkToken');

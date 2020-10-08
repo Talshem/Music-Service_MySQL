@@ -17,10 +17,10 @@ let match = useRouteMatch();
 
 return (
 <li className="grid-item">
-<span style={{cursor:'pointer'}}>{like} {" "} </span>
-<p>
+<span style={{cursor:'pointer'}}>{like} </span>
+<p style={{width: like ? '195px': '250px'}}>
 <NavLink className="navTo" to={`${match.url}/${item.id}`}>
-{item.name} - {item.Artist.name}
+{item.Artist ? <> {item.name} - {item.Artist.name} </> : <> {item.name}</>}
 </NavLink>
 </p>
 <NavLink className="navTo" to={`${match.url}/${item.id}`}>
@@ -72,10 +72,14 @@ setLoading(true)
 }
 
 const deleteAlbum = async (e) => {
-const newName = e.name.replace(`'`,`''`);
-await network.delete(`/api/albums/${newName}`);
+await network.delete(`/api/albums/${e.id}`);
 setToggle(e => e + 1)
 };
+
+const handleFavorite = () => {
+setFavorites(!favorites)
+setLoading(true)
+}
 
 const isLiked = async (e, preferences) => {
 document.getElementById(e.id + 'like').setAttribute('disabled', false);
@@ -113,8 +117,8 @@ const heart = preferences.includes(e.id.toString()) ?
 <button  onClick={() => isLiked(e, preferences)} id={e.id + 'like'} className="like fas fa-heart"/> :
 <button  onClick={() => isLiked(e, preferences)} id={e.id + 'like'} className="like far fa-heart"/>
 const deleteButton = <button onClick={() => deleteAlbum(e)} className="deleteButton">Delete</button>;
-const like = user ? heart :  '';
-const adminDelete = user && user.admin === 1 ? deleteButton : '';
+const like = user ? heart :  null;
+const adminDelete = user && user.is_admin ? deleteButton : null;
 
 return (
             <MemoAlbum
@@ -157,7 +161,7 @@ const override =`
 {" "} Albums</p>
 <input className="filterList" onChange={(event) => setSearch(event.target.value)} /> 
 <button onClick={() => handleSearch()} className="searchButton">Search</button>
-{user ? <i className="filterFavorites" onClick={() => setFavorites(!favorites)}>{filterFavorites}</i> : ''}
+{user ? <i className="filterFavorites" onClick={() => handleFavorite()}>{filterFavorites}</i> : ''}
 <ul className="grid-container">
 {list}
 </ul>

@@ -37,7 +37,7 @@ useEffect(() => {
       }
        catch(response) {
       setLoading(false)
-      return alert(response)
+console.log(response)
       }
     }; fetchData();
    }, [])
@@ -49,18 +49,13 @@ play_count: e.play_count + 1,
 };
 
 const makeLists = (songs, albums, artists, playlists) => {
-let z =30;
-let index= 0;
-
 let sArray = songs.map(e => {
 setSongsLength(songs.length)
-index++;
-z--;
 return (
-<Slide index={index} style={{zIndex: z}} key={e.youtube_id} className="hov carouselist">
+<Slide key={e.youtube_id} className="hov carouselist">
 <div>
 <p>
-<NavLink className="navTo" to={`/songs/${e.youtube_id}`} >{e.title} - {e.Artist.name}</NavLink>
+<NavLink className="navTo" to={`/songs/${e.youtube_id}`} > {e.Artist ? <> {e.title} - {e.Artist.name} </> : <> {e.title}</>}</NavLink>
 </p>
 <YouTube className="video" onPlay={() => playCount(e)}videoId={e.youtube_id} id="video" opts={{width:"300",height:"300"}}/>
 <br/><br/>
@@ -73,12 +68,11 @@ return (
 
 let alArray = albums.map(e => {
 setAlbumsLength(albums.length)
-z--;
 return (
-<Slide style={{zIndex: z}} key={e.name} className="hov carouselist">
+<Slide key={e.name} className="hov carouselist">
 <p>
 <NavLink className="navTo" to={`/albums/${e.id}`} >
-{e.name} - {e.Artist.name}
+{e.Artist ? <> {e.name} - {e.Artist.name} </> : <> {e.name}</>}
 </NavLink>
 </p>
 <NavLink className="navTo" to={`/albums/${e.id}`} >
@@ -90,10 +84,9 @@ return (
 )
 
 let arArray = artists.map(e => {
-z--;
 setArtistsLength(artists.length)
 return (
-<Slide style={{zIndex: z}} key={e.name} className="hov carouselist">
+<Slide key={e.name} className="hov carouselist">
 <p>
 <NavLink className="navTo" to={`/artists/${e.id}`}>
 {e.name}
@@ -108,10 +101,9 @@ return (
 )
 
 let pArray = playlists.map(e => {
-z--;
 setPlaylistsLength(playlists.length)
 return (
-<Slide style={{zIndex: z}} key={e.name} className="hov carouselist">
+<Slide key={e.name} className="hov carouselist">
 <p>
 <NavLink className="navTo" to={`/playlists/${e.id}`}>
 {e.name}

@@ -11,7 +11,7 @@ const router = Router();
 
 router.post('/', checkToken, async (req, res) => {
 const songs = JSON.parse(req.body.songs)
-console.log(req.body.id)
+console.log(req.body)
   try {
   for (let song of songs) {
   await SongInPlaylist.create({
@@ -30,7 +30,7 @@ const songs = await SongInPlaylist.scope('filter').findAll({where: {playlist_id:
 include: [{model: Song, attributes: ['youtube_id', 'title', 'length'], 
 }]})
   res.json(songs)
-  } catch (err) { console.log(err); res.json(err)}
+  } catch (err) { res.json(err)}
 })
 
 module.exports = router;

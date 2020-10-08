@@ -23,7 +23,7 @@ return(
 </NavLink>
 { user ? 
 <NavLink to={`${match.url}/${user.username}`}>
-<button style={{position:'relative', textAlign:"right", width:"108%", top:"550px", marginBottom:"0px"}} className="post">To my page</button>
+<button style={{position:'relative', textAlign:"right", width:"108%", top:"550px", marginBottom:"0px"}} className="post">To my uploads</button>
 </NavLink> : '' }
 </div>
 )
