@@ -326,10 +326,10 @@ font-size: 20px;
 }
 
 .grid-item3 p{
+overflow: hidden;
 margin-top:-0px;
 font-size: 26px;
-margin-left:5.5%;
-width:87%;
+width: 200px;
 }
 
 .dataSongs{
@@ -590,11 +590,10 @@ display: inline-block;
 background: rgb(30, 30, 30);
 padding-bottom: 5px;
 margin-bottom:-15px;
-max-height:35px;
 font-size: 26px;
-margin-top: 0px;
 padding-left:3px;
-height:40px;
+height:37px;
+margin-top: -30px;
 }
 
 .horizontalSlider___281Ls{
@@ -605,7 +604,8 @@ outline:0;
 overflow:hidden;
 padding-top:30px;
 background: rgb(30, 30, 30);
-border-right: 40px solid rgb(30,30,30);
+margin-right: 40px;
+min-width: 260px;
 }
 
 .searchButton{

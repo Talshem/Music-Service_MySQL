@@ -83,7 +83,7 @@ return (
 <div className="artistData">
 {albumList}
 </div>
-
+<br/><br/><br/>
 <NavLink className="fa fa-arrow-left back" to="/artists"></NavLink>
 </div>
 )}

@@ -62,7 +62,7 @@ return(
 
 <i className="hov"><strong>Artist:</strong>
 <i>
-<NavLink className="navTo" to={`/artists/${e.Artist.id}`}>
+<NavLink className="navTo" to={`/artists/${e.Artist && e.Artist.id}`}>
 {" "} {e.Artist.name}
 </NavLink>
 </i>
@@ -70,7 +70,7 @@ return(
 
 <i className="hov"><strong>Album:</strong>
 <i>
-<NavLink className="navTo" to={`/artists/${e.Album.id}`}>
+<NavLink className="navTo" to={`/artists/${e.Album && e.Album.id}`}>
 {" "} {e.Album.name}
 </NavLink>
 </i>

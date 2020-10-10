@@ -84,39 +84,40 @@ setToggle(e => e + 1)
 };
 
 
-const isLiked = async (e, preferences) => {
-document.getElementById(e.id + 'like').setAttribute('disabled', false);
+const isLiked = async (e) => {
 try{
+if (document.getElementById(e.id + 'like').className.includes('fas')){
 document.getElementById(e.id + 'like').classList.replace('fas', 'far');
-if (preferences.includes(e.id.toString())){
-await network.patch(`/api/playlists/like/${e.id}`, {
-is_liked: e.is_liked - 1,
-});
 await network.patch(`/api/preferences`, {
 username: user.username,
 type: 'playlist',
 item_id: e.id
-});
+}).then((res) => {
+if (res.data.deleted)
+network.patch(`/api/playlists/like/${e.id}`, {
+is_liked: e.is_liked - 1,
+})})
 } else {
 document.getElementById(e.id + 'like').classList.replace('far', 'fas');
-await network.patch(`/api/playlists/like/${e.id}`, {
-is_liked: e.is_liked + 1,
-});
 await network.post(`/api/preferences`, {
 username: user.username,
 type: 'playlist',
 item_id: e.id
-});
+}).then((res) => {
+if (res.data.deleted)
+network.patch(`/api/playlists/like/${e.id}`, {
+is_liked: e.is_liked + 1,
+})});
 }
 } catch (response) {
 console.log(response)
 }
-setToggle(e => e + 1)
 }
 
 
 const makePlaylists = (playlists, preferences) => {
 let array = playlists.map(e => {
+document.getElementById(e.id + 'like') && document.getElementById(e.id + 'like').removeAttribute('disabled');
 const heart = preferences.includes(e.id.toString()) ? 
 <button  onClick={() => isLiked(e, preferences)} id={e.id + 'like'} className="like fas fa-heart"/> :
 <button  onClick={() => isLiked(e, preferences)} id={e.id + 'like'} className="like far fa-heart"/>
@@ -136,9 +137,6 @@ return (
 )
 setList(array)
 setLoading(false)
-playlists.forEach(e =>{
-document.getElementById(e.id + 'like').removeAttribute('disabled');
-})
 }
 
 const filterFavorites = favorites ?  <i className="fas fa-heart"></i> : <i className="far fa-heart"></i>

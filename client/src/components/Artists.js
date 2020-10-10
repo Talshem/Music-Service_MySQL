@@ -81,34 +81,34 @@ setToggle(e => e + 1)
 };
 
 
-const isLiked = async (e, preferences) => {
-document.getElementById(e.id + 'like').setAttribute('disabled', false);
+const isLiked = async (e) => {
 try{
+if (document.getElementById(e.id + 'like').className.includes('fas')){
 document.getElementById(e.id + 'like').classList.replace('fas', 'far');
-if (preferences.includes(e.id.toString())){
-await network.patch(`/api/artists/like/${e.id}`, {
-is_liked: e.is_liked - 1,
-});
 await network.patch(`/api/preferences`, {
 username: user.username,
 type: 'artist',
 item_id: e.id
-});
+}).then((res) => {
+if (res.data.deleted)
+network.patch(`/api/artists/like/${e.id}`, {
+is_liked: e.is_liked - 1,
+})})
 } else {
 document.getElementById(e.id + 'like').classList.replace('far', 'fas');
-await network.patch(`/api/artists/like/${e.id}`, {
-is_liked: e.is_liked + 1,
-});
 await network.post(`/api/preferences`, {
 username: user.username,
 type: 'artist',
 item_id: e.id
-});
+}).then((res) => {
+if (res.data.deleted)
+network.patch(`/api/artists/like/${e.id}`, {
+is_liked: e.is_liked + 1,
+})});
 }
 } catch (response) {
 console.log(response)
 }
-setToggle(e => e + 1)
 }
 
 
@@ -133,9 +133,6 @@ return (
 )
 setList(array)
 setLoading(false)
-artists.forEach(e =>{
-document.getElementById(e.id + 'like').removeAttribute('disabled');
-})
 }
 
 
