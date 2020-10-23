@@ -17,18 +17,16 @@ const { username } = req.body;
     process.env.TOKEN_SECRET,
     { expiresIn: '3d' }
   );
+req.body.remember_token = token
+req.body.created_at = date.toISOString().substring(0, 10)
+req.body.last_login = date.toISOString().substring(0, 10)
   const newUser = await User.create(req.body);
-  await newUser.update({
-  remember_token: token,
-  created_at: date.toISOString().substring(0, 10),
-  last_login: date.toISOString().substring(0, 10),
-});
   res.json({
     user: newUser,
     success: true,
     token
   })
-  } catch (err) { res.json(err) }
+  } catch (err) { res.json({message: err}) }
 })
 
 
@@ -46,7 +44,6 @@ router.post('/login', validateChars, async (req, res) => {
     process.env.TOKEN_SECRET,
     { expiresIn: '3d' }
   );
-  await user.update(req.body);
   await user.update(
   {
   last_login: date.toISOString().substring(0, 10),
@@ -76,7 +73,7 @@ router.patch('/:userId', checkToken, async (req, res) => {
   const user = await User.findByPk(req.params.userId);
   user.update(req.body)
   res.json(req.body)
-  } catch (err) { res.json(err) }
+  } catch (err) { res.json({message: 'user doesn\'t exist'}) }
 })
 
 router.get('/', async (req, res) => {

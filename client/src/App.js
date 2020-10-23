@@ -88,7 +88,7 @@ setUser(data.user)
 }
     }
   } catch (response){
-  document.getElementById('errorMessage2').innerHTML= response;
+  document.getElementById('errorMessage2').innerHTML= response.message;
   }; 
   }
 
