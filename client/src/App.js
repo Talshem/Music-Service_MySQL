@@ -84,14 +84,14 @@ setTimeout(() => {
 setUser(data.user)
 }, 500);
 } else {
+  console.log(data)
+  console.log(data.message)
+  console.log(data.message.toString())
+  console.log(JSON.stringify(data.message))
   document.getElementById('errorMessage').innerHTML = data.message
 }
     }
   } catch (response){
-   console.log(response)
-  console.log(response.message)
-  console.log(response.message.toString())
-  console.log(JSON.stringify(response.message))
   document.getElementById('errorMessage2').innerHTML= response.message;
   }; 
   }
@@ -109,13 +109,13 @@ setTimeout(() => {
 setUser(data.user)
 }, 500);
 } else {
+  console.log(data)
+  console.log(data.message)
+  console.log(data.message.toString())
+  console.log(JSON.stringify(data.message))
   document.getElementById('errorMessage').innerHTML = data.message
 }
   } catch (response) {
-  console.log(response)
-  console.log(response.message)
-  console.log(response.message.toString())
-  console.log(JSON.stringify(response.message))
   document.getElementById('errorMessage').innerHTML = response.message
   }; 
 };
