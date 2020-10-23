@@ -54,7 +54,7 @@ router.post('/login', validateChars, async (req, res) => {
     success: true,
     token,
   });
-  } catch (err) {res.json({message: err})}
+  } catch (err) {res.json({message: 'something'})}
 })
 
 router.patch('/auto', checkToken, async (req, res) => {
