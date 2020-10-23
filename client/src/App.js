@@ -84,10 +84,6 @@ setTimeout(() => {
 setUser(data.user)
 }, 500);
 } else {
-  console.log(data)
-  console.log(data.message)
-  console.log(data.message.toString())
-  console.log(JSON.stringify(data.message))
   document.getElementById('errorMessage').innerHTML = data.message
 }
     }
@@ -102,6 +98,7 @@ setUser(data.user)
       username: username,
       password: password,
     });
+console.log(data)
 if (data && data.success && data.token) {
 localStorage.setItem('token', data.token);
 setLoginOpen(false)   

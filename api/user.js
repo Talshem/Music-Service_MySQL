@@ -49,7 +49,7 @@ router.post('/login', validateChars, async (req, res) => {
   last_login: date.toISOString().substring(0, 10),
   remember_token: token
 });
-  res.json({
+  return res.json({
     user: user,
     success: true,
     token,
