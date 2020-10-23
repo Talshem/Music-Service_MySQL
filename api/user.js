@@ -22,7 +22,7 @@ req.body.created_at = date.toISOString().substring(0, 10)
 req.body.last_login = date.toISOString().substring(0, 10)
   const newUser = await User.create(req.body);
   res.json({
-    user: newUser,
+    user: {username:newUser.username, is_admin:newUser.is_admin},
     success: true,
     token
   })
@@ -50,11 +50,12 @@ router.post('/login', validateChars, async (req, res) => {
   remember_token: token
 });
   return res.json({
-    user: user,
+    user: {username:user.username, is_admin:user.is_admin},
     success: true,
     token,
   });
-  } catch (err) {res.json({message: 'something'})}
+  } catch (err) {
+    res.json({message: err})}
 })
 
 router.patch('/auto', checkToken, async (req, res) => {
