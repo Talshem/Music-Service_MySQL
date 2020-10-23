@@ -70,7 +70,6 @@ return (
 
 </div>
 </div>
-<br/><br/>
 <NavLink className="fa fa-arrow-left back" to="/albums"></NavLink>
 </div>
 );
