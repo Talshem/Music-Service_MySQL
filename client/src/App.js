@@ -98,7 +98,6 @@ setUser(data.user)
       username: username,
       password: password,
     });
-    console.log(data)
 if (data && data.success && data.token) {
 localStorage.setItem('token', data.token);
 setLoginOpen(false)   
