@@ -88,6 +88,10 @@ setUser(data.user)
 }
     }
   } catch (response){
+   console.log(response)
+  console.log(response.message)
+  console.log(response.message.toString())
+  console.log(JSON.stringify(response.message))
   document.getElementById('errorMessage2').innerHTML= response.message;
   }; 
   }
@@ -108,6 +112,10 @@ setUser(data.user)
   document.getElementById('errorMessage').innerHTML = data.message
 }
   } catch (response) {
+  console.log(response)
+  console.log(response.message)
+  console.log(response.message.toString())
+  console.log(JSON.stringify(response.message))
   document.getElementById('errorMessage').innerHTML = response.message
   }; 
 };

@@ -73,7 +73,7 @@ router.patch('/:userId', checkToken, async (req, res) => {
   const user = await User.findByPk(req.params.userId);
   user.update(req.body)
   res.json(req.body)
-  } catch (err) { res.json({message: 'user doesn\'t exist'}) }
+  } catch (err) { res.json(err) }
 })
 
 router.get('/', async (req, res) => {
@@ -86,8 +86,8 @@ router.get('/', async (req, res) => {
 router.get('/:userId', validateChars, async (req, res) => {
   try {
   const user = await User.scope('filter').findByPk(req.params.userId);
-  res.json(user)
-
+  if(user) return res.json(user)
+  return res.json('user doesn\'t exist')
   } catch (err) { res.json(err)}
 })
 router.get('/uploads/:userId', validateChars, async (req, res) => {
