@@ -85,7 +85,7 @@ return (
 <span  style={{cursor:'pointer'}} >
 {deleteButton}
 </span>
-<p style={{width: deleteButton ? '220px' : null}}>
+<p style={{width: deleteButton ? '220px' : null, marginTop:'20px'}}>
 <NavLink className="navTo" to={`/songs/${e.youtube_id}`}>
 {e.title}
 </NavLink>
@@ -108,7 +108,7 @@ return (
 <span style={{cursor:'pointer'}} >
 {deleteButton}
 </span>
-<p style={{width: deleteButton ? '220px' : null}}>
+<p style={{width: deleteButton ? '220px' : null, marginTop:'0px'}}>
 <NavLink className="navTo" to={`/albums/${e.id}`}>
 {e.name}
 </NavLink>
@@ -128,7 +128,7 @@ return (
 <span style={{cursor:'pointer'}} >
 {deleteButton}
 </span>
-<p style={{width: deleteButton ? '220px' : null}}>
+<p style={{width: deleteButton ? '220px' : null, marginTop:'0px'}}>
 <NavLink className="navTo" to={`/artists/${e.id}`}>
 {e.name}
 </NavLink>
@@ -147,7 +147,7 @@ return (
 <span style={{cursor:'pointer'}} >
 {deleteButton}
 </span>
-<p style={{width: deleteButton ? '220px' : null}}>
+<p style={{width: deleteButton ? '220px' : null, marginTop:'0px'}}>
 <NavLink className="navTo"  to={`/playlists/${e.id}`}>
 {e.name}
 </NavLink>
