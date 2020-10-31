@@ -12,7 +12,6 @@ app.use(errorHandler)
 app.use('/api/', require('./api'));
 
 app.get('*', function(req, res) {
-    console.log(1111111111111)
   res.sendFile(path.join(__dirname, 'client/build/index.html'), function(err) {
     if (err) {
       res.status(500).send(err)
