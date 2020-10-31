@@ -25,6 +25,7 @@ const [albumsLength, setAlbumsLength] = useStateIfMounted(0);
 const [artistsLength, setArtistsLength] = useStateIfMounted(0);
 const [playlistsLength, setPlaylistsLength] = useStateIfMounted(0);
 
+
 useEffect(() => {
     const fetchData = async () => {
       try {

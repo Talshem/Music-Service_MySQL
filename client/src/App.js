@@ -11,7 +11,9 @@ import {
   Route,
   NavLink,
   Switch,
-  withRouter
+  useHistory,
+  withRouter,
+  useLocation
 } from "react-router-dom";
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -36,15 +38,28 @@ import PlaylistData from './components/PlaylistData.js';
 import SongData from './components/SongData.js';
 import UploadsData from './components/UploadsData.js';
 import { ConfirmProvider } from "material-ui-confirm";
+import { Mixpanel } from './AnalyticsManager';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
 });
 
+
+function usePageViews() {
+  let location = useLocation();
+  useEffect(() => {
+    Mixpanel.track('Url change',{ loaction: location });
+  }, [location]);
+}
+
 function App() {
 const [registerOpen, setRegisterOpen] = useState(false)
 const [loginOpen,setLoginOpen] = useState(false)
 const [user, setUser] = useState(undefined);
+
+let history = useHistory();
+
+usePageViews();
 
 useEffect(() => {
 const autoLogin = async () => {
@@ -54,6 +69,8 @@ const { data } = await network.patch(`/api/users/auto`, {
 last_login: date.toISOString().substring(0, 10),
 });
 setUser(data)
+if(data.user.username) Mixpanel.identify(data.user.username)
+Mixpanel.track('Site visit');
 } catch { return }
 }; autoLogin();
 }, [])
@@ -83,6 +100,10 @@ setRegisterOpen(false)
 setTimeout(() => {
 setUser(data.user)
 }, 500);
+Mixpanel.people.set({
+USER_ID: data.user.username,
+      });
+Mixpanel.track('Registration', { user: data.user.username });
 } else {
   document.getElementById('errorMessage').innerHTML = data.message
 }
@@ -103,6 +124,8 @@ localStorage.setItem('token', data.token);
 setLoginOpen(false)   
 setTimeout(() => {
 setUser(data.user)
+Mixpanel.identify(data.user.username)
+Mixpanel.track('Successful login');
 }, 500);
 } else {
   document.getElementById('errorMessage').innerHTML = data.message
@@ -257,7 +280,7 @@ const AnimatedSwitch = withRouter(({ location }) => (
     <CSSTransition key={location.key} classNames="page" timeout={1000}>
 <ConfirmProvider>
 <UserProvider value={user}>
-      <Switch location={location}>
+      <Switch location={location} history={history}>
 <Route exact path="/" component={() => <Home/>}/>
 <Route exact path="/songs" component={() => <Songs/>}/>
 <Route exact path="/songs/:songId" component={() => <SongData/>}/>

@@ -11,8 +11,11 @@ import ClipLoader from "react-spinners/ClipLoader";
 import network from '../Network.js';
 import UserContext from '../UserContext'
 import { useStateIfMounted } from "use-state-if-mounted";
+import { Mixpanel } from '../AnalyticsManager';
 
 function Song({item, adminDelete, like, include}){
+
+const user = useContext(UserContext)
 
 let match = useRouteMatch();
 
@@ -20,7 +23,10 @@ const playCount = async (e) => {
 await axios.patch(`/api/songs/count/${e.youtube_id}`, {
 play_count: e.play_count + 1,
 });
+if (user) Mixpanel.identify(user.username)
+Mixpanel.track('play song', { song: e.title });
 };
+
 return (
 <li className="grid-item">
 <span style={{cursor:'pointer'}} >
@@ -99,6 +105,8 @@ if (res.data.deleted)
 network.patch(`/api/songs/like/${e.youtube_id}`, {
 is_liked: e.is_liked - 1,
 })})
+if (user) Mixpanel.identify(user.username)
+Mixpanel.track('toggle song likes', { song: e.title, method: 'unlike'});
 } else {
 document.getElementById(e.youtube_id + 'like').classList.replace('far', 'fas');
 await network.post(`/api/preferences`, {
@@ -110,6 +118,8 @@ if (res.data.created)
 network.patch(`/api/songs/like/${e.youtube_id}`, {
 is_liked: e.is_liked + 1,
 })})
+if (user) Mixpanel.identify(user.username)
+Mixpanel.track('toggle song likes', { song: e.title, method: 'like'});
 }
 } catch (response) {
 console.log(response)
