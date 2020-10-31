@@ -15,6 +15,7 @@
     "react": "^16.13.1",
     "react-confirm-alert": "^2.6.2",
     "react-dom": "^16.13.1",
+    "react-ga": "^3.2.0",
     "react-indiana-drag-scroll": "^1.6.1",
     "react-loading-overlay": "^1.0.1",
     "react-player": "^2.6.2",
