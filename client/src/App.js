@@ -11,7 +11,6 @@ import {
   Route,
   NavLink,
   Switch,
-  useHistory,
   withRouter,
   useLocation
 } from "react-router-dom";
@@ -39,7 +38,6 @@ import SongData from './components/SongData.js';
 import UploadsData from './components/UploadsData.js';
 import { ConfirmProvider } from "material-ui-confirm";
 import { Mixpanel } from './AnalyticsManager';
-
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
 });
@@ -56,8 +54,6 @@ function App() {
 const [registerOpen, setRegisterOpen] = useState(false)
 const [loginOpen,setLoginOpen] = useState(false)
 const [user, setUser] = useState(undefined);
-
-let history = useHistory();
 
 usePageViews();
 
@@ -280,7 +276,7 @@ const AnimatedSwitch = withRouter(({ location }) => (
     <CSSTransition key={location.key} classNames="page" timeout={1000}>
 <ConfirmProvider>
 <UserProvider value={user}>
-      <Switch location={location} history={history}>
+      <Switch location={location}>
 <Route exact path="/" component={() => <Home/>}/>
 <Route exact path="/songs" component={() => <Songs/>}/>
 <Route exact path="/songs/:songId" component={() => <SongData/>}/>
