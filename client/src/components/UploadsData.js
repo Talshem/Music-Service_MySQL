@@ -78,15 +78,14 @@ setName(`${capitalUserId}'s Uploads`)
 }
 
 let sArray = songs.map(e => {
-const deleteButton = user && user.email === e.user ? <button onClick={() => deleteSong(e)} style={{marginBottom:"15px", marginTop:'30px'}} className="fa fa-remove"></button> : ''
-
+const deleteButton = user && user.username.toUpperCase() === e.username.toUpperCase() ? <button onClick={() => deleteSong(e)} style={{marginBottom:"15px", marginTop:'30px'}} className="fa fa-remove"></button> : null
 return (
 <li key={e.youtube_id} className="hov">
 <YouTube className="video" onPlay={() => playCount(e)}videoId={e.youtube_id} id="video" opts={{width:"250",height:"250"}}/>
 <span  style={{cursor:'pointer'}} >
 {deleteButton}
 </span>
-<p style={{marginTop:'21px', width: deleteButton ? '220px' : null}}>
+<p style={{width: deleteButton ? '220px' : null, marginTop:'20px'}}>
 <NavLink className="navTo" to={`/songs/${e.youtube_id}`}>
 {e.title}
 </NavLink>
@@ -100,7 +99,7 @@ return (
 
 
 let alArray = albums.map(e => {
-const deleteButton = user && user.email === e.user ? <button onClick={() => deleteAlbum(e)} className="fa fa-remove"></button> : ''
+const deleteButton = user && user.username.toUpperCase() === e.username.toUpperCase() ? <button onClick={() => deleteAlbum(e)} className="fa fa-remove"></button> : null
 return (
 <li key={e.name} className="hov">
 <NavLink className="navTo" to={`/albums/${e.id}`}>
@@ -109,7 +108,7 @@ return (
 <span style={{cursor:'pointer'}} >
 {deleteButton}
 </span>
-<p style={{width: deleteButton ? '220px' : null}}>
+<p style={{width: deleteButton ? '220px' : null, marginTop:'0px'}}>
 <NavLink className="navTo" to={`/albums/${e.id}`}>
 {e.name}
 </NavLink>
@@ -120,7 +119,7 @@ return (
 )
 
 let arArray = artists.map(e => {
-const deleteButton = user && user.email === e.user ? <button onClick={() => deleteArtist(e)} className="fa fa-remove"></button> : ''
+const deleteButton = user && user.username.toUpperCase() === e.username.toUpperCase() ? <button onClick={() => deleteArtist(e)} className="fa fa-remove"></button> : null
 return (
 <li key={e.name} className="hov">
 <NavLink className="navTo"  to={`/artists/${e.id}`}>
@@ -129,7 +128,7 @@ return (
 <span style={{cursor:'pointer'}} >
 {deleteButton}
 </span>
-<p style={{width: deleteButton ? '220px' : null}}>
+<p style={{width: deleteButton ? '220px' : null, marginTop:'0px'}}>
 <NavLink className="navTo" to={`/artists/${e.id}`}>
 {e.name}
 </NavLink>
@@ -139,7 +138,7 @@ return (
 )}
 ) 
 let pArray = playlists.map(e => {
-const deleteButton = user && user.email === e.user ? <button onClick={() => deletePlaylist(e)} className="fa fa-remove"></button> : null
+const deleteButton = user && user.username.toUpperCase() === e.username.toUpperCase() ? <button onClick={() => deletePlaylist(e)} className="fa fa-remove"></button> : null
 return (
 <li key={e.name} className="hov">
 <NavLink className="navTo" to={`/playlists/${e.id}`}>
@@ -148,7 +147,7 @@ return (
 <span style={{cursor:'pointer'}} >
 {deleteButton}
 </span>
-<p style={{width: deleteButton ? '220px' : null}}>
+<p style={{width: deleteButton ? '220px' : null, marginTop:'0px'}}>
 <NavLink className="navTo"  to={`/playlists/${e.id}`}>
 {e.name}
 </NavLink>

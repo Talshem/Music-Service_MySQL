@@ -7,7 +7,6 @@ const checkToken = require('../middlewares/checkToken');
 const validateChars = require('../middlewares/validateChars');
 
 const router = Router();
-var date = new Date();
 
 router.get('/:type/:userId', validateChars, async (req, res) => {
   try {
@@ -18,14 +17,17 @@ router.get('/:type/:userId', validateChars, async (req, res) => {
 
 router.post('/', checkToken, async (req, res) => {
   try {
-  const newPreference = await Preference.create(req.body);
-  res.json(newPreference)
+  const exist = await Preference.findOne({where :req.body})
+  if (exist) return res.json({created: false});
+  await Preference.create(req.body);
+  res.json({created: true})
   } catch (err) { res.json(err)}
 })
 
 router.patch('/', checkToken, async (req, res) => {
   try {
   const preference = await Preference.findOne({where: req.body});
+  if (!preference) return res.json({deleted: false});
   await preference.destroy()
   res.json({deleted: true})
   } catch (err) { res.json(err)}

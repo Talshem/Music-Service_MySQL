@@ -1,0 +1,26 @@
+webpackHotUpdate("main",{
+
+/***/ "./node_modules/css-loader/dist/cjs.js?!./node_modules/postcss-loader/src/index.js?!./src/Components/NavBar.css":
+/*!**************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ref--5-oneOf-4-1!./node_modules/postcss-loader/src??postcss!./src/Components/NavBar.css ***!
+  \**************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(true);
+// Module
+___CSS_LOADER_EXPORT___.push([module.i, ".navTo{\r\nmargin-right:50px;\r\nmargin-left:50px;\r\n}\r\n\r\n.shopBar {\r\n  position: relative;\r\n  display: inline-block;\r\n  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */\r\n}\r\n\r\n.shopBar .tooltip {\r\n  visibility: hidden;\r\n  width: 100%;\r\n  background:rgb(245, 245, 239);\r\n  text-align: center;\r\n  position: absolute;\r\n  z-index: 1;\r\n  z-Index:1000;\r\n  position:fixed;\r\n  top:210px;\r\n  opacity: 0;\r\n  transition: opacity 0.3s;\r\n}\r\n\r\n\r\n/* Show the shopBar text when you mouse over the shopBar container */\r\n.shopBar:hover .tooltip {\r\n  visibility: visible;\r\n  opacity: 1;\r\n}", "",{"version":3,"sources":["webpack://src/Components/NavBar.css"],"names":[],"mappings":"AAAA;AACA,iBAAiB;AACjB,gBAAgB;AAChB;;AAEA;EACE,kBAAkB;EAClB,qBAAqB;EACrB,+BAA+B,EAAE,8CAA8C;AACjF;;AAEA;EACE,kBAAkB;EAClB,WAAW;EACX,6BAA6B;EAC7B,kBAAkB;EAClB,kBAAkB;EAClB,UAAU;EACV,YAAY;EACZ,cAAc;EACd,SAAS;EACT,UAAU;EACV,wBAAwB;AAC1B;;;AAGA,oEAAoE;AACpE;EACE,mBAAmB;EACnB,UAAU;AACZ","sourcesContent":[".navTo{\r\nmargin-right:50px;\r\nmargin-left:50px;\r\n}\r\n\r\n.shopBar {\r\n  position: relative;\r\n  display: inline-block;\r\n  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */\r\n}\r\n\r\n.shopBar .tooltip {\r\n  visibility: hidden;\r\n  width: 100%;\r\n  background:rgb(245, 245, 239);\r\n  text-align: center;\r\n  position: absolute;\r\n  z-index: 1;\r\n  z-Index:1000;\r\n  position:fixed;\r\n  top:210px;\r\n  opacity: 0;\r\n  transition: opacity 0.3s;\r\n}\r\n\r\n\r\n/* Show the shopBar text when you mouse over the shopBar container */\r\n.shopBar:hover .tooltip {\r\n  visibility: visible;\r\n  opacity: 1;\r\n}"],"sourceRoot":""}]);
+// Exports
+/* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
+
+
+/***/ })
+
+})
+//# sourceMappingURL=main.c3bba69a715fb2157157.hot-update.js.map

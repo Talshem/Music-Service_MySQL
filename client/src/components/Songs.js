@@ -11,8 +11,11 @@ import ClipLoader from "react-spinners/ClipLoader";
 import network from '../Network.js';
 import UserContext from '../UserContext'
 import { useStateIfMounted } from "use-state-if-mounted";
+import { Mixpanel } from '../AnalyticsManager';
 
 function Song({item, adminDelete, like, include}){
+
+const user = useContext(UserContext)
 
 let match = useRouteMatch();
 
@@ -20,7 +23,10 @@ const playCount = async (e) => {
 await axios.patch(`/api/songs/count/${e.youtube_id}`, {
 play_count: e.play_count + 1,
 });
+if (user) Mixpanel.identify(user.username)
+Mixpanel.track('play song', { song: e.title });
 };
+
 return (
 <li className="grid-item">
 <span style={{cursor:'pointer'}} >
@@ -86,41 +92,44 @@ await network.delete(`/api/songs/${e.youtube_id}`);
 setToggle(e => e + 1)
 };
 
-const isLiked = async (e, preferences) => {
-document.getElementById(e.youtube_id + 'like').setAttribute('disabled', false);
+const isLiked = async (e) => {
 try{
-if (preferences.includes(e.youtube_id)){
+if (document.getElementById(e.youtube_id + 'like').className.includes('fas')){
 document.getElementById(e.youtube_id + 'like').classList.replace('fas', 'far');
-await network.patch(`/api/songs/like/${e.youtube_id}`, {
-is_liked: e.is_liked - 1,
-});
 await network.patch(`/api/preferences`, {
 username: user.username,
 type: 'song',
 item_id: e.youtube_id
-});
+}).then((res) => {
+if (res.data.deleted)
+network.patch(`/api/songs/like/${e.youtube_id}`, {
+is_liked: e.is_liked - 1,
+})})
+if (user) Mixpanel.identify(user.username)
+Mixpanel.track('toggle song likes', { song: e.title, method: 'unlike'});
 } else {
 document.getElementById(e.youtube_id + 'like').classList.replace('far', 'fas');
-await network.patch(`/api/songs/like/${e.youtube_id}`, {
-is_liked: e.is_liked + 1,
-});
 await network.post(`/api/preferences`, {
 username: user.username,
 type: 'song',
 item_id: e.youtube_id
-});
+}).then((res) => {
+if (res.data.created)
+network.patch(`/api/songs/like/${e.youtube_id}`, {
+is_liked: e.is_liked + 1,
+})})
+if (user) Mixpanel.identify(user.username)
+Mixpanel.track('toggle song likes', { song: e.title, method: 'like'});
 }
 } catch (response) {
 console.log(response)
 }
-setToggle(e => e + 1)
 }
 
 
 const makeSongs = (songs, preferences) => {
 let array = songs.map(e => {
-const heart = 
-<button onClick={() => isLiked(e, preferences)} id={e.youtube_id + 'like'} className={preferences.includes(e.youtube_id) ? "like fas fa-heart" : "like far fa-heart"}/>
+const heart = <button onClick={() => isLiked(e, preferences)} id={e.youtube_id + 'like'} className={preferences.includes(e.youtube_id) ? "like fas fa-heart" : "like far fa-heart"}/>
 const deleteButton = <button onClick={() => deleteSong(e)} style={{marginTop:'30px'}} className="deleteButton">Delete</button>;
 const like = user ? heart :  null;
 const adminDelete = user && user.is_admin ? deleteButton : null;
@@ -135,9 +144,6 @@ return (
             />
 )})
 setList(array)
-songs.forEach(e =>{
-document.getElementById(e.youtube_id + 'like').removeAttribute('disabled');
-})
 setLoading(false)
 }
 
