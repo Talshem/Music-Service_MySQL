@@ -38,10 +38,10 @@ import SongData from './components/SongData.js';
 import UploadsData from './components/UploadsData.js';
 import { ConfirmProvider } from "material-ui-confirm";
 import { Mixpanel } from './AnalyticsManager';
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
 });
-
 
 function usePageViews() {
   let location = useLocation();
@@ -54,6 +54,23 @@ function App() {
 const [registerOpen, setRegisterOpen] = useState(false)
 const [loginOpen,setLoginOpen] = useState(false)
 const [user, setUser] = useState(undefined);
+
+useEffect(() => {
+    const fetchElasticData = async () => {
+      try {
+      const { data } = await axios.get(`/api/search`)
+      await axios.post('/api/search', {
+      songs: data.songs,
+      albums: data.albums,
+      artists: data.artists,
+      playlists: data.playlists
+      })
+      }
+       catch(error) {
+         return error
+      }
+    }; fetchElasticData();
+   }, [])
 
 usePageViews();
 

@@ -59,8 +59,8 @@ const user = useContext(UserContext)
 useEffect(() => {
     const fetchData = async () => {
       try {
-      const songs = await (await axios.get(`/api/songs?name=${search}`)).data;
-      const preferences = user ? await (await axios.get(`/api/preferences/song/${user.username}`)).data : [];
+      const { data: songs } = await axios.get(`/api/search/songs?name=${search}`);
+      const preferences = user ? (await axios.get(`/api/preferences/song/${user.username}`)).data : [];
       let prefArray = preferences.map(e => e.item_id)
       let list = songs.filter(e => e.title.toUpperCase().includes(search.toUpperCase()))
       if (!favorites) {
@@ -122,7 +122,7 @@ if (user) Mixpanel.identify(user.username)
 Mixpanel.track('toggle song likes', { song: e.title, method: 'like'});
 }
 } catch (response) {
-console.log(response)
+return response
 }
 }
 

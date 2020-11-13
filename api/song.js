@@ -11,7 +11,7 @@ const { Op } = require("sequelize");
 
 const router = Router();
 
-router.get('/', async (req, res) => {
+router.get('/top', async (req, res) => {
 try {
 const { name } = req.query;
 let allSongs = await Song.scope('filter').findAll({where: {title: {[Op.substring]: name ? name : ''}}, limit: 20, order: [['play_count','DESC']],

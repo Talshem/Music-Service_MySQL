@@ -1,7 +1,5 @@
 const { Router } = require('express');
-const { Album } = require('../models');
-const { Artist } = require('../models');
-const { User } = require('../models');
+const { Album, Artist, User } = require('../models');
 
 const validateChars = require('../middlewares/validateChars');
 const checkToken = require('../middlewares/checkToken');
@@ -10,7 +8,7 @@ const { Op } = require("sequelize");
 
 const router = Router();
 
-router.get('/', async (req, res) => {
+router.get('/top', async (req, res) => {
 try {
 const { name } = req.query;
 let allAlbums = await Album.scope('filter').findAll({where: {name: {[Op.substring]: name ? name : ''}}, limit: 20, order: [['is_liked','DESC']],

@@ -29,19 +29,20 @@ const [playlistsLength, setPlaylistsLength] = useStateIfMounted(0);
 useEffect(() => {
     const fetchData = async () => {
       try {
-      const songs = await axios.get(`/api/songs`)
-      const albums = await axios.get(`/api/albums`);
-      const artists = await axios.get(`/api/artists`);
-      const playlists = await axios.get(`/api/playlists`);
-      makeLists(songs.data, albums.data, artists.data, playlists.data)
+      const { data: songs } = await axios.get(`/api/songs/top`)
+      const { data: albums } = await axios.get(`/api/albums/top`)
+      const { data: artists } = await axios.get(`/api/artists/top`)
+      const { data: playlists } = await axios.get(`/api/playlists/top`)
+      console.log(albums)
+      makeLists(songs, albums, artists, playlists) 
       setLoading(false)
       }
        catch(response) {
       setLoading(false)
-console.log(response)
       }
     }; fetchData();
    }, [])
+
 
 const playCount = async (e) => {
 await axios.patch(`/api/songs/count/${e.youtube_id}`, {
@@ -138,8 +139,7 @@ const override =`
   spinner={<ClipLoader css={override} color="white" style={{zIndex:1010}} size={150}/>}
   >
   </LoadingOverlay>
-
-
+  
 <div className="homeLists">
 <h4> Top Songs </h4> 
   <CarouselProvider
