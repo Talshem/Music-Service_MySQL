@@ -17,9 +17,9 @@ const client = new Client({
 
 
 const fetchElasticData = async (index, data) => {
-await client.indices.create({
-    index:  index,
-});
+// await client.indices.create({
+//     index:  index,
+// });
 const body = data.flatMap(doc => [{ index: {_index: index}}, doc]);
 const { body: bulk } = await client.bulk({ refresh: true, body });
 if (bulk.errors) console.log(bulk.error)
@@ -90,9 +90,10 @@ const { body } = await client.search({
     index: 'songs',
     body: {
         query: {
-                query_string: {
-                query: `*${name}*`,
-                fields: ['title']
+            query_string: {
+                query: `/.*${name}.*/`,
+                fields: ['title', 'Artist.name'],
+                fuzziness: 'auto'
             }
         }
     }
@@ -105,14 +106,16 @@ router.get('/albums', async (req, res) => {
 const { name } = req.query;
 
 const { body } = await client.search({
-    index: 'albums'
-    // body: {
-    //     query: {
-    //         match: {
-    //             title: name
-    //         }
-    //     }
-    // }
+    index: 'albums',
+    body: {
+        query: {
+            query_string: {
+                query: `/.*${name}.*/`,
+                fields: ['name'],
+                fuzziness: 'auto'
+            }
+        }
+    }
 })
 res.send(body.hits.hits.map(e => e = e._source))
 })
@@ -121,14 +124,16 @@ router.get('/artists', async (req, res) => {
 const { name } = req.query;
 
 const { body } = await client.search({
-    index: 'artists'
-    // body: {
-    //     query: {
-    //         match: {
-    //             title: name
-    //         }
-    //     }
-    // }
+    index: 'artists',
+    body: {
+        query: {
+            query_string: {
+                query: `/.*${name}.*/`,
+                fields: ['name'],
+                fuzziness: 'auto'
+            }
+        }
+    }
 })
 res.send(body.hits.hits.map(e => e = e._source))
 })
@@ -137,14 +142,16 @@ router.get('/playlists', async (req, res) => {
 const { name } = req.query;
 
 const { body } = await client.search({
-    index: 'playlists'
-    // body: {
-    //     query: {
-    //         match: {
-    //             title: name
-    //         }
-    //     }
-    // }
+    index: 'playlists',
+    body: {
+        query: {
+            query_string: {
+                query: `/.*${name}.*/`,
+                fields: ['name'],
+                fuzziness: 'auto'
+            }
+        }
+    }
 })
 res.send(body.hits.hits.map(e => e = e._source))
 })
