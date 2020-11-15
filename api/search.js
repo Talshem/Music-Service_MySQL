@@ -2,7 +2,6 @@ const { Song, Album, Artist, Playlist } = require('../models');
 const { Router } = require('express');
 require('dotenv').config()
 const router = Router();
-const { Op } = require("sequelize");
 
 const { Client } = require('@elastic/elasticsearch');
 const client = new Client({ 
@@ -17,9 +16,9 @@ const client = new Client({
 
 
 const fetchElasticData = async (index, data) => {
-// await client.indices.create({
-//     index:  index,
-// });
+await client.indices.create({
+    index:  index,
+});
 const body = data.flatMap(doc => [{ index: {_index: index}}, doc]);
 const { body: bulk } = await client.bulk({ refresh: true, body });
 if (bulk.errors) console.log(bulk.error)
@@ -92,7 +91,7 @@ const { body } = await client.search({
         query: {
             query_string: {
                 query: `/.*${name}.*/`,
-                fields: ['title', 'Artist.name'],
+                fields: ['title', 'Artist.name', 'Album.name'],
                 fuzziness: 'auto'
             }
         }
@@ -111,7 +110,7 @@ const { body } = await client.search({
         query: {
             query_string: {
                 query: `/.*${name}.*/`,
-                fields: ['name'],
+                fields: ['name', 'Artist.name'],
                 fuzziness: 'auto'
             }
         }
