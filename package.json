@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/Talshem/Music-Service#readme",
   "dependencies": {
+    "@elastic/elasticsearch": "^7.10.0",
     "cookie-parser": "^1.4.5",
     "cookie-session": "^1.4.0",
     "cors": "^2.8.5",

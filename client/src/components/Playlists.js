@@ -52,10 +52,10 @@ const user = useContext(UserContext)
 useEffect(() => {
     const fetchData = async () => {
       try{
-      const artists = await (await axios.get(`/api/playlists?name=${search}`)).data;
+      const { data: playlists } = await axios.get(`/api/search/playlists?name=${search}`);
       const preferences = user ? await (await axios.get(`/api/preferences/playlist/${user.username}`)).data : [];
       let prefArray = preferences.map(e => e.item_id)
-      let list = artists.filter(e => e.name.toUpperCase().includes(search.toUpperCase()))
+      let list = playlists.filter(e => e.name.toUpperCase().includes(search.toUpperCase()))
       if (!favorites) {
       makePlaylists(list, prefArray) 
       } else {

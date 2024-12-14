@@ -6,9 +6,6 @@ let actions = {
   identify: (id) => {
 mixpanel.identify(id);
   },
-  alias: (id) => {
-mixpanel.alias(id);
-  },
   track: (name, props) => {
 mixpanel.track(name, props);
   },

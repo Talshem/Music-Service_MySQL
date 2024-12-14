@@ -21,7 +21,7 @@ app.get('*', function(req, res) {
 
 // connection
 require("./models/index")
-const PORT = process.env.PORT || 3005;
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`)
